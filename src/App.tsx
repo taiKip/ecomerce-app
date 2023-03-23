@@ -1,35 +1,79 @@
+import { useState, useMemo, createContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
+import { Routes, Route } from 'react-router-dom'
+
 import { Button, Box, Grid, Typography } from '@mui/material'
+import { purple } from '@mui/material/colors'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 
-import { decrement, increment } from './features/counter/counterSlice'
-import { RootState } from './store'
-import './App.css'
+import { RootState } from './app/store'
+import Layout from './components/Layout'
+import HomePage from './pages/HomePage'
 
-function App() {
-  const count = useSelector((state: RootState) => state.counter.value)
-  const dispatch = useDispatch()
+export const ThemeContext = createContext({
+  toggleColorMode: () => {
+    /**/
+  }
+})
 
+const App = () => {
+  // const count = useSelector((state: RootState) => state.counter.value)
+  // const dispatch = useDispatch()
+
+  const [mode, setMode] = useState<'dark' | 'light'>(() => {
+    const localData = localStorage.getItem('theme')
+    return localData ? JSON.parse(localData) : 'light'
+  })
+  localStorage.setItem('theme', JSON.stringify(mode))
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'))
+      }
+    }),
+    []
+  )
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          primary: {
+            main: '#fefefe'
+          },
+          secondary: purple,
+          mode: mode
+        },
+
+        typography: {
+          fontFamily: 'Quicksand',
+          fontWeightLight: 400,
+          fontWeightRegular: 500,
+          fontWeightMedium: 600,
+          fontWeightBold: 700,
+          button: {
+            textTransform: 'none'
+          }
+        }
+      }),
+    [mode]
+  )
   return (
-    <div className="App">
-      <h1>Vite + React + Toolkit + MUI</h1>
-      <Box sx={{ width: '100%' }}>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={5}>
-            <Button variant="contained" onClick={() => dispatch(increment())}>
-              Increment
-            </Button>
-          </Grid>
-          <Grid item xs={2}>
-            <Typography>{count}</Typography>
-          </Grid>
-          <Grid item xs={5}>
-            <Button variant="contained" onClick={() => dispatch(decrement())}>
-              Decrement
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-    </div>
+    <ThemeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <main
+          style={{
+            background: theme.palette.mode === 'dark' ? 'black' : ''
+          }}>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<HomePage />} />
+            </Route>
+          </Routes>
+        </main>
+      </ThemeProvider>
+    </ThemeContext.Provider>
   )
 }
 
