@@ -2,7 +2,7 @@ import { apiSlice } from './../api/apiSlice'
 
 export type productType = {
   id: number
-  name: string
+  title: string
   description: string
   category: string
   variant: string
