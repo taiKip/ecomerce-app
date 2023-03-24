@@ -20,6 +20,7 @@ import { Link } from 'react-router-dom'
 import { ThemeContext } from '../App'
 import profile from '../../public/profile.jpg'
 import { useAppSelector } from '../app/hooks'
+import CartItemsList from '../features/cart/CartItemsList'
 
 const navItems = ['users', 'products', 'orders']
 
@@ -35,6 +36,16 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null)
+
+  const handleCloseCart = () => {
+    setCartAnchorEl(null)
+  }
+
+  const handleCart = (event: MouseEvent<HTMLElement>) => {
+    setCartAnchorEl(event.currentTarget)
+  }
 
   const handleLogin = () => {
     setIsLoggedIn((prev) => !prev)
@@ -79,6 +90,7 @@ const Header = () => {
             size="medium"
             aria-label="notifications"
             color="inherit"
+            onClick={handleCart}
             sx={{
               borderRadius: 1
             }}>
@@ -127,6 +139,7 @@ const Header = () => {
           <MenuItem onClick={handleClose}>My account</MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
+        <CartItemsList anchorEl={cartAnchorEl} handleClose={handleCloseCart} />
       </Toolbar>
     </AppBar>
   )

@@ -39,7 +39,7 @@ const Product = ({ id, category, description, image, price, title }: productType
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Typography>{price.toFixed(2)}€</Typography>
+        <Typography>€{price.toFixed(2)}</Typography>
         <IconButton sx={{ ml: 'auto', color: 'green' }} onClick={handleAddToCart}>
           <AddShoppingCartOutlinedIcon />
         </IconButton>

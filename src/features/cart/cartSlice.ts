@@ -5,7 +5,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface Iquantity {
   quantity: number
 }
-type cartItemType = productType & Iquantity
+export type cartItemType = productType & Iquantity
 
 export type cartStateType = {
   cartItems: cartItemType[]
