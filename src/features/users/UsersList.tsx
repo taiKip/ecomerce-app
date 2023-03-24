@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useAppDispatch } from '../../app/store'
+import { useAppDispatch } from '../../app/hooks'
 import { extendedUsersApiSlice } from './userSlice'
 
 const UsersList = () => {

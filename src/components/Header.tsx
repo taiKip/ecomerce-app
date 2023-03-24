@@ -19,11 +19,14 @@ import { Link } from 'react-router-dom'
 
 import { ThemeContext } from '../App'
 import profile from '../../public/profile.jpg'
-import Search from './Search'
-const navItems = ['users', 'products', 'invoices']
+import { useAppSelector } from '../app/hooks'
+
+const navItems = ['users', 'products', 'orders']
 
 const Header = () => {
   const navigate = useNavigate()
+
+  const cartItems = useAppSelector((state) => state.cart.cartItems)
 
   const colorMode = useContext(ThemeContext)
 
@@ -79,7 +82,7 @@ const Header = () => {
             sx={{
               borderRadius: 1
             }}>
-            <Badge badgeContent={3} color={'secondary'}>
+            <Badge badgeContent={cartItems.length} color={'secondary'}>
               <ShoppingCartCheckoutOutlined />
             </Badge>
           </IconButton>

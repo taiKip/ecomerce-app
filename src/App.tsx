@@ -10,6 +10,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { RootState } from './app/store'
 import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
+import { Snowshoeing } from '@mui/icons-material'
+import SingleProductPage from './features/products/SingleProductPage'
 
 export const ThemeContext = createContext({
   toggleColorMode: () => {
@@ -18,9 +20,6 @@ export const ThemeContext = createContext({
 })
 
 const App = () => {
-  // const count = useSelector((state: RootState) => state.counter.value)
-  // const dispatch = useDispatch()
-
   const [mode, setMode] = useState<'dark' | 'light'>(() => {
     const localData = localStorage.getItem('theme')
     return localData ? JSON.parse(localData) : 'light'
@@ -55,6 +54,19 @@ const App = () => {
           button: {
             textTransform: 'none'
           }
+        },
+        components: {
+          MuiCardMedia: {
+            styleOverrides: {
+              root: {
+                '&:hover': {
+                  transform: 'scale(1.1)',
+                  transition: 'transform .3s ease-in-out'
+                },
+                objectFit: 'cover'
+              }
+            }
+          }
         }
       }),
     [mode]
@@ -69,6 +81,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<HomePage />} />
+              <Route path=":propertyId" element={<SingleProductPage />} />
             </Route>
           </Routes>
         </main>

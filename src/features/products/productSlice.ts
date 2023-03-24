@@ -1,12 +1,12 @@
 import { apiSlice } from './../api/apiSlice'
 
-export type productType = {
+export interface productType {
   id: number
   title: string
+  price: number
   description: string
   category: string
-  variant: string
-  size: number
+  image: string
 }
 export const extendedProductsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

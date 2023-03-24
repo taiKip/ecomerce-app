@@ -1,9 +1,11 @@
 import { apiSlice } from '../features/api/apiSlice'
 import { configureStore } from '@reduxjs/toolkit'
-import { useDispatch } from 'react-redux'
+import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
+import CartReducer from '../features/cart/cartSlice'
 export const store = configureStore({
   reducer: {
-    [apiSlice.reducerPath]: apiSlice.reducer
+    [apiSlice.reducerPath]: apiSlice.reducer,
+    cart: CartReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
   devTools: true
@@ -13,5 +15,3 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
-
-export const useAppDispatch: () => AppDispatch = useDispatch
