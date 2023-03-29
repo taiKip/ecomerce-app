@@ -1,16 +1,18 @@
+import { IOrder } from '../../interfaces'
 import { apiSlice } from './../api/apiSlice'
 
-export type orderType = {
-  id: number
-  userId: string
-  createdAt: string
-  products: number[]
-}
 export const extendedProductsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getOrders: builder.query<orderType[], void>({
+    getOrders: builder.query<IOrder[], void>({
       query: () => '/products.json',
       providesTags: ['Orders']
+    }),
+    addNewOrder: builder.mutation({
+      query: (initialOrder: Partial<IOrder>) => ({
+        url: '/orders',
+        method: 'POST',
+        body: initialOrder
+      })
     })
   })
 })

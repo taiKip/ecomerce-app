@@ -1,4 +1,4 @@
-import { Toolbar, Typography, Box, FormControl } from '@mui/material'
+import { Toolbar, Typography, Box, FormControl, Button } from '@mui/material'
 import { Container } from '@mui/system'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
@@ -7,34 +7,26 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import Product from './Product'
 import { useGetProductsQuery } from './productSlice'
 import Masonry from 'react-masonry-css'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import SearchBar from '../../components/SearchBar'
+import { useGetCategoriesQuery } from '../categories/categorySlice'
+import { wrapperStyle, breakpointColumnsObj } from './Styles'
+import { Link } from 'react-router-dom'
 
-const breakpointColumnsObj = {
-  default: 4,
-  1100: 3,
-  700: 2,
-  500: 1
-}
 const ProductList = () => {
   const { data } = useGetProductsQuery()
+  const { data: categories } = useGetCategoriesQuery()
   const [category, setCategory] = useState('')
 
   const handleChange = (event: SelectChangeEvent) => {
     event.preventDefault()
     setCategory(event.target.value)
   }
+
   return (
     <>
-      <Box
-        sx={{
-          mb: 2,
-          display: 'flex',
-          justifyContent: 'center',
-          width: '100%',
-          alignItems: 'center'
-        }}>
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+      <Box sx={wrapperStyle}>
+        <FormControl sx={{ m: 1, minWidth: 160 }} size="small">
           <InputLabel id="demo-select-small" color="secondary">
             Category
           </InputLabel>
@@ -48,12 +40,19 @@ const ProductList = () => {
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {categories?.map((item) => (
+              <MenuItem key={item.id} value={item.id}>
+                {item.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
         <SearchBar />
+        <Link to="/create">
+          <Button variant="contained" color="primary">
+            Add New product
+          </Button>
+        </Link>
       </Box>
       <Masonry
         breakpointCols={breakpointColumnsObj}

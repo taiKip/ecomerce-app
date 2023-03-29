@@ -5,12 +5,12 @@ import Typography from '@mui/material/Typography'
 import { CardActionArea, CardActions, IconButton } from '@mui/material'
 import { ArrowForward } from '@mui/icons-material'
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined'
-import { productType } from './productSlice'
 import { NavLink } from 'react-router-dom'
 import { useAppDispatch } from '../../app/hooks'
 import { addToCart } from '../cart/cartSlice'
+import { IProduct } from '../../interfaces'
 
-const Product = ({ id, category, description, image, price, title }: productType) => {
+const Product = ({ id, category, description, image, price, title }: IProduct) => {
   const dispatch = useAppDispatch()
   const handleAddToCart = () => {
     dispatch(

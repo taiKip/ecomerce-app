@@ -1,20 +1,42 @@
+import { IProduct } from '../../interfaces'
 import { apiSlice } from './../api/apiSlice'
 
-export interface productType {
-  id: number
-  title: string
-  price: number
-  description: string
-  category: string
-  image: string
-}
 export const extendedProductsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getProducts: builder.query<productType[], void>({
-      query: () => '/products.json',
+    getProducts: builder.query<IProduct[], void>({
+      query: () => '/products',
       providesTags: ['Products']
+    }),
+    addNewProduct: builder.mutation({
+      query: (product: Partial<IProduct>) => ({
+        url: '/products',
+        method: 'POST',
+        body: product
+      }),
+      invalidatesTags: ['Products']
+    }),
+    deleteProduct: builder.mutation({
+      query: ({ id }: { id: string }) => ({
+        url: `products/${id}`,
+        method: 'DELETE',
+        body: { id }
+      }),
+      invalidatesTags: ['Products']
+    }),
+    updateProduct: builder.mutation({
+      query: (product: Partial<IProduct>) => ({
+        url: `products/${product.id}`,
+        method: 'PATCH',
+        body: product
+      }),
+      invalidatesTags: ['Products']
     })
   })
 })
 
-export const { useGetProductsQuery } = extendedProductsApiSlice
+export const {
+  useGetProductsQuery,
+  useAddNewProductMutation,
+  useDeleteProductMutation,
+  useUpdateProductMutation
+} = extendedProductsApiSlice

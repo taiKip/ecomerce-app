@@ -1,4 +1,5 @@
 import { useContext, useState, MouseEvent } from 'react'
+import { Link } from 'react-router-dom'
 
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '@mui/material/styles'
@@ -8,35 +9,27 @@ import { Avatar, Badge, Button, CardHeader, IconButton, Menu, MenuItem } from '@
 import {
   Brightness7Outlined,
   DarkModeOutlined,
-  House,
   MailOutline,
   Person2Outlined,
   ShoppingCartCheckoutOutlined,
   TireRepair
 } from '@mui/icons-material'
 
-import { Link } from 'react-router-dom'
-
 import { ThemeContext } from '../App'
 import profile from '../../public/profile.jpg'
 import { useAppSelector } from '../app/hooks'
 import CartItemsList from '../features/cart/CartItemsList'
 
-const navItems = ['users', 'products', 'orders']
+const navItems = ['users', 'orders', 'categories', 'products']
 
 const Header = () => {
   const navigate = useNavigate()
-
-  const cartItems = useAppSelector((state) => state.cart.cartItems)
-
   const colorMode = useContext(ThemeContext)
-
   const theme = useTheme()
 
+  const cartItems = useAppSelector((state) => state.cart.cartItems)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-
   const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null)
 
   const handleCloseCart = () => {

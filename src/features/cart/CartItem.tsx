@@ -1,5 +1,4 @@
-import { Button, ButtonGroup, CardMedia, Box, TableCell, TableRow, Typography } from '@mui/material'
-import React from 'react'
+import { Button, CardMedia, Box, TableCell, TableRow, Typography } from '@mui/material'
 import { useAppDispatch } from '../../app/hooks'
 import { cartItemType, decrementQuantity, incrementQuantity, removeItem } from './cartSlice'
 

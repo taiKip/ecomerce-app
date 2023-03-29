@@ -7,8 +7,10 @@ import { store } from './app/store'
 import App from './App'
 import './index.css'
 import { extendedProductsApiSlice } from './features/products/productSlice'
+import { extendedCategoriesApiSlice } from './features/categories/categorySlice'
 
 store.dispatch(extendedProductsApiSlice.endpoints.getProducts.initiate())
+store.dispatch(extendedCategoriesApiSlice.endpoints.getCategories.initiate())
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <Provider store={store}>

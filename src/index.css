@@ -4,6 +4,7 @@ body {
 
 transition: all 0.3s ease-in-out;
 box-sizing: border-box;
+height: 100vh;
 }
 a{
   text-decoration: none;

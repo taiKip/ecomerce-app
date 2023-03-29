@@ -8,17 +8,20 @@ import {
   TableCell,
   TableBody,
   IconButton,
-  Box
+  Box,
+  CardHeader,
+  Button
 } from '@mui/material'
-import { ArrowBack, Category, Close } from '@mui/icons-material'
+import { ArrowBack } from '@mui/icons-material'
 import { useAppSelector } from '../../app/hooks'
 import CartItem from './CartItem'
-import { color } from '@mui/system'
+import { RootState } from '../../app/store'
 
 export type cartPropsType = { anchorEl: null | HTMLElement; handleClose: () => void }
 const nav = ['PRODUCT DETAILS', 'QUANTITY', 'PRICE', 'TOTAL']
 const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
-  const cartItems = useAppSelector((state) => state.cart.cartItems)
+  const cartItems = useAppSelector((state: RootState) => state.cart.cartItems)
+  const count = cartItems.length
 
   return (
     <Menu
@@ -44,9 +47,10 @@ const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
           padding: 2,
           marginBottom: 1
         }}>
-        <Typography fontWeight="bold" variant="h5">
-          My Shopping cart
-        </Typography>
+        <CardHeader
+          title="My Shopping Cart"
+          subheader={`There is currently ${count} item${count > 1 ? 's' : ''} in the cart`}
+        />
       </Container>
       <Table>
         <TableHead>
@@ -87,6 +91,7 @@ const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
 
           <Typography variant="h6">Continue Shopping</Typography>
         </Box>
+        <Button variant="outlined">Checkout</Button>
       </Container>
     </Menu>
   )
