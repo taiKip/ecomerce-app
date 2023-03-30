@@ -9,10 +9,10 @@ import { Avatar, Badge, Button, CardHeader, IconButton, Menu, MenuItem } from '@
 import {
   Brightness7Outlined,
   DarkModeOutlined,
+  Dashboard,
   MailOutline,
   Person2Outlined,
-  ShoppingCartCheckoutOutlined,
-  TireRepair
+  ShoppingCartCheckoutOutlined
 } from '@mui/icons-material'
 
 import { ThemeContext } from '../App'
@@ -20,7 +20,7 @@ import profile from '../../public/profile.jpg'
 import { useAppSelector } from '../app/hooks'
 import CartItemsList from '../features/cart/CartItemsList'
 
-const navItems = ['users', 'orders', 'categories', 'products']
+const navItems = ['users', 'dashboard', 'categories']
 
 const Header = () => {
   const navigate = useNavigate()
@@ -60,7 +60,7 @@ const Header = () => {
     <AppBar elevation={0} position="sticky">
       <Toolbar>
         <Link to={'/'}>
-          <TireRepair sx={{ mr: 5 }} />
+          <Dashboard sx={{ mr: 5 }} />
         </Link>
         <Box sx={{ display: { xs: 'none', sm: 'block', flexGrow: 1 } }}>
           {navItems.map((item) => (

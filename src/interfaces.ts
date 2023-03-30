@@ -1,5 +1,5 @@
 export interface IProduct {
-  id: number
+  id: string
   title: string
   price: number
   description: string
@@ -13,5 +13,14 @@ export interface IOrder {
   id: number
   userId: string
   createdAt: string
-  products: number[]
+  products: string[]
+}
+
+export interface ISelectProps {
+  id: string
+  content: string
+}
+export interface ISortConfig<T> {
+  key: keyof T
+  direction: 'asc' | 'desc'
 }

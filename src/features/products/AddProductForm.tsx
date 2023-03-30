@@ -1,4 +1,5 @@
 import React, { FormEvent, useState, ChangeEvent } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { useNavigate } from 'react-router-dom'
 import {
   Select,
@@ -7,7 +8,8 @@ import {
   Typography,
   SelectChangeEvent,
   OutlinedInput,
-  InputAdornment
+  InputAdornment,
+  CircularProgress
 } from '@mui/material'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
@@ -33,6 +35,9 @@ const AddProductForm = () => {
   const [titleError, setTitleError] = useState(false)
   const [descriptionError, setDescriptionError] = useState(false)
   const [image, setImage] = useState<File | null>(null)
+  const [imageUrl, setImageUrl] = useState<string>('')
+  const [imageError, setImageError] = useState(false)
+  const [imageLoading, setImageLoading] = useState(false)
 
   const { data: addresses } = useGetCategoriesQuery()
 
@@ -48,17 +53,35 @@ const AddProductForm = () => {
   const handleTitle = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value)
   }
-  const handleUploadImage = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
+    setImageLoading(true)
     if (event.target.files && event.target.files.length > 0) {
       setImage(event.target.files[0])
     }
-  }
+    const formData = new FormData()
 
+    if (image) {
+      formData.append('file', image)
+      const response = await fetch('https://api.escuelajs.co/api/v1/files/upload', {
+        method: 'POST',
+        body: formData
+      })
+      if (response.ok) {
+        const data = await response.json()
+        if (data) {
+          setImageUrl(data.location)
+          setImageLoading(false)
+        }
+      } else {
+        setImageError(true)
+      }
+    }
+  }
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     setFormError(false)
-
+    console.log(imageUrl)
     setTitleError(false)
     setDescriptionError(false)
     if (title === '') {
@@ -71,9 +94,8 @@ const AddProductForm = () => {
     if (title && description && category) {
       console.log('in save')
       const itemPrice = +price
-      //todo : fix image upload
-      const id = 5
-      const product = { id, title, description, category, image: image?.name, price: itemPrice }
+      const id = uuidv4()
+      const product = { id, title, description, category, image: imageUrl, price: itemPrice }
       console.log(product)
       try {
         await addNewProduct(product).unwrap()
@@ -121,13 +143,24 @@ const AddProductForm = () => {
           rows={2}
           error={descriptionError}
         />
-
+        {imageError && (
+          <Typography color="error" display={'flex'} alignItems={'center'}>
+            Something went wrong
+            <SentimentVeryDissatisfiedIcon />
+          </Typography>
+        )}
         <Button
           color="primary"
           component="label"
           variant="contained"
           fullWidth
-          endIcon={<Camera />}
+          endIcon={
+            imageLoading ? (
+              <CircularProgress color="secondary" size={20} />
+            ) : (
+              <Camera color="success" />
+            )
+          }
           sx={{ mb: 2 }}>
           Upload Image
           <input hidden accept="image/*" type="file" onChange={handleUploadImage} />

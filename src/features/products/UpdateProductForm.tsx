@@ -29,7 +29,7 @@ const UpdateProductForm = () => {
     isSuccess
   } = useGetProductsQuery(undefined, {
     selectFromResult: ({ data, isLoading: loading, error, isSuccess }) => ({
-      product: data?.filter((item) => item.id === Number(productId)) ?? [],
+      product: data?.filter((item) => item.id === productId) ?? [],
       error,
       isLoading: loading,
       isSuccess

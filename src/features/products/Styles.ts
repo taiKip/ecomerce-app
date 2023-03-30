@@ -1,7 +1,7 @@
 export const wrapperStyle = {
   mb: 2,
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'end',
   width: '100%',
   alignItems: 'center'
 }

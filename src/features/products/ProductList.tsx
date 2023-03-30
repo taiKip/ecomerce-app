@@ -1,65 +1,59 @@
-import { Toolbar, Typography, Box, FormControl, Button } from '@mui/material'
-import { Container } from '@mui/system'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import { Box } from '@mui/material'
 
 import Product from './Product'
 import { useGetProductsQuery } from './productSlice'
 import Masonry from 'react-masonry-css'
-import { ChangeEvent, useState } from 'react'
+import { useState } from 'react'
 import SearchBar from '../../components/SearchBar'
 import { useGetCategoriesQuery } from '../categories/categorySlice'
 import { wrapperStyle, breakpointColumnsObj } from './Styles'
-import { Link } from 'react-router-dom'
 
+import EnhancedSelect from '../../components/EnhancedSelect'
+import { sortItems } from '../../utils/SortValues'
+import { sortArray } from '../../utils/Comparator'
+import { sortType } from '../../types'
+import { IProduct } from '../../interfaces'
 const ProductList = () => {
   const { data } = useGetProductsQuery()
   const { data: categories } = useGetCategoriesQuery()
-  const [category, setCategory] = useState('')
-
-  const handleChange = (event: SelectChangeEvent) => {
-    event.preventDefault()
-    setCategory(event.target.value)
+  const [sort, setSort] = useState<sortType>('' as sortType)
+  const array1 = [
+    { name: 'ken', score: 10 },
+    { name: 'vic', score: 20 }
+  ]
+  let sortedArray: IProduct[] = []
+  if (data) {
+    sortedArray = [...data]
+    switch (sort) {
+      case 'nasc':
+        sortedArray = sortArray([...data], { key: 'title', direction: 'asc' })
+        break
+      case 'ndesc':
+        sortedArray = sortArray([...data], { key: 'title', direction: 'desc' })
+        break
+      case 'pasc':
+        sortedArray = sortArray([...data], { key: 'price', direction: 'asc' })
+        break
+      case 'pdesc':
+        sortedArray = sortArray([...data], { key: 'price', direction: 'desc' })
+        break
+      default:
+        sortedArray = [...data]
+        break
+    }
   }
-
   return (
     <>
       <Box sx={wrapperStyle}>
-        <FormControl sx={{ m: 1, minWidth: 160 }} size="small">
-          <InputLabel id="demo-select-small" color="secondary">
-            Category
-          </InputLabel>
-          <Select
-            labelId="demo-select-small"
-            id="demo-select-small"
-            value={category}
-            label="Category"
-            color="secondary"
-            onChange={handleChange}>
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {categories?.map((item) => (
-              <MenuItem key={item.id} value={item.id}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <EnhancedSelect items={sortItems} value={sort} handleChange={setSort} />
         <SearchBar />
-        <Link to="/create">
-          <Button variant="contained" color="primary">
-            Add New product
-          </Button>
-        </Link>
       </Box>
       <Masonry
         breakpointCols={breakpointColumnsObj}
         className="my-masonry-grid"
         columnClassName="my-masonry-grid_column">
         {data &&
-          data.map((item) => (
+          sortedArray.map((item) => (
             <Product
               id={item.id}
               category={item.category}

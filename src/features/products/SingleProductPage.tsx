@@ -20,7 +20,7 @@ const SingleProductPage = () => {
   const [deleteError, setDeleteError] = useState(false)
   const { product, error, isLoading } = useGetProductsQuery(undefined, {
     selectFromResult: ({ data, isLoading, error }) => ({
-      product: data?.filter((item) => item.id === Number(productId)),
+      product: data?.filter((item) => item.id === productId),
       error,
       isLoading
     })
@@ -86,7 +86,6 @@ const SingleProductPage = () => {
         <Button variant="outlined" color="error" onClick={handleDelete}>
           Delete
         </Button>
-        <p> productId : {productId}</p>
       </Stack>
     </Container>
   )

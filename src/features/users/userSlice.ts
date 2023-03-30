@@ -14,7 +14,7 @@ export type userType = {
 export const extendedUsersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query<userType[], void>({
-      query: () => '/users.json',
+      query: () => '/users',
       providesTags: ['Users']
     })
   })

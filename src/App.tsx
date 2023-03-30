@@ -12,6 +12,7 @@ import UseTheme from './hooks/UseTheme'
 import AddProductForm from './features/products/AddProductForm'
 import UsersList from './features/users/UsersList'
 import UpdateProductForm from './features/products/UpdateProductForm'
+import Dashboard from './pages/Dashboard'
 
 export const ThemeContext = createContext({
   toggleColorMode: () => {
@@ -32,11 +33,15 @@ const App = () => {
             <Route path="/" element={<Layout />}>
               <Route index element={<HomePage />} />
               <Route path=":productId" element={<SingleProductPage />} />
-              <Route path="create" element={<AddProductForm />} />
+
               <Route path="edit/:productId" element={<UpdateProductForm />} />
               <Route path="users">
                 <Route index element={<UsersList />} />
                 <Route path=":userId" element={<SingleProductPage />} />
+                <Route path="create" element={<AddProductForm />} />
+              </Route>
+              <Route path="dashboard">
+                <Route index element={<Dashboard />} />
                 <Route path="create" element={<AddProductForm />} />
               </Route>
             </Route>
