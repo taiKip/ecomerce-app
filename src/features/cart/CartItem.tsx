@@ -17,6 +17,7 @@ const CartItem = ({ image, quantity, price, title, id }: cartItemType) => {
     dispatch(removeItem(id))
   }
   const total = price * quantity
+  //
   return (
     <TableRow>
       <TableCell sx={{ display: 'flex', gap: 1 }} align={'left'}>
