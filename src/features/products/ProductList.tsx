@@ -1,11 +1,10 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 import Product from './Product'
 import { useGetProductsQuery } from './productSlice'
 import Masonry from 'react-masonry-css'
 import { useState } from 'react'
 import SearchBar from '../../components/SearchBar'
-import { useGetCategoriesQuery } from '../categories/categorySlice'
 import { wrapperStyle, breakpointColumnsObj } from './Styles'
 
 import EnhancedSelect from '../../components/EnhancedSelect'
@@ -13,28 +12,29 @@ import { sortItems } from '../../utils/SortValues'
 import { sortArray } from '../../utils/Comparator'
 import { sortType } from '../../types'
 import { IProduct } from '../../interfaces'
+import useDebounce from '../../hooks/useDebounce'
+import { SentimentVeryDissatisfied } from '@mui/icons-material'
 const ProductList = () => {
   const { data } = useGetProductsQuery()
-  const { data: categories } = useGetCategoriesQuery()
   const [sort, setSort] = useState<sortType>('' as sortType)
-  const array1 = [
-    { name: 'ken', score: 10 },
-    { name: 'vic', score: 20 }
-  ]
+  const [searchItem, setSearchItem] = useState<string>('')
+
+  const debounceSearchValue = useDebounce(searchItem, 500)
   let sortedArray: IProduct[] = []
+
   if (data) {
     sortedArray = [...data]
     switch (sort) {
-      case 'nasc':
+      case 'nasc': //sort by name asc
         sortedArray = sortArray([...data], { key: 'title', direction: 'asc' })
         break
-      case 'ndesc':
+      case 'ndesc': //sort by name desc
         sortedArray = sortArray([...data], { key: 'title', direction: 'desc' })
         break
-      case 'pasc':
+      case 'pasc': //sort by price ascending
         sortedArray = sortArray([...data], { key: 'price', direction: 'asc' })
         break
-      case 'pdesc':
+      case 'pdesc': //sort by price descending
         sortedArray = sortArray([...data], { key: 'price', direction: 'desc' })
         break
       default:
@@ -42,17 +42,21 @@ const ProductList = () => {
         break
     }
   }
+  if (debounceSearchValue !== '' && data) {
+    sortedArray = [...data].filter((item) => item.title.toLowerCase().includes(debounceSearchValue))
+  }
+
   return (
     <>
       <Box sx={wrapperStyle}>
         <EnhancedSelect items={sortItems} value={sort} handleChange={setSort} />
-        <SearchBar />
+        <SearchBar handleSearch={setSearchItem} searchValue={searchItem} />
       </Box>
       <Masonry
         breakpointCols={breakpointColumnsObj}
         className="my-masonry-grid"
         columnClassName="my-masonry-grid_column">
-        {data &&
+        {data && sortedArray.length !== 0 ? (
           sortedArray.map((item) => (
             <Product
               id={item.id}
@@ -63,7 +67,13 @@ const ProductList = () => {
               title={item.title}
               key={item.id}
             />
-          ))}
+          ))
+        ) : (
+          <Typography color="purple" display={'flex'} alignItems={'center'} gap={1}>
+            Product does not exist
+            <SentimentVeryDissatisfied />
+          </Typography>
+        )}
       </Masonry>
     </>
   )

@@ -13,16 +13,22 @@ import {
   Button
 } from '@mui/material'
 import { ArrowBack } from '@mui/icons-material'
-import { useAppSelector } from '../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import CartItem from './CartItem'
 import { RootState } from '../../app/store'
+import { resetCart } from './cartSlice'
 
 export type cartPropsType = { anchorEl: null | HTMLElement; handleClose: () => void }
 const nav = ['PRODUCT DETAILS', 'QUANTITY', 'PRICE', 'TOTAL']
 const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
+  const dispatch = useAppDispatch()
+
   const cartItems = useAppSelector((state: RootState) => state.cart.cartItems)
   const count = cartItems.length
 
+  const handeleOrder = async () => {
+    dispatch(resetCart())
+  }
   return (
     <Menu
       id="menu-appbar"
@@ -91,7 +97,9 @@ const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
 
           <Typography variant="h6">Continue Shopping</Typography>
         </Box>
-        <Button variant="outlined">Checkout</Button>
+        <Button variant="outlined" color="inherit" onClick={handeleOrder}>
+          Checkout
+        </Button>
       </Container>
     </Menu>
   )

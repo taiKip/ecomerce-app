@@ -1,5 +1,8 @@
-import { useContext, useState, MouseEvent } from 'react'
+import { useContext, useState, MouseEvent, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+
+import { GoogleLogout } from 'react-google-login'
+import { CLIENT_ID } from '../secrets/apiKey'
 
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '@mui/material/styles'
@@ -19,6 +22,8 @@ import { ThemeContext } from '../App'
 import profile from '../../public/profile.jpg'
 import { useAppSelector } from '../app/hooks'
 import CartItemsList from '../features/cart/CartItemsList'
+import Login from './Login'
+import { selectCurrentUser } from '../features/auth/authSlice'
 
 const navItems = ['users', 'dashboard', 'categories']
 
@@ -27,11 +32,20 @@ const Header = () => {
   const colorMode = useContext(ThemeContext)
   const theme = useTheme()
 
+  const user = useAppSelector(selectCurrentUser)
+
   const cartItems = useAppSelector((state) => state.cart.cartItems)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null)
 
+  useEffect(() => {
+    if (user != null) {
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
+    }
+  }, [user])
   const handleCloseCart = () => {
     setCartAnchorEl(null)
   }
@@ -40,9 +54,6 @@ const Header = () => {
     setCartAnchorEl(event.currentTarget)
   }
 
-  const handleLogin = () => {
-    setIsLoggedIn((prev) => !prev)
-  }
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -95,22 +106,13 @@ const Header = () => {
             {theme.palette.mode === 'light' ? <DarkModeOutlined /> : <Brightness7Outlined />}
           </IconButton>
         </Box>
-        {!isLoggedIn && (
-          <Button
-            sx={{ ml: 5 }}
-            variant="outlined"
-            color="secondary"
-            endIcon={<Person2Outlined />}
-            onClick={handleLogin}>
-            login
-          </Button>
-        )}
+        {!isLoggedIn && <Login />}
         {isLoggedIn && (
           <CardHeader
             sx={{ cursor: 'pointer' }}
             onClick={handleMenu}
-            avatar={<Avatar alt="john doe" src={profile} />}
-            title="Jane Doe"
+            avatar={<Avatar alt={user?.firstName.charAt(0)} src={user?.imageUrl} />}
+            title={`${user?.firstName + ' ' + user?.lastName}`}
             subheader="Admin"
           />
         )}
@@ -130,7 +132,13 @@ const Header = () => {
           onClose={handleClose}>
           <MenuItem onClick={handleClose}>Profile</MenuItem>
           <MenuItem onClick={handleClose}>My account</MenuItem>
-          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          <MenuItem>
+            <GoogleLogout
+              clientId={CLIENT_ID}
+              buttonText={'Logout'}
+              onLogoutSuccess={handleLogout}
+            />
+          </MenuItem>
         </Menu>
         <CartItemsList anchorEl={cartAnchorEl} handleClose={handleCloseCart} />
       </Toolbar>

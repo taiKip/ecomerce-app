@@ -8,13 +8,13 @@ export const extendedProductsApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Orders']
     }),
     addNewOrder: builder.mutation({
-      query: (initialOrder: Partial<IOrder>) => ({
+      query: (order: Partial<IOrder>) => ({
         url: '/orders',
         method: 'POST',
-        body: initialOrder
+        body: order
       })
     })
   })
 })
 
-export const { useGetOrdersQuery } = extendedProductsApiSlice
+export const { useGetOrdersQuery, useAddNewOrderMutation } = extendedProductsApiSlice

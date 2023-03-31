@@ -1,4 +1,4 @@
-import { createContext } from 'react'
+import { createContext, useEffect } from 'react'
 
 import { Routes, Route } from 'react-router-dom'
 
@@ -13,6 +13,8 @@ import AddProductForm from './features/products/AddProductForm'
 import UsersList from './features/users/UsersList'
 import UpdateProductForm from './features/products/UpdateProductForm'
 import Dashboard from './pages/Dashboard'
+import { gapi } from 'gapi-script'
+import { API_KEY, CLIENT_ID } from './secrets/apiKey'
 
 export const ThemeContext = createContext({
   toggleColorMode: () => {
@@ -22,6 +24,15 @@ export const ThemeContext = createContext({
 
 const App = () => {
   const { colorMode, theme } = UseTheme()
+  useEffect(() => {
+    const start = () => {
+      gapi.client.init({
+        apiKey: API_KEY,
+        clientId: CLIENT_ID
+      })
+    }
+    gapi.load('client:auth2', start)
+  })
   return (
     <ThemeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
