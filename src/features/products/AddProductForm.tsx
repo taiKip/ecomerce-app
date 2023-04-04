@@ -1,6 +1,7 @@
 import React, { FormEvent, useState, ChangeEvent } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { useNavigate } from 'react-router-dom'
+
 import {
   Select,
   MenuItem,
@@ -17,8 +18,8 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
-import { useGetCategoriesQuery } from '../categories/categorySlice'
 import { Camera } from '@mui/icons-material'
+import { useGetCategoriesQuery } from '../categories/categorySlice'
 import { useAddNewProductMutation } from './productSlice'
 import { field } from './Styles'
 

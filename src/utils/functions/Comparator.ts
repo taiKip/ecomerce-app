@@ -1,4 +1,4 @@
-import { ISortConfig } from './../interfaces'
+import { ISortConfig } from '../../interfaces'
 export function sortArray<T>(array: T[], config: ISortConfig<T>): T[] {
   const { key, direction } = config
 

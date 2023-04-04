@@ -1,5 +1,6 @@
 import { RootState } from '../../app/store'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import { IProduct, IQuantity } from '../../interfaces'
 
 export type cartItemType = IProduct & IQuantity

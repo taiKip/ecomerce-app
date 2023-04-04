@@ -1,6 +1,7 @@
 import { Button, CardMedia, Box, TableCell, TableRow, Typography } from '@mui/material'
-import { useAppDispatch } from '../../app/hooks'
+
 import { cartItemType, decrementQuantity, incrementQuantity, removeItem } from './cartSlice'
+import { useAppDispatch } from '../../app/hooks'
 
 const CartItem = ({ image, quantity, price, title, id }: cartItemType) => {
   const dispatch = useAppDispatch()

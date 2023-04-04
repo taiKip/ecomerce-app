@@ -1,3 +1,4 @@
+import { cartItemType } from './features/cart/cartSlice'
 import { orderStatusType } from './types'
 
 export interface IProduct {
@@ -14,10 +15,10 @@ export interface IQuantity {
 export interface IOrder {
   id: string
   createdAt: string
-  products: string[]
+  products: cartItemType[]
   customer: string
   status: orderStatusType
-  revenue: string
+  revenue?: string
 }
 
 export interface ISelectProps {
@@ -32,6 +33,7 @@ export interface ITableProps {
   title: string
   subheader: string
   headerCells: string[]
+  orders: IOrder[] | []
 }
 export interface IAuth {
   user: string | null

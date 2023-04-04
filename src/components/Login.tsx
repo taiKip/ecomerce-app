@@ -1,8 +1,9 @@
 import { GoogleLogin } from 'react-google-login'
 import { useAppDispatch } from '../app/hooks'
 import { setCredentials } from '../features/auth/authSlice'
-import { IUser } from '../interfaces'
+
 import { CLIENT_ID } from '../secrets/apiKey'
+import { IUser } from '../interfaces'
 
 const Login = () => {
   const dispatch = useAppDispatch()

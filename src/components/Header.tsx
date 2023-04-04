@@ -1,10 +1,9 @@
 import { useContext, useState, MouseEvent, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { GoogleLogout } from 'react-google-login'
 import { CLIENT_ID } from '../secrets/apiKey'
-
-import { useNavigate } from 'react-router-dom'
 import { useTheme } from '@mui/material/styles'
 import { AppBar, Toolbar } from '@mui/material'
 import { Box } from '@mui/system'
@@ -14,18 +13,13 @@ import {
   DarkModeOutlined,
   Dashboard,
   MailOutline,
-  Person2Outlined,
   ShoppingCartCheckoutOutlined
 } from '@mui/icons-material'
-
 import { ThemeContext } from '../App'
-import profile from '../../public/profile.jpg'
 import { useAppSelector } from '../app/hooks'
 import CartItemsList from '../features/cart/CartItemsList'
 import Login from './Login'
 import { selectCurrentUser } from '../features/auth/authSlice'
-
-const navItems = ['users', 'dashboard', 'categories']
 
 const Header = () => {
   const navigate = useNavigate()
@@ -33,7 +27,10 @@ const Header = () => {
   const theme = useTheme()
 
   const user = useAppSelector(selectCurrentUser)
-
+  let navItems: string[] = []
+  if (user) {
+    navItems = ['users', 'dashboard', 'categories']
+  }
   const cartItems = useAppSelector((state) => state.cart.cartItems)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)

@@ -1,26 +1,27 @@
+import { Link, useNavigate, useParams } from 'react-router-dom'
+
 import { Button, CardMedia, Container, Typography } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import { useTheme } from '@mui/material/styles'
 import { Stack } from '@mui/system'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-
 import { useDeleteProductMutation, useGetProductsQuery } from './productSlice'
 import { ShoppingCartCheckout } from '@mui/icons-material'
-import { useAppDispatch } from '../../app/hooks'
 import { useState } from 'react'
 import { addToCart } from '../cart/cartSlice'
-import { IProduct } from '../../interfaces'
+import { selectCurrentUser } from '../auth/authSlice'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 
 const SingleProductPage = () => {
   const navigate = useNavigate()
   const { productId } = useParams()
+  const user = useAppSelector(selectCurrentUser)
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const [deleteProduct] = useDeleteProductMutation()
   const [deleteError, setDeleteError] = useState(false)
   const { product, error, isLoading } = useGetProductsQuery(undefined, {
     selectFromResult: ({ data, isLoading, error }) => ({
-      product: data?.filter((item) => item.id === productId),
+      product: data?.filter((item) => item.id == productId?.toString()),
       error,
       isLoading
     })
@@ -80,12 +81,20 @@ const SingleProductPage = () => {
           onClick={handleAddToCart}>
           Add to cart
         </Button>
-        <Button variant="outlined" color="warning" endIcon={<EditIcon />} onClick={handleUpdate}>
-          Update
-        </Button>
-        <Button variant="outlined" color="error" onClick={handleDelete}>
-          Delete
-        </Button>
+        {user && (
+          <>
+            <Button
+              variant="outlined"
+              color="warning"
+              endIcon={<EditIcon />}
+              onClick={handleUpdate}>
+              Update
+            </Button>
+            <Button variant="outlined" color="error" onClick={handleDelete}>
+              Delete
+            </Button>
+          </>
+        )}
       </Stack>
     </Container>
   )

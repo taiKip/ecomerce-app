@@ -5,11 +5,12 @@ import {
   CardHeader,
   TableCell,
   TableRow,
-  TableBody
+  TableBody,
+  Menu
 } from '@mui/material'
 import { ITableProps } from '../../interfaces'
 
-const EnhancedTable = ({ title, subheader, headerCells }: ITableProps) => {
+const EnhancedTable = ({ title, subheader, headerCells, orders }: ITableProps) => {
   return (
     <TableContainer>
       <CardHeader title={title} subheader={subheader} />
@@ -21,7 +22,18 @@ const EnhancedTable = ({ title, subheader, headerCells }: ITableProps) => {
             ))}
           </TableRow>
         </TableHead>
-        <TableBody></TableBody>
+        <TableBody>
+          {orders &&
+            orders.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.id}</TableCell>
+                <TableCell>{item.createdAt}</TableCell>
+                <TableCell>{item.status}</TableCell>
+                <TableCell>{item.customer}</TableCell>
+                <TableCell>{item.revenue}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
       </Table>
     </TableContainer>
   )

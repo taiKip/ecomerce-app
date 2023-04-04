@@ -1,10 +1,11 @@
-import { IOrder } from '../../interfaces'
 import { apiSlice } from './../api/apiSlice'
 
-export const extendedProductsApiSlice = apiSlice.injectEndpoints({
+import { IOrder } from '../../interfaces'
+
+export const extendedOrdersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getOrders: builder.query<IOrder[], void>({
-      query: () => '/products.json',
+      query: () => '/orders',
       providesTags: ['Orders']
     }),
     addNewOrder: builder.mutation({
@@ -12,9 +13,10 @@ export const extendedProductsApiSlice = apiSlice.injectEndpoints({
         url: '/orders',
         method: 'POST',
         body: order
-      })
+      }),
+      invalidatesTags: ['Orders']
     })
   })
 })
 
-export const { useGetOrdersQuery, useAddNewOrderMutation } = extendedProductsApiSlice
+export const { useGetOrdersQuery, useAddNewOrderMutation } = extendedOrdersApiSlice

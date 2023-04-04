@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 import {
   Menu,
   Typography,
@@ -13,21 +15,46 @@ import {
   Button
 } from '@mui/material'
 import { ArrowBack } from '@mui/icons-material'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import CartItem from './CartItem'
-import { RootState } from '../../app/store'
+import Login from '../../components/Login'
 import { resetCart } from './cartSlice'
+import { selectCurrentUser } from '../auth/authSlice'
+import { useAddNewOrderMutation } from '../orders/orderSlice'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { RootState } from '../../app/store'
+import { IOrder } from '../../interfaces'
 
 export type cartPropsType = { anchorEl: null | HTMLElement; handleClose: () => void }
 const nav = ['PRODUCT DETAILS', 'QUANTITY', 'PRICE', 'TOTAL']
 const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
   const dispatch = useAppDispatch()
-
+  const user = useAppSelector(selectCurrentUser)
+  const [addNewOrder, { isLoading }] = useAddNewOrderMutation()
   const cartItems = useAppSelector((state: RootState) => state.cart.cartItems)
   const count = cartItems.length
 
-  const handeleOrder = async () => {
-    dispatch(resetCart())
+  const totalAmount = cartItems.map((item) => item.quantity * item.price)
+  const handleOrder = async () => {
+    const id = uuidv4()
+
+    if (user && count !== 0) {
+      const newOrder: IOrder = {
+        customer: user.email,
+        id: id,
+        products: [...cartItems],
+        status: 'pending',
+        createdAt: new Date().toLocaleDateString(),
+        revenue: totalAmount.toString()
+      }
+      try {
+        await addNewOrder(newOrder).unwrap()
+      } catch (error) {
+        console.log(error)
+      } finally {
+        dispatch(resetCart())
+        handleClose()
+      }
+    }
   }
   return (
     <Menu
@@ -97,9 +124,18 @@ const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
 
           <Typography variant="h6">Continue Shopping</Typography>
         </Box>
-        <Button variant="outlined" color="inherit" onClick={handeleOrder}>
-          Checkout
-        </Button>
+        {!user && (
+          <>
+            <Typography>Login to checkout</Typography>
+            <Login />
+          </>
+        )}
+        {}{' '}
+        {user && (
+          <Button variant="outlined" color="inherit" onClick={handleOrder}>
+            Checkout
+          </Button>
+        )}
       </Container>
     </Menu>
   )

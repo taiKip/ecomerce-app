@@ -1,6 +1,8 @@
-import { IUser } from './../../interfaces'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import { RootState } from '../../app/store'
+
+import { IUser } from './../../interfaces'
 
 export interface IAuthentication {
   user: IUser | null

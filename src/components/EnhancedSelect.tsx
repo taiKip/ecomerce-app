@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import { ISelectProps } from '../interfaces'
 import { sortType } from '../types'
+
 const EnhancedSelect = ({
   items,
   handleChange

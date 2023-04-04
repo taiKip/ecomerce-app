@@ -1,5 +1,6 @@
 import React, { FormEvent, useState, ChangeEvent, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+
 import {
   Select,
   MenuItem,
@@ -14,10 +15,10 @@ import Container from '@mui/material/Container'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
-import { useGetCategoriesQuery } from '../categories/categorySlice'
 import { Camera } from '@mui/icons-material'
-import { useGetProductsQuery, useUpdateProductMutation } from './productSlice'
 import { field } from './Styles'
+import { useGetCategoriesQuery } from '../categories/categorySlice'
+import { useGetProductsQuery, useUpdateProductMutation } from './productSlice'
 
 const UpdateProductForm = () => {
   const { productId } = useParams()
@@ -29,7 +30,7 @@ const UpdateProductForm = () => {
     isSuccess
   } = useGetProductsQuery(undefined, {
     selectFromResult: ({ data, isLoading: loading, error, isSuccess }) => ({
-      product: data?.filter((item) => item.id === productId) ?? [],
+      product: data?.filter((item) => item.id == productId) ?? [],
       error,
       isLoading: loading,
       isSuccess

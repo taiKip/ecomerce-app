@@ -1,19 +1,18 @@
 import { Box, Typography } from '@mui/material'
-
 import Product from './Product'
 import { useGetProductsQuery } from './productSlice'
 import Masonry from 'react-masonry-css'
 import { useState } from 'react'
 import SearchBar from '../../components/SearchBar'
 import { wrapperStyle, breakpointColumnsObj } from './Styles'
-
 import EnhancedSelect from '../../components/EnhancedSelect'
-import { sortItems } from '../../utils/SortValues'
-import { sortArray } from '../../utils/Comparator'
+import { sortItems } from '../../utils/functions/SortValues'
+import { sortArray } from '../../utils/functions/Comparator'
 import { sortType } from '../../types'
 import { IProduct } from '../../interfaces'
-import useDebounce from '../../hooks/useDebounce'
+import useDebounce from '../../utils/hooks/useDebounce'
 import { SentimentVeryDissatisfied } from '@mui/icons-material'
+
 const ProductList = () => {
   const { data } = useGetProductsQuery()
   const [sort, setSort] = useState<sortType>('' as sortType)
