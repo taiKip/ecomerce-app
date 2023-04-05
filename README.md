@@ -125,3 +125,4 @@ here's how to approach it:
 ## Lastly
 
 Any additional features are welcome, like switching theme or other cool stuff. **but make sure you work on the required ones first.**
+# ecomerce-app
