@@ -28,19 +28,22 @@ const Product = ({ id, category, description, image, price, title }: IProduct) =
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
-        <CardMedia component="img" height="30%" image={image} alt={title} />
+        <CardMedia component="img" height="25%" image={image} alt={title} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ maxHeight: 345, overflow: 'scroll' }}>
             {description}
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Typography>€{price.toFixed(2)}</Typography>
-        <IconButton sx={{ ml: 'auto', color: 'green' }} onClick={handleAddToCart}>
+      <CardActions sx={{ borderTop: 1, borderTopStyle: 'dashed', borderTopColor: 'gray' }}>
+        <Typography color={'greenyellow'}>€{price.toFixed(2)}</Typography>
+        <IconButton sx={{ ml: 'auto', color: 'greenyellow' }} onClick={handleAddToCart}>
           <AddShoppingCartOutlinedIcon />
         </IconButton>
         <NavLink to={`/${id}`}>

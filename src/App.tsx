@@ -23,7 +23,7 @@ export const ThemeContext = createContext({
 
 const App = () => {
   const { colorMode, theme } = UseTheme()
-  console.log(window.process.env)
+
   useEffect(() => {
     const start = () => {
       gapi.client.init({

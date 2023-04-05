@@ -6,9 +6,9 @@ export const wrapperStyle = {
   alignItems: 'center'
 }
 export const breakpointColumnsObj = {
-  default: 4,
+  default: 6,
   1100: 3,
-  700: 2,
+  700: 3,
   500: 1
 }
 
