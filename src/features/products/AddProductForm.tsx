@@ -112,7 +112,7 @@ const AddProductForm = () => {
     }
   }
   return (
-    <Container sx={{ marginTop: 2, height: '100vh', overflow: 'scroll' }}>
+    <Container sx={{ paddingTop: 6, height: '100vh', overflow: 'scroll' }}>
       <Typography variant="h6" component="h2" color="textSecondary" gutterBottom>
         Add New Product
       </Typography>

@@ -9,7 +9,6 @@ const Layout = () => {
   return (
     <Container sx={{ minHeight: '100vh' }}>
       <Header />
-      <Toolbar />
       <Container>
         <Outlet />
       </Container>

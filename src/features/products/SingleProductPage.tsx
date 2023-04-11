@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 const SingleProductPage = () => {
   const navigate = useNavigate()
   const { productId } = useParams()
- // const user = useAppSelector(selectCurrentUser)
+  // const user = useAppSelector(selectCurrentUser)
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const [deleteProduct] = useDeleteProductMutation()

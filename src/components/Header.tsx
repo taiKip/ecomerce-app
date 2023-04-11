@@ -21,6 +21,7 @@ import CartItemsList from '../features/cart/CartItemsList'
 // import { selectCurrentUser } from '../features/auth/authSlice'
 
 import SignUpButton from './SignUpButton'
+import { IUser } from '../interfaces'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -29,21 +30,16 @@ const Header = () => {
 
   //const user = useAppSelector(selectCurrentUser)
   let navItems: string[] = []
-  
-    navItems = ['users', 'dashboard', 'categories']
- 
+
+  navItems = ['users', 'dashboard', 'categories']
+
   const cartItems = useAppSelector((state) => state.cart.cartItems)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null)
 
-  useEffect(() => {
-    //  if (true) {
-    setIsLoggedIn(true)
-    // } else {
-    //  setIsLoggedIn(false)
-    // }
-  }, [])
+  const user = useAppSelector((state) => state.auth.user)
+
   const handleCloseCart = () => {
     setCartAnchorEl(null)
   }
@@ -60,6 +56,10 @@ const Header = () => {
     setAnchorEl(null)
   }
 
+  const handleProfile = () => {
+    navigate('/profile')
+    setAnchorEl(null)
+  }
   const handleLogout = () => {
     setIsLoggedIn((prev) => !prev)
     setAnchorEl(null)
@@ -104,6 +104,16 @@ const Header = () => {
             {theme.palette.mode === 'light' ? <DarkModeOutlined /> : <FlareIcon />}
           </IconButton>
         </Box>
+        {user === null && <SignUpButton />}
+        {user && (
+          <CardHeader
+            sx={{ cursor: 'pointer' }}
+            onClick={handleMenu}
+            avatar={<Avatar alt={user?.firstname} src={user?.imageUrl} />}
+            title={`${user?.firstname + ' ' + user?.lastname}`}
+            subheader="Admin"
+          />
+        )}
         <Menu
           id="menu-appbar"
           anchorEl={anchorEl}
@@ -118,9 +128,9 @@ const Header = () => {
           }}
           open={Boolean(anchorEl)}
           onClose={handleClose}>
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
+          <MenuItem onClick={handleProfile}>Profile</MenuItem>
           <MenuItem onClick={handleClose}>My account</MenuItem>
-          <MenuItem>Logout</MenuItem>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
         <CartItemsList anchorEl={cartAnchorEl} handleClose={handleCloseCart} />
       </Toolbar>

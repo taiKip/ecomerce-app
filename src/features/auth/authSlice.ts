@@ -1,31 +1,30 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
+import { IAuthState } from './../../interfaces'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../app/store'
 
-import { IUser } from './../../interfaces'
-import { apiSlice } from '../api/apiSlice'
-
-export const extendedAuthenticationSlice = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
-    registerUser: builder.mutation({
-      query: (body: Partial<IUser>) => {
-        return {
-          url: '/auth/register',
-          method: 'POST',
-          body
-        }
-      }
-    }),
-    loginUser: builder.mutation({
-      query: (body: Partial<IUser>) => {
-        return {
-          url: '/auth/login',
-          method: 'POST',
-          body
-        }
-      }
-    })
-  })
+const initialAuthState: IAuthState = {
+  user: null,
+  token: null
+}
+const authSlice = createSlice({
+  name: 'auth',
+  initialState: initialAuthState,
+  reducers: {
+    setCredentials: (state, action: PayloadAction<IAuthState>) => {
+      const { user, token } = action.payload
+      state.user = user
+      state.token = token
+    },
+    logOut: (state, action) => {
+      state.user = null
+      state.token = null
+    }
+  }
 })
 
-export const { useRegisterUserMutation, useLoginUserMutation } = extendedAuthenticationSlice
+export const { setCredentials, logOut } = authSlice.actions
+
+export default authSlice.reducer
+
+export const selectCurrentUser = (state: RootState) => state.auth.user
+export const selectCurrentUserToken = (state: RootState) => state.auth.token

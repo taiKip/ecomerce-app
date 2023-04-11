@@ -138,7 +138,7 @@ const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
           </>
         )}
         <>
-          {!true && ( //not user
+          {true && ( //not user
             <Button variant="outlined" color="inherit" onClick={handleOrder}>
               Checkout
             </Button>

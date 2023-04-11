@@ -199,6 +199,14 @@
       "category": 1,
       "image": "",
       "price": 647
+    },
+    {
+      "id": "15967ca8-f1f5-48ff-b70f-b608c59b25eb",
+      "title": "airpods",
+      "description": "awesome tech",
+      "category": 3,
+      "image": "",
+      "price": 100
     }
   ],
   "categories": [
@@ -348,6 +356,123 @@
       "status": "pending",
       "createdAt": "31/03/2023",
       "revenue": "44.6,219.9"
+    },
+    {
+      "customer": "tarus",
+      "id": "3f185bfd-3c89-4302-812f-14e76b019068",
+      "products": [
+        {
+          "id": 5,
+          "category": "jewelery",
+          "description": "From our Legends Collection, the Naga was inspired by the mythical water dragon that protects the ocean's pearl. Wear facing inward to be bestowed with love and abundance, or outward for protection.",
+          "image": "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg",
+          "price": 695,
+          "title": "John Hardy Women's Legends Naga Gold & Silver Dragon Station Chain Bracelet",
+          "quantity": 1
+        }
+      ],
+      "status": "pending",
+      "createdAt": "11/04/2023",
+      "revenue": "695"
+    },
+    {
+      "customer": "tarus",
+      "id": "d55822ea-ddb7-4d14-bbb5-61f65e649e04",
+      "products": [
+        {
+          "id": 7,
+          "category": "jewelery",
+          "description": "Classic Created Wedding Engagement Solitaire Diamond Promise Ring for Her. Gifts to spoil your love more for Engagement, Wedding, Anniversary, Valentine's Day...",
+          "image": "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg",
+          "price": 9.99,
+          "title": "White Gold Plated Princess",
+          "quantity": 2
+        },
+        {
+          "id": 11,
+          "category": "electronics",
+          "description": "3D NAND flash are applied to deliver high transfer speeds Remarkable transfer speeds that enable faster bootup and improved overall system performance. The advanced SLC Cache Technology allows performance boost and longer lifespan 7mm slim design suitable for Ultrabooks and Ultra-slim notebooks. Supports TRIM command, Garbage Collection technology, RAID, and ECC (Error Checking & Correction) to provide the optimized performance and enhanced reliability.",
+          "image": "https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_.jpg",
+          "price": 109,
+          "title": "Silicon Power 256GB SSD 3D NAND A55 SLC Cache Performance Boost SATA III 2.5",
+          "quantity": 1
+        },
+        {
+          "id": 5,
+          "category": "jewelery",
+          "description": "From our Legends Collection, the Naga was inspired by the mythical water dragon that protects the ocean's pearl. Wear facing inward to be bestowed with love and abundance, or outward for protection.",
+          "image": "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg",
+          "price": 695,
+          "title": "John Hardy Women's Legends Naga Gold & Silver Dragon Station Chain Bracelet",
+          "quantity": 2
+        }
+      ],
+      "status": "pending",
+      "createdAt": "11/04/2023",
+      "revenue": "19.98,109,1390"
+    },
+    {
+      "customer": "tarus",
+      "id": "6c7f385d-0089-42a8-a755-0d9698dbabe7",
+      "products": [
+        {
+          "id": 16,
+          "category": "women's clothing",
+          "description": "100% POLYURETHANE(shell) 100% POLYESTER(lining) 75% POLYESTER 25% COTTON (SWEATER), Faux leather material for style and comfort / 2 pockets of front, 2-For-One Hooded denim style faux leather jacket, Button detail on waist / Detail stitching at sides, HAND WASH ONLY / DO NOT BLEACH / LINE DRY / DO NOT IRON",
+          "image": "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
+          "price": 29.95,
+          "title": "Lock and Love Women's Removable Hooded Faux Leather Moto Biker Jacket",
+          "quantity": 1
+        }
+      ],
+      "status": "pending",
+      "createdAt": "11/04/2023",
+      "revenue": "29.95"
+    },
+    {
+      "customer": "tarus",
+      "id": "60e83055-2cef-489a-a322-7291d9d48535",
+      "products": [
+        {
+          "id": 13,
+          "category": "electronics",
+          "description": "21. 5 inches Full HD (1920 x 1080) widescreen IPS display And Radeon free Sync technology. No compatibility for VESA Mount Refresh Rate: 75Hz - Using HDMI port Zero-frame design | ultra-thin | 4ms response time | IPS panel Aspect ratio - 16: 9. Color Supported - 16. 7 million colors. Brightness - 250 nit Tilt angle -5 degree to 15 degree. Horizontal viewing angle-178 degree. Vertical viewing angle-178 degree 75 hertz",
+          "image": "https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_.jpg",
+          "price": 599,
+          "title": "Acer SB220Q bi 21.5 inches Full HD (1920 x 1080) IPS Ultra-Thin",
+          "quantity": 1
+        },
+        {
+          "id": 7,
+          "category": "jewelery",
+          "description": "Classic Created Wedding Engagement Solitaire Diamond Promise Ring for Her. Gifts to spoil your love more for Engagement, Wedding, Anniversary, Valentine's Day...",
+          "image": "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg",
+          "price": 9.99,
+          "title": "White Gold Plated Princess",
+          "quantity": 1
+        }
+      ],
+      "status": "pending",
+      "createdAt": "11/04/2023",
+      "revenue": "599,9.99"
+    },
+    {
+      "customer": "tarus",
+      "id": "7c7f0ac2-120c-44c5-adf2-3865be7b9df5",
+      "products": [
+        {
+          "id": "15967ca8-f1f5-48ff-b70f-b608c59b25eb",
+          "category": 3,
+          "description": "awesome tech",
+          "image": "",
+          "price": 100,
+          "title": "airpods",
+          "quantity": 1
+        }
+      ],
+      "status": "pending",
+      "createdAt": "11/04/2023",
+      "revenue": "100"
     }
   ]
 }

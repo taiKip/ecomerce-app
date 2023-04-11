@@ -39,10 +39,10 @@ export interface IAuth {
   user: string | null
   token: string | null
 }
-
+//lower case because of database
 export interface IUser {
-  firstName: string
-  lastName: string
+  firstname: string
+  lastname: string
   imageUrl: string
   email: string
   password: string

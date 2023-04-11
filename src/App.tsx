@@ -16,6 +16,8 @@ import RequireAuth from './components/RequireAuth'
 import SignUp from './features/auth/SignUpForm'
 import Login from './features/auth/LoginForm'
 import ShoppingCartPage from './features/cart/ShoppingCartPage'
+import SearchProductsMobilePage from './features/products/SearchProductsMobile'
+import UserProfilePage from './features/users/UserProfilePage'
 
 export const ThemeContext = createContext({
   toggleColorMode: () => {
@@ -38,12 +40,14 @@ const App = () => {
               <Route index element={<HomePage />} />
               <Route path="/products/:productId" element={<SingleProductPage />} />
               <Route path="cart" element={<ShoppingCartPage />} />
+              <Route path="search" element={<SearchProductsMobilePage />} />
               <Route path="/auth">
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<SignUp />} />
               </Route>
               {/**protectd routes */}
               <Route element={<RequireAuth />}>
+                <Route path="profile" element={<UserProfilePage />} />
                 <Route path="edit/:productId" element={<UpdateProductForm />} />
                 <Route path="dashboard">
                   <Route index element={<Dashboard />} />

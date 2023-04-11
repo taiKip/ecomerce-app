@@ -7,11 +7,11 @@ const LoginButton = () => {
   const navigate = useNavigate()
   return (
     <Button
-      color="inherit"
-      variant="outlined"
+      color="secondary"
+      variant="contained"
       endIcon={<Login />}
       onClick={() => navigate('/auth/login')}>
-      Login
+      Login with email
     </Button>
   )
 }

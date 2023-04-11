@@ -19,12 +19,8 @@ const SignUpButton = ({
     navigate('/auth/register')
   }
   return (
-    <Button
-      variant="outlined"
-      color="inherit"
-      onClick={handleClick}
-      endIcon={<AppRegistrationOutlined />}>
-      Sign up
+    <Button variant="contained" onClick={handleClick} endIcon={<AppRegistrationOutlined />}>
+      Sign up with email
     </Button>
   )
 }

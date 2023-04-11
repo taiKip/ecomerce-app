@@ -28,7 +28,7 @@ import { IOrder } from '../../interfaces'
 import SignUpButton from '../../components/SignUpButton'
 import { useNavigate } from 'react-router-dom'
 import UseTheme from '../../utils/hooks/UseTheme'
-import { dark } from '@mui/material/styles/createPalette'
+
 import SmallScreenAppBar from '../../components/SmallScreenAppBar'
 
 const nav = ['PRODUCT DETAILS', 'QUANTITY', 'PRICE', 'TOTAL']

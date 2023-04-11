@@ -5,6 +5,7 @@ import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import TextField from '@mui/material/TextField'
+import SmallScreenAppBar from '../../components/SmallScreenAppBar'
 
 const SignUp = () => {
   const navigate = useNavigate()
@@ -40,56 +41,55 @@ const SignUp = () => {
     }
   }
   return (
-    <Container>
-      <Typography variant="h6" component="h2" color="textSecondary" gutterBottom>
-        Sign up
-      </Typography>
-      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <TextField
-          onChange={(e) => setName(e.target.value)}
-          sx={field}
-          label="User Name"
-          color="secondary"
-          fullWidth
-          required
-          error={nameError}
-        />
-        <TextField
-          onChange={(e) => setDetails(e.target.value)}
-          sx={field}
-          label="Password"
-          color="secondary"
-          fullWidth
-          required
-          error={detailsError}
-        />
-        <TextField
-          onChange={(e) => setDetails(e.target.value)}
-          sx={field}
-          label="Confirm password"
-          color="secondary"
-          fullWidth
-          required
-          error={detailsError}
-        />
-        <Stack>
-          <Button
-            type="submit"
+    <>
+      <SmallScreenAppBar title="Sign Up" extraInfo="almost there" />
+      <Container sx={{ paddingTop: 16 }}>
+        <Typography variant="h6" component="h2" color="textSecondary" gutterBottom>
+          Sign up
+        </Typography>
+        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <TextField
+            onChange={(e) => setName(e.target.value)}
+            sx={field}
+            label="User Name"
             color="secondary"
-            variant="contained"
-            endIcon={<KeyboardArrowRightIcon />}>
-            Sign Up
-          </Button>
-          <Button color="secondary" onClick={() => navigate('/auth/login')}>
-            already have an account? Login
-          </Button>
-        </Stack>
-      </form>
-
-      {/* icons */}
-      <br />
-      {/* <AcUnitOutlinedIcon color="secondary" fontSize="large"/> */}
-    </Container>
+            fullWidth
+            required
+            error={nameError}
+          />
+          <TextField
+            onChange={(e) => setDetails(e.target.value)}
+            sx={field}
+            label="Password"
+            color="secondary"
+            fullWidth
+            required
+            error={detailsError}
+          />
+          <TextField
+            onChange={(e) => setDetails(e.target.value)}
+            sx={field}
+            label="Confirm password"
+            color="secondary"
+            fullWidth
+            required
+            error={detailsError}
+          />
+          <Stack>
+            <Button
+              type="submit"
+              color="secondary"
+              variant="contained"
+              endIcon={<KeyboardArrowRightIcon />}>
+              Sign Up
+            </Button>
+            <Button color="secondary" onClick={() => navigate('/auth/login')}>
+              already have an account? Login
+            </Button>
+          </Stack>
+        </form>
+      </Container>
+    </>
   )
 }
 
