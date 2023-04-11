@@ -22,7 +22,9 @@ const EnhancedSelect = ({
     handleChange(event.target.value as sortType)
   }
   return (
-    <FormControl sx={{ m: 1, minWidth: 200 }} size="small">
+    <FormControl
+      sx={{ m: 1, minWidth: 200, width: { xs: '100%', sm: '' }, padding: 0 }}
+      size="small">
       <InputLabel id="demo-select-small" color="secondary">
         Sort by
       </InputLabel>

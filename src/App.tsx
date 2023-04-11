@@ -13,7 +13,9 @@ import UpdateProductForm from './features/products/UpdateProductForm'
 import Dashboard from './pages/Dashboard'
 import RequireAuth from './components/RequireAuth'
 
-import { API_KEY, CLIENT_ID } from './secrets/apiKey'
+import SignUp from './features/auth/SignUpForm'
+import Login from './features/auth/LoginForm'
+import ShoppingCartPage from './features/cart/ShoppingCartPage'
 
 export const ThemeContext = createContext({
   toggleColorMode: () => {
@@ -24,15 +26,6 @@ export const ThemeContext = createContext({
 const App = () => {
   const { colorMode, theme } = UseTheme()
 
-  useEffect(() => {
-    const start = () => {
-      gapi.client.init({
-        apiKey: API_KEY,
-        clientId: CLIENT_ID
-      })
-    }
-    gapi.load('client:auth2', start)
-  })
   return (
     <ThemeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -43,8 +36,12 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<HomePage />} />
-              <Route path=":productId" element={<SingleProductPage />} />
-
+              <Route path="/products/:productId" element={<SingleProductPage />} />
+              <Route path="cart" element={<ShoppingCartPage />} />
+              <Route path="/auth">
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<SignUp />} />
+              </Route>
               {/**protectd routes */}
               <Route element={<RequireAuth />}>
                 <Route path="edit/:productId" element={<UpdateProductForm />} />

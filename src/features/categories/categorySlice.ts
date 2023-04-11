@@ -1,7 +1,7 @@
 import { apiSlice } from './../api/apiSlice'
 
 export type categoryType = {
-  id: string
+  id: number
   name: string
 }
 export const extendedCategoriesApiSlice = apiSlice.injectEndpoints({

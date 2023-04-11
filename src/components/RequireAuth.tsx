@@ -3,7 +3,7 @@ import { useAppSelector } from '../app/hooks'
 import { selectCurrentUser } from '../features/auth/authSlice'
 
 const RequireAuth = () => {
-  const user = useAppSelector(selectCurrentUser)
+  const user = true //useAppSelector(selectCurrentUser)
 
   return user ? <Outlet /> : <Navigate to={'/'} replace />
 }

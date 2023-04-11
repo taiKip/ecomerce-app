@@ -33,20 +33,14 @@ const Product = ({ id, category, description, image, price, title }: IProduct) =
           <Typography gutterBottom variant="h5" component="div">
             {title}
           </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ maxHeight: 345, overflow: 'scroll' }}>
-            {description}
-          </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions sx={{ borderTop: 1, borderTopStyle: 'dashed', borderTopColor: 'gray' }}>
-        <Typography color={'greenyellow'}>€{price.toFixed(2)}</Typography>
-        <IconButton sx={{ ml: 'auto', color: 'greenyellow' }} onClick={handleAddToCart}>
+        <Typography>€{price.toFixed(2)}</Typography>
+        <IconButton sx={{ ml: 'auto', color: 'green' }} onClick={handleAddToCart}>
           <AddShoppingCartOutlinedIcon />
         </IconButton>
-        <NavLink to={`/${id}`}>
+        <NavLink to={`/products/${id}`}>
           <IconButton>
             <ArrowForward />
           </IconButton>

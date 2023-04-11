@@ -12,23 +12,25 @@ import {
   IconButton,
   Box,
   CardHeader,
-  Button
+  Button,
+  createTheme
 } from '@mui/material'
 import { ArrowBack } from '@mui/icons-material'
 import CartItem from './CartItem'
-import Login from '../../components/Login'
+import SignUp from '../auth/SignUpForm'
 import { resetCart } from './cartSlice'
-import { selectCurrentUser } from '../auth/authSlice'
 import { useAddNewOrderMutation } from '../orders/orderSlice'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { RootState } from '../../app/store'
 import { IOrder } from '../../interfaces'
+import SignUpButton from '../../components/SignUpButton'
 
 export type cartPropsType = { anchorEl: null | HTMLElement; handleClose: () => void }
 const nav = ['PRODUCT DETAILS', 'QUANTITY', 'PRICE', 'TOTAL']
 const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
+  const theme = createTheme()
   const dispatch = useAppDispatch()
-  const user = useAppSelector(selectCurrentUser)
+  //const user = useAppSelector(selectCurrentUser)
   const [addNewOrder, { isLoading }] = useAddNewOrderMutation()
   const cartItems = useAppSelector((state: RootState) => state.cart.cartItems)
   const count = cartItems.length
@@ -37,9 +39,10 @@ const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
   const handleOrder = async () => {
     const id = uuidv4()
 
-    if (user && count !== 0) {
+    if ('tarus' && count !== 0) {
+      ///user
       const newOrder: IOrder = {
-        customer: user.email,
+        customer: 'tarus',
         id: id,
         products: [...cartItems],
         status: 'pending',
@@ -80,10 +83,14 @@ const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
           padding: 2,
           marginBottom: 1
         }}>
-        <CardHeader
-          title="My Shopping Cart"
-          subheader={`There is currently ${count} item${count > 1 ? 's' : ''} in the cart`}
-        />
+        <Box>
+          <Typography variant="h4" sx={{ color: 'purple' }}>
+            Your Shopping Cart
+          </Typography>
+          <Typography sx={{ color: 'gray' }}>
+            {`There is currently ${count} item${count > 1 ? 's' : ''} in the cart`}
+          </Typography>
+        </Box>
       </Container>
       <Table>
         <TableHead>
@@ -124,18 +131,19 @@ const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
 
           <Typography variant="h6">Continue Shopping</Typography>
         </Box>
-        {!user && (
+        {!true && ( //not user
           <>
-            <Typography>Login to checkout</Typography>
-            <Login />
+            <Typography color="ButtonHighlight">Login to checkout</Typography>
+            <SignUpButton handleCloseCart={handleClose} anchorEl={Boolean(anchorEl)} />
           </>
         )}
-        {}{' '}
-        {user && (
-          <Button variant="outlined" color="inherit" onClick={handleOrder}>
-            Checkout
-          </Button>
-        )}
+        <>
+          {!true && ( //not user
+            <Button variant="outlined" color="inherit" onClick={handleOrder}>
+              Checkout
+            </Button>
+          )}
+        </>
       </Container>
     </Menu>
   )

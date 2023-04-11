@@ -45,4 +45,10 @@ export interface IUser {
   lastName: string
   imageUrl: string
   email: string
+  password: string
+}
+
+export interface IAuthState {
+  user: IUser | null
+  token: string | null
 }

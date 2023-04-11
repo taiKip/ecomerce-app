@@ -3,31 +3,29 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../app/store'
 
 import { IUser } from './../../interfaces'
+import { apiSlice } from '../api/apiSlice'
 
-export interface IAuthentication {
-  user: IUser | null
-  token: string | null
-}
-const initialState: IAuthentication = { user: null, token: null }
-export const authenticationSlice = createSlice({
-  name: 'authentication',
-  initialState,
-  reducers: {
-    setCredentials: (state, action: PayloadAction<IUser>) => {
-      const user = action.payload
-      console.log(user)
-      state.user = user
-    },
-    logOut: (state) => {
-      state.user = null
-      //state.token = null
-    }
-  }
+export const extendedAuthenticationSlice = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    registerUser: builder.mutation({
+      query: (body: Partial<IUser>) => {
+        return {
+          url: '/auth/register',
+          method: 'POST',
+          body
+        }
+      }
+    }),
+    loginUser: builder.mutation({
+      query: (body: Partial<IUser>) => {
+        return {
+          url: '/auth/login',
+          method: 'POST',
+          body
+        }
+      }
+    })
+  })
 })
 
-export const { setCredentials, logOut } = authenticationSlice.actions
-
-export default authenticationSlice.reducer
-
-export const selectCurrentUser = (state: RootState) => state.auth.user
-export const selectCurrentUserToken = (state: RootState) => state.auth.token
+export const { useRegisterUserMutation, useLoginUserMutation } = extendedAuthenticationSlice

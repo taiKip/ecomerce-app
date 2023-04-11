@@ -49,7 +49,9 @@ const ProductList = () => {
     <>
       <Box sx={wrapperStyle}>
         <EnhancedSelect items={sortItems} value={sort} handleChange={setSort} />
-        <SearchBar handleSearch={setSearchItem} searchValue={searchItem} />
+        <Box component={'span'} sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <SearchBar handleSearch={setSearchItem} searchValue={searchItem} />
+        </Box>
       </Box>
       <Masonry
         breakpointCols={breakpointColumnsObj}

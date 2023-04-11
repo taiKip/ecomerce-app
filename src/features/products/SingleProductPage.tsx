@@ -8,13 +8,13 @@ import { useDeleteProductMutation, useGetProductsQuery } from './productSlice'
 import { ShoppingCartCheckout } from '@mui/icons-material'
 import { useState } from 'react'
 import { addToCart } from '../cart/cartSlice'
-import { selectCurrentUser } from '../auth/authSlice'
+//import { selectCurrentUser } from '../auth/authSlice'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 
 const SingleProductPage = () => {
   const navigate = useNavigate()
   const { productId } = useParams()
-  const user = useAppSelector(selectCurrentUser)
+ // const user = useAppSelector(selectCurrentUser)
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const [deleteProduct] = useDeleteProductMutation()
@@ -54,7 +54,14 @@ const SingleProductPage = () => {
   return (
     <Container
       component={'section'}
-      sx={{ gap: 2, display: 'flex', flexDirection: 'column', marginTop: 2, minHeight: '100vh' }}>
+      sx={{
+        gap: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        marginTop: 2,
+        minHeight: '100vh',
+        padding: 0
+      }}>
       <div
         style={{
           position: 'relative',
@@ -81,7 +88,7 @@ const SingleProductPage = () => {
           onClick={handleAddToCart}>
           Add to cart
         </Button>
-        {user && (
+        {true && ( //user exists ..todo
           <>
             <Button
               variant="outlined"
