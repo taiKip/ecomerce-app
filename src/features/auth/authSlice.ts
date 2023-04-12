@@ -4,7 +4,8 @@ import { RootState } from '../../app/store'
 
 const initialAuthState: IAuthState = {
   user: null,
-  token: null
+  token: null,
+
 }
 const authSlice = createSlice({
   name: 'auth',
@@ -18,6 +19,7 @@ const authSlice = createSlice({
     logOut: (state, action) => {
       state.user = null
       state.token = null
+      
     }
   }
 })

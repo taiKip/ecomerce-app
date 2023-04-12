@@ -7,13 +7,15 @@ const UserNotLoggedIn = () => {
   return (
     <Container sx={{ paddingTop: 10, overflow: 'hidden', display: { sm: 'none' } }}>
       <Typography
-        color={'primary'}
+        color={'inherit'}
         variant="h4"
         fontSize={'1.5em'}
         fontWeight={900}
         alignItems={'center'}
+      
         gap={1}
-        marginBottom={3}>
+        marginBottom={3} >
+      
         Start your shopping journey
         <span role="img" aria-label="smiley face">
           😊

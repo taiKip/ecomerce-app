@@ -38,6 +38,8 @@ const AddProductForm = () => {
   const [descriptionError, setDescriptionError] = useState(false)
   const [image, setImage] = useState<File | null>(null)
   const [imageUrl, setImageUrl] = useState<string>('')
+  const [imageError, setImageError] = useState(false)
+  const [imageLoading,setImageLoading] =useState(false)
 
   const { data: addresses } = useGetCategoriesQuery()
   const [uploadImage, { isError, isLoading: loading, isSuccess }] = useUploadImageMutation()

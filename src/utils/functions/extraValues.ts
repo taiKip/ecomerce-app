@@ -16,3 +16,5 @@ export const sortItems = [
     content: 'Price,high to low'
   }
 ]
+
+export const navItems = ['users', 'dashboard', 'categories']

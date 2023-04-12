@@ -12,33 +12,42 @@ import {
   DarkModeOutlined,
   Dashboard,
   Login,
+  LogoutRounded,
   MailOutline,
   ShoppingCartCheckoutOutlined
 } from '@mui/icons-material'
 import { ThemeContext } from '../App'
-import { useAppSelector } from '../app/hooks'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
 import CartItemsList from '../features/cart/CartItemsList'
-// import { selectCurrentUser } from '../features/auth/authSlice'
+import { logOut, selectCurrentUser, setCredentials } from '../features/auth/authSlice'
 
 import SignUpButton from './SignUpButton'
 import { IUser } from '../interfaces'
+import { useLoginUserMutation } from '../features/auth/authApiSlice'
+import { navItems } from '../utils/functions/extraValues'
 
 const Header = () => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const colorMode = useContext(ThemeContext)
   const theme = useTheme()
+  let user:null|IUser = null
 
-  //const user = useAppSelector(selectCurrentUser)
-  let navItems: string[] = []
-
-  navItems = ['users', 'dashboard', 'categories']
+  user = useAppSelector(selectCurrentUser)
 
   const cartItems = useAppSelector((state) => state.cart.cartItems)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  //const [userData , setUserData] = useState(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null)
-
-  const user = useAppSelector((state) => state.auth.user)
+  const[isLoggedIn,setIsLoggedIn] =useState(false)
+ 
+  useEffect(() => {
+    if (user) {
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
+    }
+  },[user])
 
   const handleCloseCart = () => {
     setCartAnchorEl(null)
@@ -61,23 +70,28 @@ const Header = () => {
     setAnchorEl(null)
   }
   const handleLogout = () => {
-    setIsLoggedIn((prev) => !prev)
+    dispatch(logOut)
     setAnchorEl(null)
+    setIsLoggedIn(false)
     navigate('/')
   }
+console.log(user)
   return (
     <AppBar elevation={0} position="sticky" sx={{ display: { xs: 'none', sm: 'block' } }}>
       <Toolbar>
         <Link to={'/'}>
           <Dashboard sx={{ mr: 5 }} />
         </Link>
+
         <Box sx={{ display: { xs: 'none', sm: 'block', flexGrow: 1 } }}>
-          {navItems.map((item) => (
-            <Link to={item} key={item}>
-              <Button color="inherit">{item}</Button>
-            </Link>
-          ))}
+          {user?.role === 'ROLE_ADMIN' &&
+            navItems.map((item) => (
+              <Link to={item} key={item}>
+                <Button color="inherit">{item}</Button>
+              </Link>
+            ))}
         </Box>
+
         <Box gap={2} display={'flex'} marginX={2}>
           <IconButton
             size="medium"
@@ -105,13 +119,13 @@ const Header = () => {
           </IconButton>
         </Box>
         {user === null && <SignUpButton />}
-        {user && (
+        {user &&isLoggedIn && (
           <CardHeader
             sx={{ cursor: 'pointer' }}
             onClick={handleMenu}
-            avatar={<Avatar alt={user?.firstname} src={user?.imageUrl} />}
+            avatar={<Avatar alt={user?.firstname.slice(0, 1)} src={user?.imageUrl} />}
             title={`${user?.firstname + ' ' + user?.lastname}`}
-            subheader="Admin"
+            subheader={`${user?.role === 'ROLE_ADMIN' ? 'Admin' : ''}`}
           />
         )}
         <Menu

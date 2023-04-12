@@ -38,6 +38,7 @@ export interface ITableProps {
 export interface IAuth {
   user: string | null
   token: string | null
+ 
 }
 //lower case because of database
 export interface IUser {
@@ -46,6 +47,7 @@ export interface IUser {
   imageUrl: string
   email: string
   password: string
+  role:string
 }
 
 export interface IAuthState {

@@ -25,12 +25,13 @@ const Login = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (isSuccess) {
+      if (isSuccess && data) {
+        dispatch(setCredentials(data))
         navigate('/', { replace: true })
       }
     }, 1000)
     return () => clearTimeout(timer)
-  }, [isSuccess])
+  }, [isSuccess,data])
 
   const field = {
     marginTop: '20px',
