@@ -1,4 +1,4 @@
-# Frontend project
+# Frontend Project
 
 ## Expectation
 
@@ -9,62 +9,6 @@ React, TypeScript and Redux. And for styling, choose whatever you like (ideally,
 ### `Outcome:`
 
 Build a front end for an E-commerce or a Library System and deploy it.
-
-The Frontend should be talking to a mock data that stored locally in your project and later (in the fullstack project) you would plug it (to your backend.), refactor, and add more features(maybe).
-
-## Assignment
-
----
-
-### `Option 1`
-
-**A Library management system**
-
-you have to have `at least` these data sources:
-(the properties that being mentioned below each data source are the minimum)
-
-- Books
-  - ISBN
-  - title
-  - description
-  - publisher
-  - authors
-  - status: available or borrowed
-  - borrowerId
-  - publishedDate
-  - borrowDate
-  - returnDate
-- Authors
-  - name
-- Users (as visitor or admin)
-  - firstName (from google)
-  - lastName (from google)
-  - email (from google)
-
-**Use cases:**
-
-Visitor can:
-
-- login (using login via google)
-- explore list of books
-- filter and search
-- borrow a book
-- return a borrowed book
-
-Admin can:
-
-- add new book
-- update info of a book
-- remove a book
-- add a new author
-- update info of an author
-- remove an author
-
-PS. if you want to store some data, you could use LocalStorage for now.
-
----
-
-### `Option 2`
 
 **An E-commerce website**
 

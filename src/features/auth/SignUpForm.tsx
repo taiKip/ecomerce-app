@@ -33,11 +33,7 @@ const SignUp = () => {
       setDetailsError(true)
     }
     if (name && details) {
-      fetch('http://localhost:8000/notes', {
-        method: 'POST',
-        headers: { 'Content-type': 'application/json' },
-        body: JSON.stringify({ name, details, category })
-      }).then(() => navigate('/'))
+      //
     }
   }
   return (

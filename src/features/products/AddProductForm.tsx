@@ -20,8 +20,9 @@ import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
 import { Camera } from '@mui/icons-material'
 import { useGetCategoriesQuery } from '../categories/categorySlice'
-import { useAddNewProductMutation } from './productSlice'
+import { useAddNewProductMutation, useUpdateProductMutation } from './productSlice'
 import { field } from './Styles'
+import { useUploadImageMutation } from '../uploadFile/uploadSlice'
 
 const AddProductForm = () => {
   const [addNewProduct, { isLoading }] = useAddNewProductMutation()
@@ -37,10 +38,9 @@ const AddProductForm = () => {
   const [descriptionError, setDescriptionError] = useState(false)
   const [image, setImage] = useState<File | null>(null)
   const [imageUrl, setImageUrl] = useState<string>('')
-  const [imageError, setImageError] = useState(false)
-  const [imageLoading, setImageLoading] = useState(false)
 
   const { data: addresses } = useGetCategoriesQuery()
+  const [uploadImage, { isError, isLoading: loading, isSuccess }] = useUploadImageMutation()
 
   const handleCategory = (event: SelectChangeEvent) => {
     setCategory(event.target.value)
@@ -55,26 +55,17 @@ const AddProductForm = () => {
     setTitle(event.target.value)
   }
   const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
-    setImageLoading(true)
     if (event.target.files && event.target.files.length > 0) {
       setImage(event.target.files[0])
     }
     const formData = new FormData()
-
     if (image) {
       formData.append('file', image)
-      const response = await fetch('https://api.escuelajs.co/api/v1/files/upload', {
-        method: 'POST',
-        body: formData
-      })
-      if (response.ok) {
-        const data = await response.json()
-        if (data) {
-          setImageUrl(data.location)
-          setImageLoading(false)
-        }
-      } else {
-        setImageError(true)
+      try {
+        const res = await uploadImage(formData).unwrap()
+        console.log(res)
+      } catch (error) {
+        setFormError(true)
       }
     }
   }
