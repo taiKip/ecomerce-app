@@ -1,6 +1,5 @@
 import React from 'react'
 import SmallScreenAppBar from '../../components/SmallScreenAppBar'
-import { Container } from '@mui/material'
 import UserNotLoggeIn from './UserNotLoggedIn'
 import UserLoggedIn from './UserLoggedIn'
 import { useAppSelector } from '../../app/hooks'

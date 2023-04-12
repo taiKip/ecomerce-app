@@ -1,8 +1,11 @@
 import { Card, CardMedia, Container, Stack, Button } from '@mui/material'
-import Profile from '../../assets/profile.jpg'
+import Profile from '../../assets/profile.jpeg'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { useAppSelector } from '../../app/hooks'
 
 const UserLoggedIn = () => {
+  const user = useAppSelector((state) => state.auth.user)
   return (
     <Container
       sx={{
@@ -18,7 +21,7 @@ const UserLoggedIn = () => {
         sx={{
           minWidth: 300
         }}>
-        <CardMedia image={Profile} sx={{ height: 250 }} />
+        <CardMedia image={user?.imageUrl || Profile} sx={{ height: 250 }} />
       </Card>
       <Stack
         display={'flex'}
