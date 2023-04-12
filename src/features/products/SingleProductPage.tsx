@@ -70,7 +70,7 @@ const SingleProductPage = () => {
         }}>
         <CardMedia
           component="img"
-          image={productObj?.image}
+          image={productObj?.images[0]}
           sx={{ borderRadius: 1, objectFit: 'contain', maxHeight: '600px', m: 2 }}
         />
         <Typography fontWeight="bold" color="secondary" variant="h5">

@@ -15,7 +15,11 @@ import {
   CardHeader,
   Button,
   TableContainer,
-  Toolbar
+  Toolbar,
+  List,
+  ListItem,
+  Avatar,
+  ListItemText
 } from '@mui/material'
 import { ArrowBack } from '@mui/icons-material'
 import CartItem from './CartItem'
@@ -30,6 +34,7 @@ import { useNavigate } from 'react-router-dom'
 import UseTheme from '../../utils/hooks/UseTheme'
 
 import SmallScreenAppBar from '../../components/SmallScreenAppBar'
+import CartItemsList from './CartItemsList'
 
 const nav = ['PRODUCT DETAILS', 'QUANTITY', 'PRICE', 'TOTAL']
 const ShoppingCartPage = () => {
@@ -75,6 +80,14 @@ const ShoppingCartPage = () => {
             {`There is currently ${count} item${count > 1 ? 's' : ''} in the cart`}
           </Typography>
         </Box>
+        {/**@todo fix cart  */}
+        <List sx={{ width: '100%',color:"purple",bgcolor:"background.paper"}}>
+          {cartItems.map((item) => (
+            <ListItem key={item.id}  >
+              <ListItemText>{item.title}</ListItemText>
+            </ListItem>
+          ))}
+        </List>
       </Container>
     </>
   )

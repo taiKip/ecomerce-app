@@ -44,6 +44,7 @@ const ProductList = () => {
   if (debounceSearchValue !== '' && data) {
     sortedArray = [...data].filter((item) => item.title.toLowerCase().includes(debounceSearchValue))
   }
+  
 
   return (
     <>
@@ -63,7 +64,7 @@ const ProductList = () => {
               id={item.id}
               category={item.category}
               description={item.description}
-              image={item.image}
+              images={item.images}
               price={item.price}
               title={item.title}
               key={item.id}
@@ -71,8 +72,7 @@ const ProductList = () => {
           ))
         ) : (
           <Typography color="purple" display={'flex'} alignItems={'center'} gap={1}>
-            Product does not exist
-            <SentimentVeryDissatisfied />
+            Loading...
           </Typography>
         )}
       </Masonry>

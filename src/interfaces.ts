@@ -7,7 +7,7 @@ export interface IProduct {
   price: number
   description: string
   category: string
-  image: string
+  images: string[]
 }
 export interface IQuantity {
   quantity: number
@@ -37,7 +37,6 @@ export interface ITableProps {
 }
 export interface IAuth {
   user: string | null
-  token: string | null
  
 }
 //lower case because of database
@@ -53,4 +52,7 @@ export interface IUser {
 export interface IAuthState {
   user: IUser | null
   token: string | null
+}
+export interface IAuthStateDev{
+  access_token:string|null
 }

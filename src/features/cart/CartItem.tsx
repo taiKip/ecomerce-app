@@ -3,7 +3,7 @@ import { Button, CardMedia, Box, TableCell, TableRow, Typography } from '@mui/ma
 import { cartItemType, decrementQuantity, incrementQuantity, removeItem } from './cartSlice'
 import { useAppDispatch } from '../../app/hooks'
 
-const CartItem = ({ image, quantity, price, title, id }: cartItemType) => {
+const CartItem = ({ images, quantity, price, title, id }: cartItemType) => {
   const dispatch = useAppDispatch()
   const handleIncrement = () => {
     dispatch(incrementQuantity(id))
@@ -18,6 +18,7 @@ const CartItem = ({ image, quantity, price, title, id }: cartItemType) => {
     dispatch(removeItem(id))
   }
   const total = price * quantity
+ 
   //
   return (
     <TableRow>
@@ -25,7 +26,7 @@ const CartItem = ({ image, quantity, price, title, id }: cartItemType) => {
         <CardMedia
           component="img"
           sx={{ maxWidth: 100, height: 100, borderRadius: 1 }}
-          image={image}
+          image={images?images[0]:""}
         />
 
         <Box sx={{ maxWidth: '200px' }}>
@@ -39,9 +40,10 @@ const CartItem = ({ image, quantity, price, title, id }: cartItemType) => {
         <Box
           sx={{
             display: 'flex',
-            width: '200px',
+      width:200,
             justifyContent: 'space-between',
             alignItems: 'center'
+
           }}>
           <Button variant="contained" onClick={handleDecrement}>
             -

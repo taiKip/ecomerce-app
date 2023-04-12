@@ -1,6 +1,6 @@
 import React, { FormEvent, useState, ChangeEvent, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-
+import { v4 as uuidv4 } from 'uuid'
 import {
   Select,
   MenuItem,
@@ -48,6 +48,7 @@ const UpdateProductForm = () => {
   const [titleError, setTitleError] = useState(false)
   const [descriptionError, setDescriptionError] = useState(false)
   const [image, setImage] = useState<File | null>(null)
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
 
   useEffect(() => {
     if (isSuccess) {
@@ -55,7 +56,7 @@ const UpdateProductForm = () => {
       setDescription(productObj.description)
       setPrice(productObj.price.toString())
     }
-  }, [isSuccess, productObj?.title, productObj?.category, productObj?.image, productObj?.price])
+  }, [isSuccess, productObj?.title, productObj?.category, productObj?.images[0], productObj?.price])
   const { data: categories } = useGetCategoriesQuery()
 
   const handleCategory = (event: SelectChangeEvent) => {
@@ -64,12 +65,28 @@ const UpdateProductForm = () => {
   const handlePrice = (event: ChangeEvent<HTMLInputElement>) => {
     setDescription(event.target.value)
   }
-  const handleUploadImage = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setImage(event.target.files[0])
+      const formData = new FormData()
+
+      if (image) {
+        formData.append('file', image)
+        const response = await fetch('https://api.escuelajs.co/api/v1/files/upload', {
+          method: 'POST',
+          body: formData
+        })
+        if (response.ok) {
+          const data = await response.json()
+          if (data) {
+            setImageUrl(data.location)
+          }
+        } else {
+          setImageUrl('')
+        }
+      }
     }
   }
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setTitleError(false)
@@ -83,8 +100,17 @@ const UpdateProductForm = () => {
     console.log(image?.name)
     if (title && description && image && price) {
       const itemPrice = +price
+      const id = uuidv4()
       //todo : fix image upload
-      const product = { title, description, category, image: image.name, price: itemPrice }
+
+      const product = {
+        id,
+        title,
+        description,
+        category,
+        images: imageUrl ? [imageUrl] : [],
+        price: itemPrice
+      }
       try {
         await updateProduct(product).unwrap()
         console.log(product)
@@ -136,7 +162,7 @@ const UpdateProductForm = () => {
           fullWidth
           endIcon={<Camera />}
           sx={{ mb: 2 }}>
-          Upload new Image
+         {imageUrl?<>Image uploaded</> :<>Upload new Image</> } 
           <input hidden accept="image/*" type="file" onChange={handleUploadImage} />
         </Button>
         <FormControl fullWidth sx={{ mb: 1 }}>
@@ -172,7 +198,7 @@ const UpdateProductForm = () => {
           </Select>
         </FormControl>
 
-        <Button type="submit" variant="contained" endIcon={<KeyboardArrowRightIcon />}>
+        <Button  type="submit" variant="contained" endIcon={<KeyboardArrowRightIcon />}>
           Submit
         </Button>
       </form>

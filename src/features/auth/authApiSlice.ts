@@ -9,14 +9,14 @@ export const extendedAuthenticationSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     registerUser: builder.mutation({
       query: (body: Partial<IUser>) => ({
-        url: '/auth/register',
+        url: '/auth/login',
         method: 'POST',
         body
       })
     }),
     loginUser: builder.mutation({
       query: (body: Partial<IUser>) => ({
-        url: '/auth/authenticate',
+        url: '/auth/login',
         method: 'POST',
         body
       })

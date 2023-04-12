@@ -53,6 +53,7 @@ const Login = () => {
     if (email && password) {
       try {
         const res = await loginUser({ email, password }).unwrap()
+        console.log(res)
         dispatch(setCredentials(res))
         setEmail('')
       } catch (error) {

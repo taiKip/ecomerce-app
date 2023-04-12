@@ -19,7 +19,7 @@ import {
 import { ThemeContext } from '../App'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import CartItemsList from '../features/cart/CartItemsList'
-import { logOut, selectCurrentUser, setCredentials } from '../features/auth/authSlice'
+import { logOut,selectCurrentUserToken,setCredentials } from '../features/auth/authSlice'
 
 import SignUpButton from './SignUpButton'
 import { IUser } from '../interfaces'
@@ -32,9 +32,9 @@ const Header = () => {
   const colorMode = useContext(ThemeContext)
   const theme = useTheme()
   let user:null|IUser = null
-
-  user = useAppSelector(selectCurrentUser)
-
+ /**@todo - rarefactor after connecting to rest endpoint */
+  //user = useAppSelector(selectCurrentUser)
+  const token = useAppSelector(selectCurrentUserToken);
   const cartItems = useAppSelector((state) => state.cart.cartItems)
   //const [userData , setUserData] = useState(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -75,7 +75,6 @@ const Header = () => {
     setIsLoggedIn(false)
     navigate('/')
   }
-console.log(user)
   return (
     <AppBar elevation={0} position="sticky" sx={{ display: { xs: 'none', sm: 'block' } }}>
       <Toolbar>
@@ -84,7 +83,7 @@ console.log(user)
         </Link>
 
         <Box sx={{ display: { xs: 'none', sm: 'block', flexGrow: 1 } }}>
-          {user?.role === 'ROLE_ADMIN' &&
+          {token &&
             navItems.map((item) => (
               <Link to={item} key={item}>
                 <Button color="inherit">{item}</Button>
@@ -119,13 +118,13 @@ console.log(user)
           </IconButton>
         </Box>
         {user === null && <SignUpButton />}
-        {user &&isLoggedIn && (
+        {user  && (
           <CardHeader
             sx={{ cursor: 'pointer' }}
             onClick={handleMenu}
-            avatar={<Avatar alt={user?.firstname.slice(0, 1)} src={user?.imageUrl} />}
-            title={`${user?.firstname + ' ' + user?.lastname}`}
-            subheader={`${user?.role === 'ROLE_ADMIN' ? 'Admin' : ''}`}
+            // avatar={<Avatar alt={user?.firstname.slice(0, 1)} src={user?.imageUrl} />}
+            // title={`${user?.firstname + ' ' + user?.lastname}`}
+            // subheader={`${user?.role === 'ROLE_ADMIN' ? 'Admin' : ''}`}
           />
         )}
         <Menu

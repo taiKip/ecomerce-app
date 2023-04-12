@@ -103,7 +103,7 @@ const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
         <TableBody>
           {cartItems.map((item) => (
             <CartItem
-              image={item.image}
+              images={item.images}
               quantity={item.quantity}
               price={item.price}
               title={item.title}
