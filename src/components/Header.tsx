@@ -19,7 +19,7 @@ import {
 import { ThemeContext } from '../App'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import CartItemsList from '../features/cart/CartItemsList'
-import { logOut,selectCurrentUserToken,setCredentials } from '../features/auth/authSlice'
+import { logOut, selectCurrentUserToken, setCredentials } from '../features/auth/authSlice'
 
 import SignUpButton from './SignUpButton'
 import { IUser } from '../interfaces'
@@ -31,23 +31,23 @@ const Header = () => {
   const navigate = useNavigate()
   const colorMode = useContext(ThemeContext)
   const theme = useTheme()
-  let user:null|IUser = null
- /**@todo - rarefactor after connecting to rest endpoint */
+  let user: null | IUser = null
+  /**@todo - rarefactor after connecting to rest endpoint */
   //user = useAppSelector(selectCurrentUser)
-  const token = useAppSelector(selectCurrentUserToken);
+  const token = useAppSelector(selectCurrentUserToken)
   const cartItems = useAppSelector((state) => state.cart.cartItems)
   //const [userData , setUserData] = useState(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null)
-  const[isLoggedIn,setIsLoggedIn] =useState(false)
- 
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
   useEffect(() => {
-    if (user) {
+    if (token) {
       setIsLoggedIn(true)
     } else {
       setIsLoggedIn(false)
     }
-  },[user])
+  }, [token])
 
   const handleCloseCart = () => {
     setCartAnchorEl(null)
@@ -83,7 +83,7 @@ const Header = () => {
         </Link>
 
         <Box sx={{ display: { xs: 'none', sm: 'block', flexGrow: 1 } }}>
-          {token &&
+          {isLoggedIn &&
             navItems.map((item) => (
               <Link to={item} key={item}>
                 <Button color="inherit">{item}</Button>
@@ -117,12 +117,12 @@ const Header = () => {
             {theme.palette.mode === 'light' ? <DarkModeOutlined /> : <FlareIcon />}
           </IconButton>
         </Box>
-        {user === null && <SignUpButton />}
-        {user  && (
+        {!isLoggedIn  && <SignUpButton />}
+        {token && isLoggedIn && (
           <CardHeader
             sx={{ cursor: 'pointer' }}
             onClick={handleMenu}
-            // avatar={<Avatar alt={user?.firstname.slice(0, 1)} src={user?.imageUrl} />}
+            avatar={<Avatar />}
             // title={`${user?.firstname + ' ' + user?.lastname}`}
             // subheader={`${user?.role === 'ROLE_ADMIN' ? 'Admin' : ''}`}
           />

@@ -20,9 +20,9 @@ import { field } from './Styles'
 import { useGetCategoriesQuery } from '../categories/categorySlice'
 import { useGetProductsQuery, useUpdateProductMutation } from './productSlice'
 
+
 const UpdateProductForm = () => {
   const { productId } = useParams()
-
   const {
     product,
     error,
@@ -63,7 +63,7 @@ const UpdateProductForm = () => {
     setCategory(event.target.value)
   }
   const handlePrice = (event: ChangeEvent<HTMLInputElement>) => {
-    setDescription(event.target.value)
+    setPrice(event.target.value)
   }
   const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -97,14 +97,14 @@ const UpdateProductForm = () => {
     if (description === '') {
       setDescriptionError(true)
     }
-    console.log(image?.name)
-    if (title && description && image && price) {
+   
+    if (title && description  && price) {
       const itemPrice = +price
-      const id = uuidv4()
+ 
       //todo : fix image upload
 
       const product = {
-        id,
+        id:productId,
         title,
         description,
         category,
@@ -112,8 +112,9 @@ const UpdateProductForm = () => {
         price: itemPrice
       }
       try {
-        await updateProduct(product).unwrap()
-        console.log(product)
+
+      const res=   await updateProduct(product).unwrap()
+  console.log(res)
         setTitle('')
         setDescription('')
         setImage(null)

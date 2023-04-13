@@ -88,10 +88,11 @@ const AddProductForm = () => {
     if (title && description && category) {
       console.log('in save')
       const itemPrice = +price
-      const id = uuidv4()
-      const product = { id, title, description, category, image: imageUrl, price: itemPrice }
+    
+      const product = {  title, description, category, image: imageUrl, price: itemPrice }
       console.log(product)
       try {
+        
         await addNewProduct(product).unwrap()
         console.log(product)
         setTitle('')

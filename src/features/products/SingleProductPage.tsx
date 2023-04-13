@@ -10,11 +10,12 @@ import { useState } from 'react'
 import { addToCart } from '../cart/cartSlice'
 //import { selectCurrentUser } from '../auth/authSlice'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { selectCurrentUserToken } from '../auth/authSlice'
 
 const SingleProductPage = () => {
   const navigate = useNavigate()
   const { productId } = useParams()
-  // const user = useAppSelector(selectCurrentUser)
+  const token = useAppSelector(selectCurrentUserToken)
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const [deleteProduct] = useDeleteProductMutation()
@@ -88,7 +89,7 @@ const SingleProductPage = () => {
           onClick={handleAddToCart}>
           Add to cart
         </Button>
-        {true && ( //user exists ..todo
+        {token && ( //user exists ..todo
           <>
             <Button
               variant="outlined"
