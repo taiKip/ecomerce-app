@@ -12,6 +12,8 @@ import { sortType } from '../../types'
 import { IProduct } from '../../interfaces'
 import useDebounce from '../../utils/hooks/useDebounce'
 import { SentimentVeryDissatisfied } from '@mui/icons-material'
+import Wrapper from '../../components/Wrapper'
+import Corousel from '../../components/Corousel'
 
 const ProductList = () => {
   const { data } = useGetProductsQuery()
@@ -54,10 +56,8 @@ const ProductList = () => {
           <SearchBar handleSearch={setSearchItem} searchValue={searchItem} />
         </Box>
       </Box>
-      <Masonry
-        breakpointCols={breakpointColumnsObj}
-        className="my-masonry-grid"
-        columnClassName="my-masonry-grid_column">
+      <Wrapper>
+       <Corousel/>
         {data && sortedArray.length !== 0 ? (
           sortedArray.map((item) => (
             <Product
@@ -75,7 +75,7 @@ const ProductList = () => {
             Loading...
           </Typography>
         )}
-      </Masonry>
+      </Wrapper>
     </>
   )
 }

@@ -26,11 +26,11 @@ const Product = ({ id, category, description, images, price, title }: IProduct) 
     )
   }
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card >
       <CardActionArea>
-        <CardMedia component="img" height="25%" image={images[0]} alt={title} loading='lazy' />
+        <CardMedia component="img" height={200}  image={images[0]} alt={title} loading='lazy' />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom component="div">
             {title}
           </Typography>
         </CardContent>

@@ -7,9 +7,9 @@ import { Toolbar } from '@mui/material'
 
 const Layout = () => {
   return (
-    <Container sx={{ minHeight: '100vh' }}>
+    <Container sx={{ minHeight: '100vh' ,padding:{xs:0}}}>
       <Header />
-      <Container>
+      <Container sx={{padding:{xs:1}}}>
         <Outlet />
       </Container>
       <FooterMenu />
