@@ -2,6 +2,7 @@ import { Container, Stack, Typography } from '@mui/material'
 import shopper from '../../assets/shopping.svg'
 import LoginButton from '../../components/LoginButton'
 import SignUpButton from '../../components/SignUpButton'
+import GoogleLoginButton from '../../components/GoogleLoginButton'
 
 const UserNotLoggedIn = () => {
   
@@ -33,9 +34,10 @@ const UserNotLoggedIn = () => {
         />
       </div>
 
-      <Stack display={'flex'} gap={3} marginTop={6}>
+      <Stack display={'flex'} gap={2} marginTop={6} marginBottom={6}>
         <LoginButton />
         <SignUpButton />
+        <GoogleLoginButton/>
       </Stack>
     </Container>
   )

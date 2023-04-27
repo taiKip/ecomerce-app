@@ -62,6 +62,7 @@ const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
   return (
     <Menu
       id="menu-appbar"
+      sx={{display:{xs:"none",sm:"flex"}}}
       anchorEl={anchorEl}
       anchorOrigin={{
         vertical: 'top',

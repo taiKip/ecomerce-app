@@ -11,7 +11,7 @@ const LoginButton = () => {
       variant="contained"
       endIcon={<Login />}
       onClick={() => navigate('/auth/login')}>
-      Login with email
+      Login 
     </Button>
   )
 }

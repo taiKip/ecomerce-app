@@ -29,8 +29,8 @@ const Product = ({ id, category, description, images, price, title }: IProduct) 
     <Card >
       <CardActionArea>
         <CardMedia component="img" height={200}  image={images[0]} alt={title} loading='lazy' />
-        <CardContent>
-          <Typography gutterBottom component="div">
+        <CardContent sx={{padding:0.5}}>
+          <Typography gutterBottom component="div" fontSize="1em" fontWeight="bold">
             {title}
           </Typography>
         </CardContent>

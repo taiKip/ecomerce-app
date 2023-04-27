@@ -77,7 +77,7 @@ const Login = () => {
       <SmallScreenAppBar title="Login " extraInfo="welcome" />
       <Container sx={{ paddingTop: 16 }}>
         <Typography variant="h6" component="h2" color="textSecondary" gutterBottom>
-          Sign up
+          Login
         </Typography>
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <TextField

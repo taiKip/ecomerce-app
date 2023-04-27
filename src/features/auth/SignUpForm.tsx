@@ -39,7 +39,7 @@ const SignUp = () => {
   return (
     <>
       <SmallScreenAppBar title="Sign Up" extraInfo="almost there" />
-      <Container sx={{ paddingTop: 16 }}>
+      <Container sx={{ paddingTop: 16}}>
         <Typography variant="h6" component="h2" color="textSecondary" gutterBottom>
           Sign up
         </Typography>

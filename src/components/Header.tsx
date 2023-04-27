@@ -25,6 +25,7 @@ import SignUpButton from './SignUpButton'
 import { IUser } from '../interfaces'
 import { useLoginUserMutation } from '../features/auth/authApiSlice'
 import { navItems } from '../utils/functions/extraValues'
+import LoginButton from './LoginButton'
 
 const Header = () => {
   const dispatch = useAppDispatch()
@@ -92,15 +93,18 @@ const Header = () => {
         </Box>
 
         <Box gap={2} display={'flex'} marginX={2}>
-          <IconButton
-            size="medium"
-            aria-label="show all 2 new notifications"
-            color="inherit"
-            sx={{ borderRadius: 1 }}>
-            <Badge badgeContent={2} color="success">
-              <MailOutline />
-            </Badge>
-          </IconButton>
+          {isLoggedIn && (
+            <IconButton
+              size="medium"
+              aria-label="show all 2 new notifications"
+              color="inherit"
+              sx={{ borderRadius: 1 }}>
+              <Badge badgeContent={2} color="success">
+                <MailOutline />
+              </Badge>
+            </IconButton>
+          )}
+
           <IconButton
             size="medium"
             aria-label="notifications"
@@ -117,7 +121,15 @@ const Header = () => {
             {theme.palette.mode === 'light' ? <DarkModeOutlined /> : <FlareIcon />}
           </IconButton>
         </Box>
-        {!isLoggedIn  && <SignUpButton />}
+        {!isLoggedIn && (
+          <div style={{
+            display: "flex",
+            gap:"8px"
+          }}>
+            <LoginButton />
+            <SignUpButton />
+          </div>
+        )}
         {token && isLoggedIn && (
           <CardHeader
             sx={{ cursor: 'pointer' }}
