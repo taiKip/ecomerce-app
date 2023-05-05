@@ -5,7 +5,7 @@ import { createTheme } from '@mui/material/styles'
 const UseTheme = () => {
   const [mode, setMode] = useState<'dark' | 'light'>(() => {
     const localData = localStorage.getItem('theme')
-    return localData ? JSON.parse(localData) : 'light'
+    return localData ? JSON.parse(localData) : 'dark'
   })
   useEffect(() => {
     localStorage.setItem('theme', JSON.stringify(mode))
