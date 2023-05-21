@@ -3,13 +3,13 @@ import { Box } from '@mui/system'
 
 import ProductList from '../features/products/ProductList'
 import SmallScreenAppBar from '../components/SmallScreenAppBar'
+import { useAppSelector } from '../app/hooks'
+import { seletCurrentCategory } from '../features/categories/categorySlice'
 
 const HomePage = () => {
   return (
     <Box>
-      <SmallScreenAppBar extraInfo="value for money" title="Products" />
-      <Toolbar />
-
+      <SmallScreenAppBar />
       <ProductList />
     </Box>
   )

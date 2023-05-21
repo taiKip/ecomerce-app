@@ -32,7 +32,6 @@ const Header = () => {
   const navigate = useNavigate()
   const colorMode = useContext(ThemeContext)
   const theme = useTheme()
-  let user: null | IUser = null
   /**@todo - rarefactor after connecting to rest endpoint */
   //user = useAppSelector(selectCurrentUser)
   const token = useAppSelector(selectCurrentUserToken)
@@ -40,7 +39,7 @@ const Header = () => {
   //const [userData , setUserData] = useState(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
 
   useEffect(() => {
     if (token) {
@@ -122,10 +121,11 @@ const Header = () => {
           </IconButton>
         </Box>
         {!isLoggedIn && (
-          <div style={{
-            display: "flex",
-            gap:"8px"
-          }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '8px'
+            }}>
             <LoginButton />
             <SignUpButton />
           </div>

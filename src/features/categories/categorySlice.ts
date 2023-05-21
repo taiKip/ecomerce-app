@@ -1,30 +1,21 @@
-import { apiSlice } from './../api/apiSlice'
-
-export type categoryType = {
-  id: number
-  name: string
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { ICategory } from '../../interfaces'
+import { RootState } from '../../app/store'
+const initialState: Partial<ICategory> = {
+  name: 'All',
+  description: 'All products'
 }
-export const extendedCategoriesApiSlice = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
-    getCategories: builder.query<categoryType[], void>({
-      query: () => '/categories',
-      providesTags: ['Categories']
-    }),
-    addNewCategory: builder.mutation({
-      query: (category: categoryType) => ({
-        url: '/categories',
-        method: 'POST',
-        body: category
-      }),
-      invalidatesTags: ['Categories']
-    }),
-    deleteCategory: builder.mutation({
-      query: ({ id }: { id: string }) => ({
-        url: `/categories/${id}`,
-        method: 'DELETE'
-      })
-    })
-  })
+const categorySlice = createSlice({
+  name: 'category',
+  initialState,
+  reducers: {
+    setCategory: (state, action: PayloadAction<typeof initialState>) => {
+      state.name = action.payload.name
+      state.description = action.payload.description
+    }
+  }
 })
 
-export const { useGetCategoriesQuery } = extendedCategoriesApiSlice
+export const { setCategory } = categorySlice.actions
+export const seletCurrentCategory = (state: RootState) => state.category
+export default categorySlice.reducer

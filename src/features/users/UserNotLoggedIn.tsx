@@ -5,7 +5,6 @@ import SignUpButton from '../../components/SignUpButton'
 import GoogleLoginButton from '../../components/GoogleLoginButton'
 
 const UserNotLoggedIn = () => {
-  
   return (
     <Container sx={{ paddingTop: 10, overflow: 'hidden', display: { sm: 'none' } }}>
       <Typography
@@ -14,12 +13,10 @@ const UserNotLoggedIn = () => {
         fontSize={'1.5em'}
         fontWeight={900}
         alignItems={'center'}
-      
         gap={1}
-        marginBottom={3} >
-      
+        marginBottom={3}>
         Start your shopping journey
-        <span role="img" aria-label="smiley face" color='inherit'>
+        <span role="img" aria-label="smiley face" color="inherit">
           😊
         </span>
       </Typography>
@@ -29,7 +26,7 @@ const UserNotLoggedIn = () => {
           loading="lazy"
           style={{
             objectFit: 'contain',
-            maxHeight: '40vh'
+            maxHeight: '35vh'
           }}
         />
       </div>
@@ -37,7 +34,7 @@ const UserNotLoggedIn = () => {
       <Stack display={'flex'} gap={2} marginTop={6} marginBottom={6}>
         <LoginButton />
         <SignUpButton />
-        <GoogleLoginButton/>
+        <GoogleLoginButton />
       </Stack>
     </Container>
   )

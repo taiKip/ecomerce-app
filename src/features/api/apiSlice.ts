@@ -3,7 +3,7 @@ import { RootState } from '../../app/store'
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.escuelajs.co/api/v1',
+    baseUrl: 'http://localhost:8000/api/v1',
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.access_token
 

@@ -56,3 +56,12 @@ export interface IAuthState {
 export interface IAuthStateDev{
   access_token:string|null
 }
+export interface ICategory {
+  id: number
+  name: string
+  image: string
+  open: boolean
+  description: string
+  parentId: number | null
+  categories: ICategory[]
+}

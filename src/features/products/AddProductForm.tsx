@@ -19,7 +19,7 @@ import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDiss
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
 import { Camera } from '@mui/icons-material'
-import { useGetCategoriesQuery } from '../categories/categorySlice'
+import { useGetCategoriesQuery } from '../categories/categoryApiSlice'
 import { useAddNewProductMutation, useUpdateProductMutation } from './productSlice'
 import { field } from './Styles'
 import { useUploadImageMutation } from '../uploadFile/uploadSlice'
@@ -39,7 +39,7 @@ const AddProductForm = () => {
   const [image, setImage] = useState<File | null>(null)
   const [imageUrl, setImageUrl] = useState<string>('')
   const [imageError, setImageError] = useState(false)
-  const [imageLoading,setImageLoading] =useState(false)
+  const [imageLoading, setImageLoading] = useState(false)
 
   const { data: addresses } = useGetCategoriesQuery()
   const [uploadImage, { isError, isLoading: loading, isSuccess }] = useUploadImageMutation()
@@ -88,11 +88,10 @@ const AddProductForm = () => {
     if (title && description && category) {
       console.log('in save')
       const itemPrice = +price
-    
-      const product = {  title, description, category, image: imageUrl, price: itemPrice }
+
+      const product = { title, description, category, image: imageUrl, price: itemPrice }
       console.log(product)
       try {
-        
         await addNewProduct(product).unwrap()
         console.log(product)
         setTitle('')

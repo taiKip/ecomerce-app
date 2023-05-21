@@ -18,6 +18,7 @@ import Login from './features/auth/LoginForm'
 import ShoppingCartPage from './features/cart/ShoppingCartPage'
 import SearchProductsMobilePage from './features/products/SearchProductsMobile'
 import UserProfilePage from './features/users/UserProfilePage'
+import ProductList from './features/products/ProductList'
 
 export const ThemeContext = createContext({
   toggleColorMode: () => {
@@ -41,6 +42,7 @@ const App = () => {
               <Route path="/products/:productId" element={<SingleProductPage />} />
               <Route path="cart" element={<ShoppingCartPage />} />
               <Route path="search" element={<SearchProductsMobilePage />} />
+              <Route path="/category/:categoryId" element={<ProductList />} />
               <Route path="/auth">
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<SignUp />} />

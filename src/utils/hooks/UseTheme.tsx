@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { purple } from '@mui/material/colors'
 import { createTheme } from '@mui/material/styles'
+import { before } from 'node:test'
 
 const UseTheme = () => {
   const [mode, setMode] = useState<'dark' | 'light'>(() => {
@@ -59,6 +60,15 @@ const UseTheme = () => {
                   transform: 'scale(1.1)',
                   transition: 'transform .3s ease-in-out'
                 }
+              }
+            }
+          },
+          MuiButton: {
+            styleOverrides: {
+              root: {
+                whiteSpace: 'nowrap',
+                minWidth: 'auto',
+                cursor: 'pointer'
               }
             }
           }

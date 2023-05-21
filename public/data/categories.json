@@ -1,6 +1,22 @@
-[
-  { "id": 1, "name": "men's clothing" },
-  { "id": 2, "name": "jewelry" },
-  { "id": 3, "name": "electronics" },
-  { "id": 4, "name": "women's clothing" }
-]
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "All",
+      "description": "All the products you need your self care routine",
+      "categories": [
+        {
+          "id": 2,
+          "name": "Men's",
+          "categories": [
+            { "id": 5, "name": "Hair & Body" },
+            { "id": 6, "name": "Face" },
+            { "id": 7, "name": "Best Sellers" }
+          ]
+        },
+        { "id": 3, "name": "Women's" },
+        { "id": 4, "name": "Kids" }
+      ]
+    }
+  ]
+}

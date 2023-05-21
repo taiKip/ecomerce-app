@@ -10,7 +10,9 @@ const FooterMenu = () => {
     {
       text: 'Home',
       icon: <Dashboard />,
-      route: '/'
+      route: '/',
+      title: 'Home',
+      description: 'Welcome'
     },
     {
       text: 'Cart',
@@ -19,17 +21,23 @@ const FooterMenu = () => {
           <ShoppingCartOutlined />
         </Badge>
       ),
-      route: '/cart'
+      route: '/cart',
+      title: 'Cart',
+      description: 'Self love basket'
     },
     {
       text: 'Search',
       icon: <Search />,
-      route: '/search'
+      route: '/search',
+      title: 'Search',
+      description: 'Want something specific?'
     },
     {
       text: 'Profile',
       icon: <AccountCircleIcon />,
-      route: '/profile'
+      route: '/profile',
+      title: 'Profile',
+      description: 'Start thrifting'
     }
   ]
   return (
@@ -44,6 +52,8 @@ const FooterMenu = () => {
             route={item.route}
             icon={item.icon}
             text={item.text}
+            title={item.title}
+            description={item.description}
           />
         ))}
       </Toolbar>

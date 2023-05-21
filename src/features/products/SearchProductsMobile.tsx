@@ -1,18 +1,17 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
-import {  AppBar, Toolbar } from '@mui/material'
+import { Toolbar } from '@mui/material'
 
 import SearchBar from '../../components/SearchBar'
+import SmallScreenAppBar from '../../components/SmallScreenAppBar'
 const SearchProductsMobilePage = () => {
   const [searchHistoryArray, setSearchHistoryArray] = useState([])
   const [searchValue, setSearchValue] = useState<string>('')
   return (
     <>
-      <AppBar>
-        <Toolbar>
-          <SearchBar handleSearch={setSearchValue} searchValue={searchValue} />
-        </Toolbar>
-      </AppBar>
+      <SmallScreenAppBar />
+      <Toolbar />
+      <SearchBar handleSearch={setSearchValue} searchValue={searchValue} />
     </>
   )
 }

@@ -7,7 +7,7 @@ import { store } from './app/store'
 import App from './App'
 import './index.css'
 import { extendedProductsApiSlice } from './features/products/productSlice'
-import { extendedCategoriesApiSlice } from './features/categories/categorySlice'
+import { extendedCategoriesApiSlice } from './features/categories/categoryApiSlice'
 import { extendedOrdersApiSlice } from './features/orders/orderSlice'
 
 store.dispatch(extendedProductsApiSlice.endpoints.getProducts.initiate())

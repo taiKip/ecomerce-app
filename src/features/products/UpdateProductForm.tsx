@@ -17,9 +17,8 @@ import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
 import { Camera } from '@mui/icons-material'
 import { field } from './Styles'
-import { useGetCategoriesQuery } from '../categories/categorySlice'
+import { useGetCategoriesQuery } from '../categories/categoryApiSlice'
 import { useGetProductsQuery, useUpdateProductMutation } from './productSlice'
-
 
 const UpdateProductForm = () => {
   const { productId } = useParams()
@@ -97,14 +96,14 @@ const UpdateProductForm = () => {
     if (description === '') {
       setDescriptionError(true)
     }
-   
-    if (title && description  && price) {
+
+    if (title && description && price) {
       const itemPrice = +price
- 
+
       //todo : fix image upload
 
       const product = {
-        id:productId,
+        id: productId,
         title,
         description,
         category,
@@ -112,9 +111,8 @@ const UpdateProductForm = () => {
         price: itemPrice
       }
       try {
-
-      const res=   await updateProduct(product).unwrap()
-  console.log(res)
+        const res = await updateProduct(product).unwrap()
+        console.log(res)
         setTitle('')
         setDescription('')
         setImage(null)
@@ -163,7 +161,7 @@ const UpdateProductForm = () => {
           fullWidth
           endIcon={<Camera />}
           sx={{ mb: 2 }}>
-         {imageUrl?<>Image uploaded</> :<>Upload new Image</> } 
+          {imageUrl ? <>Image uploaded</> : <>Upload new Image</>}
           <input hidden accept="image/*" type="file" onChange={handleUploadImage} />
         </Button>
         <FormControl fullWidth sx={{ mb: 1 }}>
@@ -199,7 +197,7 @@ const UpdateProductForm = () => {
           </Select>
         </FormControl>
 
-        <Button  type="submit" variant="contained" endIcon={<KeyboardArrowRightIcon />}>
+        <Button type="submit" variant="contained" endIcon={<KeyboardArrowRightIcon />}>
           Submit
         </Button>
       </form>
