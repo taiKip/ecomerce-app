@@ -27,7 +27,14 @@ const Product = ({ id, image, name, price }: IProduct) => {
   return (
     <Card>
       <CardActionArea>
-        <CardMedia component="img" height={200} image={image} alt={name} loading="lazy" />
+        <CardMedia
+          component="img"
+          height={200}
+          image={image}
+          alt={name}
+          loading="lazy"
+          sx={{ height: { xs: 150, sm: 200 } }}
+        />
         <CardContent sx={{ padding: 0.5 }}>
           <Typography gutterBottom component="div" fontSize="1em" fontWeight="bold">
             {name}

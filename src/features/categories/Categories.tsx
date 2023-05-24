@@ -1,14 +1,14 @@
-import { Button, Toolbar } from '@mui/material'
+import { Toolbar } from '@mui/material'
 import CategoryItem from './CategoryItem'
-import { useFetchCategoryByIdQuery, useGetCategoriesQuery } from './categoryApiSlice'
-import { ReactNode, useEffect, useState } from 'react'
+import { useGetCategoriesQuery } from './categoryApiSlice'
+import { useEffect, useState } from 'react'
 import { ICategory } from '../../interfaces'
 import { useParams } from 'react-router-dom'
 
 import SmallScreenAppBar from '../../components/SmallScreenAppBar'
 import { mapRecursive } from './mapRecursive'
 import { useAppDispatch } from '../../app/hooks'
-import { setCategory } from './categorySlice'
+import { setPageTitle } from '../page/pageTitleSlice'
 
 const Categories = () => {
   const { categoryId } = useParams()
@@ -16,30 +16,28 @@ const Categories = () => {
   const dispatch = useAppDispatch()
   const [menu, setMenu] = useState<ICategory>()
   let parent: ICategory | null = null
-  let currentCategory: ICategory
   let name = ''
   let description = ''
 
-  if (data) {
-    currentCategory = data[0]
+  if (data && data.length > 0) {
     mapRecursive(data, (item) => {
-      let id = categoryId || 1
+      const id = categoryId || 1
       if (item.id == +id) {
         name = item.name
         description = item.description
-        currentCategory = item
+
         parent = item
-        return { ...item, open: !item.open }
+        return { ...item }
       }
       return item
     })
   }
-  console.log(parent)
+
   /**
    * @desc setup header titles on navbar
    */
   useEffect(() => {
-    dispatch(setCategory({ name, description }))
+    dispatch(setPageTitle({ name, description }))
     if (parent != null) {
       setMenu(parent)
     }

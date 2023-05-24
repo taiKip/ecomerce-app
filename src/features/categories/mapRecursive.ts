@@ -8,6 +8,7 @@ export const mapRecursive = (
   if (oldArray.length <= 0) {
     return newArray
   } else {
+    // eslint-disable-next-line prefer-const
     let [item, ...rest] = oldArray
     if (item.categories) {
       item = { ...item, categories: mapRecursive(item.categories, callback) }

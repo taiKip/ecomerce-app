@@ -1,5 +1,5 @@
 export const wrapperStyle = {
-  mb: 2,
+  mb: 1,
   display: 'flex',
   justifyContent: 'end',
   width: '100%',
@@ -16,4 +16,15 @@ export const field = {
   marginTop: '20px',
   marginBottom: '20px',
   display: 'block'
+}
+export const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '70vw',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 2,
+  borderRadius: 2
 }

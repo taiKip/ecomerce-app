@@ -26,9 +26,6 @@ const ProductList = () => {
   // if (debounceSearchValue !== '' && data) {
   //   sortedArray = [...data].filter((item) => item.title.toLowerCase().includes(debounceSearchValue))
   // }
-  if (data) {
-    console.log(data)
-  }
 
   return (
     <>

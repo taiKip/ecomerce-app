@@ -31,7 +31,7 @@ const Login = () => {
       }
     }, 1000)
     return () => clearTimeout(timer)
-  }, [isSuccess,data])
+  }, [isSuccess, data])
 
   const field = {
     marginTop: '20px',

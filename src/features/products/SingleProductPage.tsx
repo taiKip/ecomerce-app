@@ -11,18 +11,20 @@ import { addToCart } from '../cart/cartSlice'
 //import { selectCurrentUser } from '../auth/authSlice'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { selectCurrentUserToken } from '../auth/authSlice'
+import AddReviewForm from './AddReviewForm'
 
 const SingleProductPage = () => {
   const navigate = useNavigate()
   const { productId } = useParams()
   const token = useAppSelector(selectCurrentUserToken)
+  const [openReviewForm, setOpenReviewForm] = useState(false)
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const [deleteProduct] = useDeleteProductMutation()
   const [deleteError, setDeleteError] = useState(false)
   const { product, error, isLoading } = useGetProductsQuery(undefined, {
     selectFromResult: ({ data, isLoading, error }) => ({
-      product: data?.filter((item) => item.id == productId?.toString()),
+      product: data?.products?.filter((item) => item.id == productId?.toString()),
       error,
       isLoading
     })
@@ -34,6 +36,7 @@ const SingleProductPage = () => {
   if (error) {
     return <div>Something went wrong</div>
   }
+
   const productObj = product && product[0]
   const handleDelete = async () => {
     try {
@@ -52,6 +55,9 @@ const SingleProductPage = () => {
   const handleUpdate = () => {
     navigate(`/edit/${productObj?.id}`)
   }
+  const handleToggleReview = () => {
+    setOpenReviewForm((prev) => !prev)
+  }
   return (
     <Container
       component={'section'}
@@ -61,7 +67,7 @@ const SingleProductPage = () => {
         flexDirection: 'column',
         marginTop: 2,
         minHeight: '100vh',
-        padding: 0
+        padding: 2
       }}>
       <div
         style={{
@@ -71,15 +77,32 @@ const SingleProductPage = () => {
         }}>
         <CardMedia
           component="img"
-          image={productObj?.images[0]}
+          image={productObj?.image}
           sx={{ borderRadius: 1, objectFit: 'contain', maxHeight: '600px', m: 2 }}
         />
         <Typography fontWeight="bold" color="secondary" variant="h5">
-          {productObj?.title}
+          {productObj?.name}
         </Typography>
         <Typography color={theme.palette.mode === 'dark' ? 'primary' : 'inherit'}>
           {productObj?.description}
         </Typography>
+        <Stack
+          display={'flex'}
+          flexDirection={'row'}
+          gap={2}
+          alignItems={'center'}
+          fontSize={'1em'}>
+          <Typography color={'green'} component={'p'} fontSize={'inherit'}>
+            {'€' + productObj?.price}
+          </Typography>
+          <Button
+            variant="text"
+            sx={{ color: '#6b6b6b', fontSize: '1em' }}
+            onClick={() => setOpenReviewForm((prev) => !prev)}>
+            Write Review
+          </Button>
+          {openReviewForm && <AddReviewForm toggle={handleToggleReview} open={openReviewForm} />}
+        </Stack>
       </div>
       <Stack display={'flex'} gap={1} width="100%">
         <Button

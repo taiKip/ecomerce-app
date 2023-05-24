@@ -4,7 +4,7 @@ const Corousel = () => {
   return (
     <div className="corousel">
       <div className="corousel--current">
-        <div className='corousel--current__circles'>
+        <div className="corousel--current__circles">
           <span></span>
           <span></span>
           <span></span>

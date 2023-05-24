@@ -6,14 +6,17 @@ import Container from '@mui/material/Container'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import TextField from '@mui/material/TextField'
 import SmallScreenAppBar from '../../components/SmallScreenAppBar'
+import { useAppDispatch } from '../../app/hooks'
 
 const SignUp = () => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch();
   const [name, setName] = useState('')
-  const [details, setDetails] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirPassword,setConfirmPassword] = useState('')
 
   const [nameError, setNameError] = useState(false)
-  const [detailsError, setDetailsError] = useState(false)
+  const [passwordError, setPasswordError] = useState(false)
 
   const [category, setCategory] = useState('todos')
   const field = {
@@ -25,14 +28,14 @@ const SignUp = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     setNameError(false)
-    setDetailsError(false)
+    setPasswordError(false)
     if (name === '') {
       setNameError(true)
     }
-    if (details === '') {
-      setDetailsError(true)
+    if (password === '') {
+      setPasswordError(true)
     }
-    if (name && details) {
+    if (name && password) {
       //
     }
   }
@@ -54,22 +57,22 @@ const SignUp = () => {
             error={nameError}
           />
           <TextField
-            onChange={(e) => setDetails(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             sx={field}
             label="Password"
             color="secondary"
             fullWidth
             required
-            error={detailsError}
+            error={passwordError}
           />
           <TextField
-            onChange={(e) => setDetails(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             sx={field}
             label="Confirm password"
             color="secondary"
             fullWidth
             required
-            error={detailsError}
+            error={passwordError}
           />
           <Stack>
             <Button

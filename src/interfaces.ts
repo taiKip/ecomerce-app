@@ -78,3 +78,7 @@ export interface IProductPage {
   totalItems: number
   totalPages: number
 }
+export interface IPageTitle {
+  name: string
+  description: string
+}
