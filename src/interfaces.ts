@@ -1,13 +1,18 @@
 import { cartItemType } from './features/cart/cartSlice'
 import { orderStatusType } from './types'
-
+export interface IReview {
+  id: number
+  rating: number
+  comment: string
+}
 export interface IProduct {
   id: string
-  title: string
+  image: string
+  name: string
   price: number
   description: string
-  category: string
-  images: string[]
+  stock: number
+  reviews: IReview[]
 }
 export interface IQuantity {
   quantity: number
@@ -37,7 +42,6 @@ export interface ITableProps {
 }
 export interface IAuth {
   user: string | null
- 
 }
 //lower case because of database
 export interface IUser {
@@ -46,15 +50,15 @@ export interface IUser {
   imageUrl: string
   email: string
   password: string
-  role:string
+  role: string
 }
 
 export interface IAuthState {
   user: IUser | null
   token: string | null
 }
-export interface IAuthStateDev{
-  access_token:string|null
+export interface IAuthStateDev {
+  access_token: string | null
 }
 export interface ICategory {
   id: number
@@ -64,4 +68,13 @@ export interface ICategory {
   description: string
   parentId: number | null
   categories: ICategory[]
+}
+
+export interface IProductPage {
+  currentPage: number
+  hasPreviousPage: boolean
+  nextPage: boolean
+  products: IProduct[]
+  totalItems: number
+  totalPages: number
 }

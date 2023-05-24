@@ -14,35 +14,20 @@ import Wrapper from '../../components/Wrapper'
 import Corousel from '../../components/Corousel'
 import Categories from '../categories/Categories'
 import { useParams } from 'react-router-dom'
+import { useGetCategoriesQuery } from '../categories/categoryApiSlice'
 
 const ProductList = () => {
   const { data } = useGetProductsQuery()
+  const { data: categories } = useGetCategoriesQuery()
   const [sort, setSort] = useState<sortType>('' as sortType)
   const [searchItem, setSearchItem] = useState<string>('')
   const debounceSearchValue = useDebounce(searchItem, 500)
-  let sortedArray: IProduct[] = []
+
+  // if (debounceSearchValue !== '' && data) {
+  //   sortedArray = [...data].filter((item) => item.title.toLowerCase().includes(debounceSearchValue))
+  // }
   if (data) {
-    sortedArray = [...data]
-    switch (sort) {
-      case 'nasc': //sort by name asc
-        sortedArray = sortArray([...data], { key: 'title', direction: 'asc' })
-        break
-      case 'ndesc': //sort by name desc
-        sortedArray = sortArray([...data], { key: 'title', direction: 'desc' })
-        break
-      case 'pasc': //sort by price ascending
-        sortedArray = sortArray([...data], { key: 'price', direction: 'asc' })
-        break
-      case 'pdesc': //sort by price descending
-        sortedArray = sortArray([...data], { key: 'price', direction: 'desc' })
-        break
-      default:
-        sortedArray = [...data]
-        break
-    }
-  }
-  if (debounceSearchValue !== '' && data) {
-    sortedArray = [...data].filter((item) => item.title.toLowerCase().includes(debounceSearchValue))
+    console.log(data)
   }
 
   return (
@@ -57,23 +42,20 @@ const ProductList = () => {
       </Box>
       <Wrapper>
         <Corousel />
-        {data && sortedArray.length !== 0 ? (
-          sortedArray.map((item) => (
+        {data &&
+          data.products &&
+          data.products.map((item) => (
             <Product
+              stock={item.stock}
+              reviews={item.reviews}
               id={item.id}
-              category={item.category}
               description={item.description}
-              images={item.images}
+              image={item.image}
               price={item.price}
-              title={item.title}
+              name={item.name}
               key={item.id}
             />
-          ))
-        ) : (
-          <Typography color="purple" display={'flex'} alignItems={'center'} gap={1}>
-            Loading...
-          </Typography>
-        )}
+          ))}
       </Wrapper>
     </>
   )

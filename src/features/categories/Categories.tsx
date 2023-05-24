@@ -14,23 +14,22 @@ const Categories = () => {
   const { categoryId } = useParams()
   const { data } = useGetCategoriesQuery()
   const dispatch = useAppDispatch()
-  const [menu, setMenu] = useState<ICategory>();
-  let parent: ICategory|null=null
-  let currentCategory:ICategory;
-  let name = "";
-    let description = "";
-  
+  const [menu, setMenu] = useState<ICategory>()
+  let parent: ICategory | null = null
+  let currentCategory: ICategory
+  let name = ''
+  let description = ''
+
   if (data) {
-    currentCategory =data[0]
-  mapRecursive(data, (item) => {
+    currentCategory = data[0]
+    mapRecursive(data, (item) => {
       let id = categoryId || 1
       if (item.id == +id) {
-        name = item.name;
-        description = item.description;
-        currentCategory = item;
-        parent = item;
+        name = item.name
+        description = item.description
+        currentCategory = item
+        parent = item
         return { ...item, open: !item.open }
-     
       }
       return item
     })
@@ -44,18 +43,22 @@ const Categories = () => {
     if (parent != null) {
       setMenu(parent)
     }
-
-  }, [name,description])
+  }, [name, description])
 
   return (
     <>
       <SmallScreenAppBar />
       <Toolbar sx={{ gap: 2, overflowX: 'scroll' }}>
-        <>{menu && <CategoryItem category={menu}disabled={Boolean(!menu.categories)} />}</>
+        <>{menu && <CategoryItem category={menu} disabled={Boolean(menu.categories)} />}</>
         <>
-          {menu &&menu.categories &&
+          {menu &&
+            menu.categories &&
             menu.categories.map((childCategory) => (
-              <CategoryItem key={childCategory.id} category={childCategory} disabled={Boolean(!menu.categories)} />
+              <CategoryItem
+                key={childCategory.id}
+                category={childCategory}
+                disabled={Boolean(!menu.categories)}
+              />
             ))}
         </>
       </Toolbar>

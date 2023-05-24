@@ -1,9 +1,9 @@
-import { IProduct } from '../../interfaces'
+import { IProduct, IProductPage } from '../../interfaces'
 import { apiSlice } from './../api/apiSlice'
 
 export const extendedProductsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getProducts: builder.query<IProduct[], void>({
+    getProducts: builder.query<IProductPage, void>({
       query: () => '/products',
       providesTags: ['Products']
     }),
@@ -27,7 +27,7 @@ export const extendedProductsApiSlice = apiSlice.injectEndpoints({
       query: (product: Partial<IProduct>) => ({
         url: `products/${product.id}`,
         method: 'PUT',
-        body: { data:product}
+        body: { data: product }
       }),
       invalidatesTags: ['Products']
     })
