@@ -36,7 +36,7 @@ import UseTheme from '../../utils/hooks/UseTheme'
 import SmallScreenAppBar from '../../components/SmallScreenAppBar'
 import CartItemsList from './CartItemsList'
 
-const nav = ['PRODUCT DETAILS', 'QUANTITY', 'PRICE', 'TOTAL']
+const nav = ['PRODUCT DETAILS', 'QUANTITY', 'TOTAL', 'ACTION']
 const ShoppingCartPage = () => {
   const { theme } = UseTheme()
   const navigate = useNavigate()
@@ -70,24 +70,42 @@ const ShoppingCartPage = () => {
   }
   return (
     <>
-      <SmallScreenAppBar title={'Cart'} extraInfo="a basket full of goodness" />
-      <Container sx={{ paddingTop: 16 }}>
-        <Box>
-          <Typography variant="h4" sx={{ color: 'purple' }} fontSize={'1.4em'}>
-            Your Shopping Cart
+      <SmallScreenAppBar />
+      <Container sx={{ paddingTop: 16, overflowX: 'hidden' }}>
+        <Box padding={2}>
+          <Typography variant="h4" color={'white'} fontSize={'1.4em'} gap={2}>
+            <span>Your Shopping Cart </span> <span>🛒</span>
           </Typography>
           <Typography sx={{ color: 'gray' }}>
             {`There is currently ${count} item${count > 1 ? 's' : ''} in the cart`}
           </Typography>
         </Box>
         {/**@todo fix cart  */}
-        <List sx={{ width: '100%',color:"purple",bgcolor:"background.paper"}}>
-          {cartItems.map((item) => (
-            <ListItem key={item.id}  >
-              <ListItemText>{item.title}</ListItemText>
-            </ListItem>
-          ))}
-        </List>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {nav.map((item) => (
+                <TableCell key={item} align="center">
+                  <Typography sx={{ fontSize: { xs: '0.4em' } }}>{item}</Typography>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {cartItems.map((item) => (
+              <CartItem
+                image={item.image}
+                quantity={item.quantity}
+                price={item.price}
+                name={item.name}
+                key={item.id}
+                description={item.description}
+                id={item.id}
+                stock={item.stock}
+              />
+            ))}
+          </TableBody>
+        </Table>
       </Container>
     </>
   )

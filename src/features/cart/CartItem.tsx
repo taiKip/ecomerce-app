@@ -1,12 +1,16 @@
-import { Button, CardMedia, Box, TableCell, TableRow, Typography } from '@mui/material'
+import { Button, CardMedia, Box, TableCell, TableRow, Typography, IconButton } from '@mui/material'
 
 import { cartItemType, decrementQuantity, incrementQuantity, removeItem } from './cartSlice'
 import { useAppDispatch } from '../../app/hooks'
-
-const CartItem = ({ images, quantity, price, title, id }: cartItemType) => {
+import { DeleteOutline } from '@mui/icons-material'
+const textStyles = { xs: '0.6em', sm: '1em' }
+const buttonStyles = { xs: 'small', sm: 'medium' }
+const CartItem = ({ image, quantity, price, name, id, stock }: cartItemType) => {
   const dispatch = useAppDispatch()
   const handleIncrement = () => {
-    dispatch(incrementQuantity(id))
+    if (quantity <= stock) {
+      dispatch(incrementQuantity(id))
+    }
   }
   const handleDecrement = () => {
     if (quantity <= 1) {
@@ -18,46 +22,55 @@ const CartItem = ({ images, quantity, price, title, id }: cartItemType) => {
     dispatch(removeItem(id))
   }
   const total = price * quantity
- 
+
   //
   return (
     <TableRow>
-      <TableCell sx={{ display: 'flex', gap: 1 }} align={'left'}>
-        <CardMedia
-          component="img"
-          sx={{ maxWidth: 100, height: 100, borderRadius: 1 }}
-          image={images?images[0]:""}
-        />
+      <TableCell>
+        <Box sx={{ marginLeft: 'auto', display: 'flex' }}>
+          <CardMedia
+            component="img"
+            sx={{
+              height: { xs: 30, sm: 40 },
+              width: { xs: 30, sm: 40 },
+              borderRadius: 1
+            }}
+            image={image ?? ' '}
+          />
 
-        <Box sx={{ maxWidth: '200px' }}>
-          <Typography>{title}</Typography>
-          <Button variant="text" color="error" onClick={handleRemove}>
-            Remove
-          </Button>
+          <Typography sx={{ fontSize: textStyles }}>{name}</Typography>
         </Box>
       </TableCell>
-      <TableCell>
+      <TableCell align="center" padding="none">
         <Box
           sx={{
             display: 'flex',
-      width:200,
+            width: { xs: 80, sm: 150 },
             justifyContent: 'space-between',
             alignItems: 'center'
-
           }}>
-          <Button variant="contained" onClick={handleDecrement}>
+          <Button variant="contained" onClick={handleDecrement} size="small">
             -
           </Button>
           <Typography>{quantity}</Typography>
-          <Button variant="contained" color="secondary" onClick={handleIncrement}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleIncrement}
+            size="small"
+            disabled={quantity >= stock}>
             +
           </Button>
         </Box>
       </TableCell>
       <TableCell>
-        <Typography>€{price.toFixed(2)}</Typography>
+        <Typography sx={{ fontSize: textStyles }}>€{total.toFixed(2)}</Typography>
       </TableCell>
-      <TableCell>€{total.toFixed(2)}</TableCell>
+      <TableCell>
+        <IconButton color="error" onClick={handleRemove} size="small">
+          <DeleteOutline />
+        </IconButton>
+      </TableCell>
     </TableRow>
   )
 }

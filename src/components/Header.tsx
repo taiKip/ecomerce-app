@@ -157,6 +157,7 @@ const Header = () => {
           <MenuItem onClick={handleClose}>My account</MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
+
         <CartItemsList anchorEl={cartAnchorEl} handleClose={handleCloseCart} />
       </Toolbar>
     </AppBar>

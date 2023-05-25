@@ -10,20 +10,20 @@ import { useAppDispatch } from '../../app/hooks'
 import { addToCart } from '../cart/cartSlice'
 import { IProduct } from '../../interfaces'
 
-const Product = ({ id, image, name, price }: IProduct) => {
+const Product = ({ id, image, name, price, stock }: IProduct) => {
   const dispatch = useAppDispatch()
-  // const handleAddToCart = () => {
-  //   dispatch(
-  //     addToCart({
-  //       id,
-  //       description,
-  //       image,
-  //       price,
-  //       name,
-  //       quantity: 1
-  //     })
-  //   )
-  // }
+  const handleAddToCart = () => {
+    dispatch(
+      addToCart({
+        id,
+        image,
+        price,
+        name,
+        quantity: 1,
+        stock
+      })
+    )
+  }
   return (
     <Card>
       <CardActionArea>
@@ -33,17 +33,22 @@ const Product = ({ id, image, name, price }: IProduct) => {
           image={image}
           alt={name}
           loading="lazy"
-          sx={{ height: { xs: 150, sm: 200 } }}
+          sx={{ minHeight: { xs: 150, sm: 200 } }}
         />
-        <CardContent sx={{ padding: 0.5 }}>
-          <Typography gutterBottom component="div" fontSize="1em" fontWeight="bold">
+        <CardContent sx={{ padding: 0.3 }}>
+          <Typography
+            gutterBottom
+            component="div"
+            fontSize="1em"
+            fontWeight="bold"
+            sx={{ fontSize: { xs: '0.8em' }, fontWeight: { xs: 'medium' } }}>
             {name}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions sx={{ borderTop: 1, borderTopStyle: 'dashed', borderTopColor: 'gray' }}>
         <Typography>€{price.toFixed(2)}</Typography>
-        <IconButton sx={{ ml: 'auto', color: 'green' }} onClick={() => console.log(name)}>
+        <IconButton sx={{ ml: 'auto', color: 'green' }} onClick={() => handleAddToCart()}>
           <AddShoppingCartOutlinedIcon />
         </IconButton>
         <NavLink to={`/products/${id}`}>

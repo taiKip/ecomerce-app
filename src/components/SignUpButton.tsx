@@ -19,7 +19,7 @@ const SignUpButton = ({
     if (anchorEl && handleCloseCart) {
       handleCloseCart()
     }
-    dispatch(setPageTitle({ name: 'Sign Up', description: 'to view profile' }))
+    dispatch(setPageTitle({ name: 'Sign Up', description: 'almost there' }))
     navigate('/auth/register')
   }
   return (

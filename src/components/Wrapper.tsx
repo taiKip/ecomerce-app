@@ -1,11 +1,7 @@
-import { ReactNode } from "react"
+import { ReactNode } from 'react'
 
-const Wrapper = ({children}:{children:ReactNode}) => {
-  return (
-    <div className="wrapper">
-         {children}
-    </div>
-  )
+const Wrapper = ({ children }: { children: ReactNode }) => {
+  return <div className="wrapper">{children}</div>
 }
 
 export default Wrapper

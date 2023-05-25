@@ -74,7 +74,7 @@ const Login = () => {
           Login successfull
         </Alert>
       </Snackbar>
-      <SmallScreenAppBar title="Login " extraInfo="welcome" />
+      <SmallScreenAppBar />
       <Container sx={{ paddingTop: 16 }}>
         <Typography variant="h6" component="h2" color="textSecondary" gutterBottom>
           Login

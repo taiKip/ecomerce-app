@@ -18,7 +18,7 @@ import { useGetCategoriesQuery } from '../categories/categoryApiSlice'
 
 const ProductList = () => {
   const { data } = useGetProductsQuery()
-  const { data: categories } = useGetCategoriesQuery()
+  let products: IProduct[] = []
   const [sort, setSort] = useState<sortType>('' as sortType)
   const [searchItem, setSearchItem] = useState<string>('')
   const debounceSearchValue = useDebounce(searchItem, 500)
@@ -26,7 +26,9 @@ const ProductList = () => {
   // if (debounceSearchValue !== '' && data) {
   //   sortedArray = [...data].filter((item) => item.title.toLowerCase().includes(debounceSearchValue))
   // }
-
+  if (data) {
+    products = data.products
+  }
   return (
     <>
       <Toolbar sx={{ display: { xs: 'block', sm: 'none' } }} />
@@ -39,9 +41,9 @@ const ProductList = () => {
       </Box>
       <Wrapper>
         <Corousel />
-        {data &&
-          data.products &&
-          data.products.map((item) => (
+        {products &&
+          products &&
+          products.map((item) => (
             <Product
               stock={item.stock}
               reviews={item.reviews}

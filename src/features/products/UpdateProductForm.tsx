@@ -29,7 +29,7 @@ const UpdateProductForm = () => {
     isSuccess
   } = useGetProductsQuery(undefined, {
     selectFromResult: ({ data, isLoading: loading, error, isSuccess }) => ({
-      product: data?.filter((item) => item.id == productId) ?? [],
+      product: data?.products.find((item) => item.id == productId),
       error,
       isLoading: loading,
       isSuccess
@@ -37,25 +37,25 @@ const UpdateProductForm = () => {
   })
 
   const [updateProduct, { isLoading }] = useUpdateProductMutation()
-  const productObj = product && product[0]
+
   const navigate = useNavigate()
-  const [title, setTitle] = useState('')
+  const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('')
   const [price, setPrice] = useState('')
   const [formError, setFormError] = useState(false)
-  const [titleError, setTitleError] = useState(false)
+  const [nameError, setNameError] = useState(false)
   const [descriptionError, setDescriptionError] = useState(false)
   const [image, setImage] = useState<File | null>(null)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
 
   useEffect(() => {
     if (isSuccess) {
-      setTitle(productObj.title)
-      setDescription(productObj.description)
-      setPrice(productObj.price.toString())
+      setName(product?.name ?? '')
+      setDescription(product?.description ?? '')
+      setPrice(product?.price.toString() ?? '')
     }
-  }, [isSuccess, productObj?.title, productObj?.category, productObj?.images[0], productObj?.price])
+  }, [isSuccess, product?.name, product?.image, product?.price])
   const { data: categories } = useGetCategoriesQuery()
 
   const handleCategory = (event: SelectChangeEvent) => {
@@ -88,23 +88,23 @@ const UpdateProductForm = () => {
   }
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    setTitleError(false)
+    setNameError(false)
     setDescriptionError(false)
-    if (title === '') {
-      setTitleError(true)
+    if (name === '') {
+      setNameError(true)
     }
     if (description === '') {
       setDescriptionError(true)
     }
 
-    if (title && description && price) {
+    if (name && description && price) {
       const itemPrice = +price
 
       //todo : fix image upload
 
       const product = {
         id: productId,
-        title,
+        name,
         description,
         category,
         images: imageUrl ? [imageUrl] : [],
@@ -113,7 +113,7 @@ const UpdateProductForm = () => {
       try {
         const res = await updateProduct(product).unwrap()
         console.log(res)
-        setTitle('')
+        setName('')
         setDescription('')
         setImage(null)
         setPrice('')
@@ -130,15 +130,15 @@ const UpdateProductForm = () => {
       </Typography>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <TextField
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
+          onChange={(e) => setName(e.target.value)}
+          value={name}
           sx={field}
-          label="Product Title"
+          label="Product Name"
           color="secondary"
           fullWidth
           multiline
           required
-          error={titleError}
+          error={nameError}
         />
 
         <TextField

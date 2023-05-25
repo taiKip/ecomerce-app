@@ -1,4 +1,4 @@
-import { IProduct, IProductPage } from '../../interfaces'
+import { IProduct, IProductPage, IReview } from '../../interfaces'
 import { apiSlice } from './../api/apiSlice'
 
 export const extendedProductsApiSlice = apiSlice.injectEndpoints({
@@ -14,6 +14,13 @@ export const extendedProductsApiSlice = apiSlice.injectEndpoints({
         body: product
       }),
       invalidatesTags: ['Products']
+    }),
+    addReview: builder.mutation({
+      query: ({ review, productId }: { review: Partial<IReview>; productId: number }) => ({
+        url: `/products/${productId}/reviews`,
+        method: 'POST',
+        body: { ...review }
+      })
     }),
     deleteProduct: builder.mutation({
       query: ({ id }: { id: string }) => ({
@@ -38,5 +45,6 @@ export const {
   useGetProductsQuery,
   useAddNewProductMutation,
   useDeleteProductMutation,
-  useUpdateProductMutation
+  useUpdateProductMutation,
+  useAddReviewMutation
 } = extendedProductsApiSlice

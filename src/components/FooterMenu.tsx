@@ -23,7 +23,7 @@ const FooterMenu = () => {
       ),
       route: '/cart',
       title: 'Cart',
-      description: 'Self love basket'
+      description: 'a basket full of goodness'
     },
     {
       text: 'Search',

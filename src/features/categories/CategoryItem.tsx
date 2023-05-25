@@ -6,7 +6,7 @@ import { Link, NavLink } from 'react-router-dom'
 const CategoryItem = ({ category, disabled }: { category: ICategory; disabled: boolean }) => {
   return (
     <Link to={`/category/${category.id}`}>
-      <Button variant="contained" disabled={disabled}>
+      <Button variant="contained" disabled={disabled} size="small">
         {category.name}
       </Button>
     </Link>

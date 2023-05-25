@@ -1,12 +1,12 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import { Button, CardMedia, Container, Typography } from '@mui/material'
+import { Alert, Button, CardMedia, Container, Typography, Rating, Box } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import { useTheme } from '@mui/material/styles'
 import { Stack } from '@mui/system'
 import { useDeleteProductMutation, useGetProductsQuery } from './productSlice'
 import { ShoppingCartCheckout } from '@mui/icons-material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { addToCart } from '../cart/cartSlice'
 //import { selectCurrentUser } from '../auth/authSlice'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
@@ -18,6 +18,7 @@ const SingleProductPage = () => {
   const { productId } = useParams()
   const token = useAppSelector(selectCurrentUserToken)
   const [openReviewForm, setOpenReviewForm] = useState(false)
+  const [showPopUp, setShowPopUp] = useState(false)
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const [deleteProduct] = useDeleteProductMutation()
@@ -29,7 +30,19 @@ const SingleProductPage = () => {
       isLoading
     })
   })
+  const handleShowPopUp = () => {
+    setShowPopUp(true)
+  }
+  useEffect(() => {
+    if (!showPopUp) {
+      return
+    }
+    const timer = setTimeout(() => {
+      setShowPopUp((prev) => !prev)
+    }, 2000)
 
+    return () => clearTimeout(timer)
+  }, [showPopUp])
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -46,7 +59,6 @@ const SingleProductPage = () => {
       setDeleteError(true)
     }
   }
-
   const handleAddToCart = () => {
     if (productObj) {
       dispatch(addToCart({ ...productObj, quantity: 1 }))
@@ -66,9 +78,12 @@ const SingleProductPage = () => {
         display: 'flex',
         flexDirection: 'column',
         marginTop: 2,
-        minHeight: '100vh',
-        padding: 2
+        maxHeight: '80vh',
+        paddingTop: 0,
+        marginRight: 0,
+        marginLeft: 0
       }}>
+      {showPopUp && <Alert> Review added</Alert>}
       <div
         style={{
           position: 'relative',
@@ -78,7 +93,7 @@ const SingleProductPage = () => {
         <CardMedia
           component="img"
           image={productObj?.image}
-          sx={{ borderRadius: 1, objectFit: 'contain', maxHeight: '600px', m: 2 }}
+          sx={{ borderRadius: 1, objectFit: 'contain', maxHeight: '50vh', m: 2 }}
         />
         <Typography fontWeight="bold" color="secondary" variant="h5">
           {productObj?.name}
@@ -89,22 +104,44 @@ const SingleProductPage = () => {
         <Stack
           display={'flex'}
           flexDirection={'row'}
-          gap={2}
+          gap={'3px'}
           alignItems={'center'}
           fontSize={'1em'}>
-          <Typography color={'green'} component={'p'} fontSize={'inherit'}>
+          <Typography color={'green'} component={'p'} fontSize={'inherit'} fontWeight={'bold'}>
             {'€' + productObj?.price}
           </Typography>
+
+          <Button sx={{ gap: '3px' }}>
+            <Rating
+              name="rating"
+              defaultValue={2.5}
+              precision={0.5}
+              readOnly
+              size="small"
+              value={productObj?.averageRating || 5}
+            />
+
+            <Typography>({productObj?.reviews?.length})</Typography>
+          </Button>
+
           <Button
             variant="text"
             sx={{ color: '#6b6b6b', fontSize: '1em' }}
             onClick={() => setOpenReviewForm((prev) => !prev)}>
             Write Review
           </Button>
-          {openReviewForm && <AddReviewForm toggle={handleToggleReview} open={openReviewForm} />}
+          {openReviewForm && (
+            <AddReviewForm
+              toggleReviewForm={handleToggleReview}
+              open={openReviewForm}
+              showPopUp={handleShowPopUp}
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              productId={+productId!}
+            />
+          )}
         </Stack>
       </div>
-      <Stack display={'flex'} gap={1} width="100%">
+      <Stack display={'flex'} gap={1} width="100%" marginBottom={8}>
         <Button
           variant="outlined"
           color="success"

@@ -10,10 +10,10 @@ import { useAppDispatch } from '../../app/hooks'
 
 const SignUp = () => {
   const navigate = useNavigate()
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
-  const [confirPassword,setConfirmPassword] = useState('')
+  const [confirPassword, setConfirmPassword] = useState('')
 
   const [nameError, setNameError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
@@ -41,8 +41,8 @@ const SignUp = () => {
   }
   return (
     <>
-      <SmallScreenAppBar title="Sign Up" extraInfo="almost there" />
-      <Container sx={{ paddingTop: 16}}>
+      <SmallScreenAppBar />
+      <Container sx={{ paddingTop: 16 }}>
         <Typography variant="h6" component="h2" color="textSecondary" gutterBottom>
           Sign up
         </Typography>

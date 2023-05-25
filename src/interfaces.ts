@@ -3,16 +3,20 @@ import { orderStatusType } from './types'
 export interface IReview {
   id: number
   rating: number
+  title: string
   comment: string
+  createdAt: string
+  username: string
 }
 export interface IProduct {
   id: string
   image: string
   name: string
   price: number
-  description: string
+  description?: string
   stock: number
-  reviews: IReview[]
+  reviews?: IReview[]
+  averageRating?: number
 }
 export interface IQuantity {
   quantity: number
