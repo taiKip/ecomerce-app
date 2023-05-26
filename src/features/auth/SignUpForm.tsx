@@ -1,60 +1,96 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FormControlLabel, Stack, Toolbar, Typography } from '@mui/material'
+import { Alert, FormControlLabel, Stack, Toolbar, Typography } from '@mui/material'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import TextField from '@mui/material/TextField'
 import SmallScreenAppBar from '../../components/SmallScreenAppBar'
 import { useAppDispatch } from '../../app/hooks'
+import { useRegisterUserMutation } from './authApiSlice'
+import { EMAIL_REGEX, PWD_REGEX } from '../../utils/AppConstants'
+import { setCredentials } from './authSlice'
+
 
 const SignUp = () => {
   const navigate = useNavigate()
+  const [registerUser, { isLoading }] = useRegisterUserMutation()
   const dispatch = useAppDispatch()
-  const [name, setName] = useState('')
+  const [userName, setUserName] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [confirPassword, setConfirmPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
-  const [nameError, setNameError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
 
-  const [category, setCategory] = useState('todos')
+  const [emailValid, setEmailValid] = useState(false)
+  const [passwordValid, setPasswordValid] = useState(false)
+  const [confirmPasswordValid, setConfirmPasswordValid] = useState(false)
+
   const field = {
     marginTop: '20px',
     marginBottom: '20px',
     display: 'block'
   }
+  useEffect(() => {
+    setEmailValid(EMAIL_REGEX.test(email))
+  }, [email])
+  useEffect(() => {
+    setPasswordValid(PWD_REGEX.test(password))
+  }, [password])
 
-  const handleSubmit = (e: FormEvent) => {
+  useEffect(() => {
+    setConfirmPasswordValid(PWD_REGEX.test(confirmPassword))
+  }, [confirmPassword])
+
+  const canSave = [email, password, userName].every(Boolean) && confirmPassword === password
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    setNameError(false)
-    setPasswordError(false)
-    if (name === '') {
-      setNameError(true)
+
+    if (canSave) {
+      await registerUser({
+        email,
+        name: userName,
+        password
+      })
+        .unwrap()
+        .then((payload) => {
+          dispatch(setCredentials(payload))
+        })
+        .catch((err) => console.log(err))
+    } else {
+      return
     }
-    if (password === '') {
-      setPasswordError(true)
-    }
-    if (name && password) {
-      //
-    }
+    setEmail('')
+    setPassword('')
+    setConfirmPassword('')
   }
+
   return (
     <>
-      <SmallScreenAppBar />
-      <Container sx={{ paddingTop: 16 }}>
+      <SmallScreenAppBar />≈
+      <Container sx={{ paddingTop: 8 }}>
+        {!canSave && email && confirmPassword && <Alert severity="error">Invalid inputs</Alert>}
         <Typography variant="h6" component="h2" color="textSecondary" gutterBottom>
           Sign up
         </Typography>
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <TextField
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setUserName(e.target.value)}
             sx={field}
-            label="User Name"
+            label="Username"
             color="secondary"
             fullWidth
             required
-            error={nameError}
+          />
+          <TextField
+            onChange={(e) => setEmail(e.target.value)}
+            sx={field}
+            label="Email"
+            color="secondary"
+            fullWidth
+            required
+            error={!emailValid}
           />
           <TextField
             onChange={(e) => setPassword(e.target.value)}
@@ -63,16 +99,16 @@ const SignUp = () => {
             color="secondary"
             fullWidth
             required
-            error={passwordError}
+            error={!passwordValid}
           />
           <TextField
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             sx={field}
             label="Confirm password"
             color="secondary"
             fullWidth
             required
-            error={passwordError}
+            error={!confirmPasswordValid}
           />
           <Stack>
             <Button

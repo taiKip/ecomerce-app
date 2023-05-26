@@ -18,7 +18,7 @@ import FormControl from '@mui/material/FormControl'
 import { Camera } from '@mui/icons-material'
 import { field } from './Styles'
 import { useGetCategoriesQuery } from '../categories/categoryApiSlice'
-import { useGetProductsQuery, useUpdateProductMutation } from './productSlice'
+import { useGetProductsQuery, useUpdateProductMutation } from './productApiSlice'
 
 const UpdateProductForm = () => {
   const { productId } = useParams()

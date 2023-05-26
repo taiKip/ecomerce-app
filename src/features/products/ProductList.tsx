@@ -1,6 +1,6 @@
 import { Box, Typography, Toolbar } from '@mui/material'
 import Product from './Product'
-import { useGetProductsQuery } from './productSlice'
+import { useGetProductsQuery } from './productApiSlice'
 import { useState } from 'react'
 import SearchBar from '../../components/SearchBar'
 import { wrapperStyle } from './Styles'

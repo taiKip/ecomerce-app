@@ -13,7 +13,7 @@ import {
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu'
 import { FormEvent, useState, ChangeEvent, useEffect } from 'react'
 import { field } from './Styles'
-import { useAddReviewMutation } from './productSlice'
+import { useAddReviewMutation } from './productApiSlice'
 import { ArrowBack } from '@mui/icons-material'
 import { IReview } from '../../interfaces'
 

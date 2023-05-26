@@ -1,5 +1,5 @@
 import { IProduct, IProductPage, IReview } from '../../interfaces'
-import { apiSlice } from './../api/apiSlice'
+import { apiSlice } from '../api/apiSlice'
 
 export const extendedProductsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -20,7 +20,8 @@ export const extendedProductsApiSlice = apiSlice.injectEndpoints({
         url: `/products/${productId}/reviews`,
         method: 'POST',
         body: { ...review }
-      })
+      }),
+      invalidatesTags: ['Products']
     }),
     deleteProduct: builder.mutation({
       query: ({ id }: { id: string }) => ({

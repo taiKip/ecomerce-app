@@ -4,7 +4,7 @@ import { Alert, Button, CardMedia, Container, Typography, Rating, Box } from '@m
 import EditIcon from '@mui/icons-material/Edit'
 import { useTheme } from '@mui/material/styles'
 import { Stack } from '@mui/system'
-import { useDeleteProductMutation, useGetProductsQuery } from './productSlice'
+import { useDeleteProductMutation, useGetProductsQuery } from './productApiSlice'
 import { ShoppingCartCheckout } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
 import { addToCart } from '../cart/cartSlice'

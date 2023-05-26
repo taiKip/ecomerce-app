@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 
 const UserProfilePage = () => {
   // const user = useAppSelector((state) => state.auth.user)
-  const token = useAppSelector((state) => state.auth.access_token)
+  const token = useAppSelector((state) => state.auth.token)
 
   return token ? (
     <>

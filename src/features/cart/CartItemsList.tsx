@@ -19,38 +19,38 @@ import { ArrowBack } from '@mui/icons-material'
 import CartItem from './CartItem'
 import SignUp from '../auth/SignUpForm'
 import { resetCart } from './cartSlice'
-import { useAddNewOrderMutation } from '../orders/orderSlice'
+import { usePlaceOrderMutation } from '../orders/orderSlice'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { RootState } from '../../app/store'
-import { IOrder } from '../../interfaces'
+import { IOrder, IOrderItem } from '../../interfaces'
 import SignUpButton from '../../components/SignUpButton'
+import { selectCurrentUserToken } from '../auth/authSlice'
+import useAuth from '../../utils/hooks/useAuth'
 
 export type cartPropsType = { anchorEl: null | HTMLElement; handleClose: () => void }
 const nav = ['PRODUCT DETAILS', 'QUANTITY', 'TOTAL', 'ACTION']
 const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
+  const token = useAppSelector(selectCurrentUserToken)
   const theme = createTheme()
   const dispatch = useAppDispatch()
   //const user = useAppSelector(selectCurrentUser)
-  const [addNewOrder, { isLoading }] = useAddNewOrderMutation()
+  const [placeOrder, { isLoading }] = usePlaceOrderMutation()
   const cartItems = useAppSelector((state: RootState) => state.cart.cartItems)
   const count = cartItems.length
-
+  console.log(token)
   const totalAmount = cartItems.map((item) => item.quantity * item.price)
   const handleOrder = async () => {
-    const id = uuidv4()
-
-    if ('tarus' && count !== 0) {
+    if (token && count !== 0) {
       ///user
-      const newOrder: IOrder = {
-        customer: 'tarus',
-        id: id,
-        products: [...cartItems],
-        status: 'pending',
-        createdAt: new Date().toLocaleDateString(),
-        revenue: totalAmount.toString()
+      // eslint-disable-next-line prettier/prettier, prefer-const
+      let orderItems: IOrderItem[] = []
+      cartItems.map((item) => orderItems.push({ productId: +item.id, quantity: item.quantity }))
+      const order = {
+        orderItems: [...orderItems]
       }
+
       try {
-        await addNewOrder(newOrder).unwrap()
+        await placeOrder(order).unwrap()
       } catch (error) {
         console.log(error)
       } finally {
@@ -135,14 +135,14 @@ const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
 
             <Typography variant="h6">Continue Shopping</Typography>
           </Box>
-          {!true && ( //not user
+          {!token && ( //not user
             <>
               <Typography color="ButtonHighlight">Login to checkout</Typography>
               <SignUpButton handleCloseCart={handleClose} anchorEl={Boolean(anchorEl)} />
             </>
           )}
           <>
-            {true && ( //not user
+            {token && ( //not user
               <Button variant="outlined" color="inherit" onClick={handleOrder}>
                 Checkout 🛍️
               </Button>

@@ -21,14 +21,6 @@ export interface IProduct {
 export interface IQuantity {
   quantity: number
 }
-export interface IOrder {
-  id: string
-  createdAt: string
-  products: cartItemType[]
-  customer: string
-  status: orderStatusType
-  revenue?: string
-}
 
 export interface ISelectProps {
   id: string
@@ -38,31 +30,20 @@ export interface ISortConfig<T> {
   key: keyof T
   direction: 'asc' | 'desc'
 }
-export interface ITableProps {
-  title: string
-  subheader: string
-  headerCells: string[]
-  orders: IOrder[] | []
-}
+
 export interface IAuth {
   user: string | null
 }
 //lower case because of database
 export interface IUser {
-  firstname: string
-  lastname: string
-  imageUrl: string
+  name: string
   email: string
   password: string
   role: string
 }
 
 export interface IAuthState {
-  user: IUser | null
   token: string | null
-}
-export interface IAuthStateDev {
-  access_token: string | null
 }
 export interface ICategory {
   id: number
@@ -85,4 +66,18 @@ export interface IProductPage {
 export interface IPageTitle {
   name: string
   description: string
+}
+export interface IOrderItem {
+  productId: number
+  quantity: number
+}
+
+export interface IOrder {
+  orderItems: IOrderItem[]
+}
+export interface ITableProps {
+  title: string
+  subheader: string
+  headerCells: string[]
+  orders: IOrder[] | []
 }

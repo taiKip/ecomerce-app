@@ -25,41 +25,37 @@ import { ArrowBack } from '@mui/icons-material'
 import CartItem from './CartItem'
 import SignUp from '../auth/SignUpForm'
 import { resetCart } from './cartSlice'
-import { useAddNewOrderMutation } from '../orders/orderSlice'
+import { usePlaceOrderMutation } from '../orders/orderSlice'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { RootState } from '../../app/store'
-import { IOrder } from '../../interfaces'
+import { IOrder, IOrderItem } from '../../interfaces'
 import SignUpButton from '../../components/SignUpButton'
 import { useNavigate } from 'react-router-dom'
 import UseTheme from '../../utils/hooks/UseTheme'
 
 import SmallScreenAppBar from '../../components/SmallScreenAppBar'
 import CartItemsList from './CartItemsList'
+import useAuth from '../../utils/hooks/useAuth'
 
 const nav = ['PRODUCT DETAILS', 'QUANTITY', 'TOTAL', 'ACTION']
 const ShoppingCartPage = () => {
   const { theme } = UseTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const [addNewOrder, { isLoading }] = useAddNewOrderMutation()
+  const [placeOrder, { isLoading }] = usePlaceOrderMutation()
   const cartItems = useAppSelector((state: RootState) => state.cart.cartItems)
   const count = cartItems.length
-
+  const { isBanned, name } = useAuth()
   const totalAmount = cartItems.map((item) => item.quantity * item.price)
   const handleOrder = async () => {
-    const id = uuidv4()
-
-    if (count !== 0) {
-      const newOrder: IOrder = {
-        customer: 'victortarus@gmail.com',
-        id: id,
-        products: [...cartItems],
-        status: 'pending',
-        createdAt: new Date().toLocaleDateString(),
-        revenue: totalAmount.toString()
+    if (!isBanned && name && count !== 0) {
+      const orderItems: IOrderItem[] = []
+      cartItems.map((item) => orderItems.push({ productId: +item.id, quantity: item.quantity }))
+      const order = {
+        orderItems: [...orderItems]
       }
       try {
-        await addNewOrder(newOrder).unwrap()
+        await placeOrder(order).unwrap()
       } catch (error) {
         console.log(error)
       } finally {
@@ -86,7 +82,7 @@ const ShoppingCartPage = () => {
             <TableRow>
               {nav.map((item) => (
                 <TableCell key={item} align="center">
-                  <Typography sx={{ fontSize: { xs: '0.4em' } }}>{item}</Typography>
+                  <Typography sx={{ fontSize: { xs: '0.5em' } }}>{item}</Typography>
                 </TableCell>
               ))}
             </TableRow>

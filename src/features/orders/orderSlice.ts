@@ -5,18 +5,18 @@ import { IOrder } from '../../interfaces'
 export const extendedOrdersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getOrders: builder.query<IOrder[], void>({
-      query: () => '/admin/orders',
+      query: () => '/orders',
       providesTags: ['Orders']
     }),
-    addNewOrder: builder.mutation({
-      query: (order: Partial<IOrder>) => ({
+    placeOrder: builder.mutation({
+      query: (order: IOrder) => ({
         url: '/orders',
         method: 'POST',
-        body: order
+        body: { ...order }
       }),
       invalidatesTags: ['Orders']
     })
   })
 })
 
-export const { useGetOrdersQuery, useAddNewOrderMutation } = extendedOrdersApiSlice
+export const { useGetOrdersQuery, usePlaceOrderMutation } = extendedOrdersApiSlice

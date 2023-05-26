@@ -26,6 +26,7 @@ import { IUser } from '../interfaces'
 import { useLoginUserMutation } from '../features/auth/authApiSlice'
 import { navItems } from '../utils/functions/extraValues'
 import LoginButton from './LoginButton'
+import useAuth from '../utils/hooks/useAuth'
 
 const Header = () => {
   const dispatch = useAppDispatch()
@@ -40,7 +41,7 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null)
   const [isLoggedIn, setIsLoggedIn] = useState(true)
-
+  const { isAdmin, isManager, isUser, isBanned, name } = useAuth()
   useEffect(() => {
     if (token) {
       setIsLoggedIn(true)
@@ -74,6 +75,14 @@ const Header = () => {
     setAnchorEl(null)
     setIsLoggedIn(false)
     navigate('/')
+  }
+  let title = ''
+  if (isAdmin) {
+    title = 'Admin'
+  } else if (isManager) {
+    title = 'Manager'
+  } else {
+    title = 'User'
   }
   return (
     <AppBar elevation={0} position="sticky" sx={{ display: { xs: 'none', sm: 'block' } }}>
@@ -135,8 +144,8 @@ const Header = () => {
             sx={{ cursor: 'pointer' }}
             onClick={handleMenu}
             avatar={<Avatar />}
-            // title={`${user?.firstname + ' ' + user?.lastname}`}
-            // subheader={`${user?.role === 'ROLE_ADMIN' ? 'Admin' : ''}`}
+            title={name}
+            subheader={title}
           />
         )}
         <Menu

@@ -19,7 +19,7 @@ import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
 import { Camera } from '@mui/icons-material'
 import { useGetCategoriesQuery } from '../categories/categoryApiSlice'
-import { useAddNewProductMutation, useUpdateProductMutation } from './productSlice'
+import { useAddNewProductMutation, useUpdateProductMutation } from './productApiSlice'
 import { field } from './Styles'
 import { useUploadImageMutation } from '../uploadFile/uploadSlice'
 
