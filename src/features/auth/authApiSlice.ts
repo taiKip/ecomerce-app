@@ -35,19 +35,9 @@ export const extendedAuthenticationSlice = apiSlice.injectEndpoints({
           console.log(err)
         }
       }
-    }),
-    refresh: builder.mutation({
-      query: () => ({
-        url: '/auth/refresh',
-        method: 'GET'
-      })
     })
   })
 })
 
-export const {
-  useRegisterUserMutation,
-  useLoginUserMutation,
-  useLogOutUserMutation,
-  useRefreshMutation
-} = extendedAuthenticationSlice
+export const { useRegisterUserMutation, useLoginUserMutation, useLogOutUserMutation } =
+  extendedAuthenticationSlice

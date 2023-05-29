@@ -58,7 +58,6 @@ const Login = () => {
     }
 
     if (email && password) {
-      console.log('Login dispatched', email, password)
       await loginUser({ email, password })
         .unwrap()
         .then((payload) => {

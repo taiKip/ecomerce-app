@@ -6,7 +6,6 @@ import { useAppDispatch } from '../app/hooks'
 import { setPageInfo } from '../features/page/pageInfoSlice'
 
 const LoginButton = () => {
-  
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const handleLogin = () => {
