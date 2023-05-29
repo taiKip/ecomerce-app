@@ -1,6 +1,6 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Alert, FormControlLabel, Snackbar, Stack, Toolbar, Typography } from '@mui/material'
+import { Alert, Snackbar, Stack, Toolbar, Typography } from '@mui/material'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import TextField from '@mui/material/TextField'
@@ -9,24 +9,30 @@ import { useLoginUserMutation } from './authApiSlice'
 import SmallScreenAppBar from '../../components/SmallScreenAppBar'
 import { useAppDispatch } from '../../app/hooks'
 import { setCredentials } from './authSlice'
+import { EMAIL_REGEX, PWD_REGEX } from '../../utils/AppConstants'
 
 const Login = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const emailRef = useRef<HTMLInputElement | null>()
+  const passwordRef = useRef<HTMLInputElement | null>()
 
-  const [formError, setFormError] = useState(false)
+  const [error, setError] = useState('')
 
   const [emailError, setEmailError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
 
-  const [loginUser, { data, isSuccess, isError, isLoading }] = useLoginUserMutation()
-
+  const [loginUser, { data, isSuccess }] = useLoginUserMutation()
+  useEffect(() => {
+    if (emailRef != null) {
+      emailRef.current?.focus()
+    }
+  }, [])
   useEffect(() => {
     const timer = setTimeout(() => {
       if (isSuccess && data) {
-        dispatch(setCredentials(data))
         navigate('/', { replace: true })
       }
     }, 1000)
@@ -41,41 +47,62 @@ const Login = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    setError('')
     setEmailError(false)
     setPasswordError(false)
-    if (email === '') {
+    if (email === '' && !EMAIL_REGEX.test(email)) {
       setEmailError(true)
     }
-    if (password === '') {
+    if (password === '' && !PWD_REGEX.test(password)) {
       setPasswordError(true)
     }
 
     if (email && password) {
-      try {
-        const res = await loginUser({ email, password }).unwrap()
+      console.log('Login dispatched', email, password)
+      await loginUser({ email, password })
+        .unwrap()
+        .then((payload) => {
+          dispatch(setCredentials({ ...payload }))
 
-        dispatch(setCredentials(res))
-        setEmail('')
-      } catch (error) {
-        setFormError(true)
-      }
+          setEmail('')
+          setPassword('')
+        })
+        .catch((err) => {
+          if (err.status === 400) {
+            setError(`Bad request::check user details`)
+            console.log(400)
+          }
+          if (err.status === 401) {
+            setError('Unauthorized')
+          }
+          if (err.status?.data) {
+            setError(`${err.data.httpStatus}::${err.data.message}`)
+          }
+        })
     }
   }
   return (
     <>
-      <Snackbar
-        open={isSuccess}
-        autoHideDuration={1000}
-        anchorOrigin={{
-          horizontal: 'right',
-          vertical: 'top'
-        }}>
-        <Alert severity="success" sx={{ width: '100%' }}>
-          Login successfull
-        </Alert>
-      </Snackbar>
       <SmallScreenAppBar />
+
       <Container sx={{ paddingTop: 16 }}>
+        <Toolbar />
+        <Snackbar
+          open={isSuccess}
+          autoHideDuration={1000}
+          anchorOrigin={{
+            horizontal: 'right',
+            vertical: 'top'
+          }}>
+          <Alert severity="success" sx={{ width: '100%' }}>
+            Login successfull
+          </Alert>
+        </Snackbar>
+        {Boolean(error) && (
+          <Alert severity="error" aria-live="assertive">
+            {error}
+          </Alert>
+        )}
         <Typography variant="h6" component="h2" color="textSecondary" gutterBottom>
           Login
         </Typography>
@@ -88,6 +115,7 @@ const Login = () => {
             fullWidth
             required
             error={emailError}
+            inputRef={emailRef}
           />
           <TextField
             onChange={(e) => setPassword(e.target.value)}
@@ -97,6 +125,7 @@ const Login = () => {
             fullWidth
             required
             error={passwordError}
+            inputRef={passwordRef}
           />
           <Stack>
             <Button type="submit" color="secondary" variant="contained" endIcon={<LoginOutlined />}>

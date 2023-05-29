@@ -31,26 +31,27 @@ export type cartPropsType = { anchorEl: null | HTMLElement; handleClose: () => v
 const nav = ['PRODUCT DETAILS', 'QUANTITY', 'TOTAL', 'ACTION']
 const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
   const token = useAppSelector(selectCurrentUserToken)
-  const theme = createTheme()
   const dispatch = useAppDispatch()
   //const user = useAppSelector(selectCurrentUser)
-  const [placeOrder, { isLoading }] = usePlaceOrderMutation()
+  const [placeOrder, { data }] = usePlaceOrderMutation()
   const cartItems = useAppSelector((state: RootState) => state.cart.cartItems)
   const count = cartItems.length
-  console.log(token)
-  const totalAmount = cartItems.map((item) => item.quantity * item.price)
+
   const handleOrder = async () => {
     if (token && count !== 0) {
       ///user
       // eslint-disable-next-line prettier/prettier, prefer-const
       let orderItems: IOrderItem[] = []
-      cartItems.map((item) => orderItems.push({ productId: +item.id, quantity: item.quantity }))
-      const order = {
-        orderItems: [...orderItems]
+      cartItems.map((item) => orderItems.push({ productId: +item.id, quantity: +item.quantity }))
+      const order: IOrder = {
+        orderItems: [...orderItems],
+        addressId: 1
       }
 
       try {
-        await placeOrder(order).unwrap()
+        console.log(order)
+        const result = await placeOrder(order).unwrap()
+        console.log('response::', result)
       } catch (error) {
         console.log(error)
       } finally {
@@ -142,11 +143,12 @@ const CartItemsList = ({ anchorEl, handleClose }: cartPropsType) => {
             </>
           )}
           <>
-            {token && ( //not user
-              <Button variant="outlined" color="inherit" onClick={handleOrder}>
-                Checkout 🛍️
-              </Button>
-            )}
+            {cartItems.length > 0 &&
+              token && ( //not user
+                <Button variant="outlined" color="inherit" onClick={handleOrder}>
+                  Checkout 🛍️
+                </Button>
+              )}
           </>
         </Container>
       </Menu>

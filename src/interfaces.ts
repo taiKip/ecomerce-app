@@ -9,7 +9,7 @@ export interface IReview {
   username: string
 }
 export interface IProduct {
-  id: string
+  id: number
   image: string
   name: string
   price: number
@@ -31,9 +31,6 @@ export interface ISortConfig<T> {
   direction: 'asc' | 'desc'
 }
 
-export interface IAuth {
-  user: string | null
-}
 //lower case because of database
 export interface IUser {
   name: string
@@ -43,7 +40,8 @@ export interface IUser {
 }
 
 export interface IAuthState {
-  token: string | null
+  accessToken: string | null
+  refreshToken: string | null
 }
 export interface ICategory {
   id: number
@@ -74,10 +72,15 @@ export interface IOrderItem {
 
 export interface IOrder {
   orderItems: IOrderItem[]
+  addressId: number
 }
 export interface ITableProps {
   title: string
   subheader: string
   headerCells: string[]
   orders: IOrder[] | []
+}
+export interface IError {
+  status: number
+  message: string
 }

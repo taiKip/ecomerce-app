@@ -2,7 +2,7 @@ import React from 'react'
 import { Toolbar, Typography, AppBar } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useAppSelector } from '../app/hooks'
-import { seletCurrentCategory } from '../features/page/pageTitleSlice'
+import { seletCurrentCategory } from '../features/page/pageInfoSlice'
 
 const SmallScreenAppBar = () => {
   const theme = useTheme()

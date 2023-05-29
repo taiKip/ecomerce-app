@@ -16,18 +16,7 @@ import Categories from '../features/categories/Categories'
 const Layout = () => {
   const [searchItem, setSearchItem] = useState<string>('')
   const [sort, setSort] = useState<sortType>('' as sortType)
-  switch (sort) {
-    case 'nasc': //sort by name asc
-      break
-    case 'ndesc': //sort by name desc
-      break
-    case 'pasc': //sort by price ascending
-      break
-    case 'pdesc': //sort by price descending
-      break
-    default:
-      break
-  }
+
   const debounceSearchValue = useDebounce(searchItem, 500)
   return (
     <Container sx={{ minHeight: '100vh', padding: { xs: 0 } }}>

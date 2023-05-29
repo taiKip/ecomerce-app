@@ -9,13 +9,13 @@ interface IToken {
   exp: number
 }
 const useAuth = () => {
-  const token = useAppSelector(selectCurrentUserToken)
+  const { accessToken } = useAppSelector(selectCurrentUserToken)
   let isAdmin = false
   let isUser = false
   let isManager = false
 
-  if (token) {
-    const decoded = jwtDecode<IToken>(token)
+  if (accessToken) {
+    const decoded = jwtDecode<IToken>(accessToken)
     const { isBanned, name, role, exp } = decoded
     switch (role) {
       case 'ADMIN':

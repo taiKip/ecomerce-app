@@ -3,7 +3,7 @@ import { Button } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../app/hooks'
-import { setPageTitle } from '../features/page/pageTitleSlice'
+import { setPageInfo } from '../features/page/pageInfoSlice'
 
 const SignUpButton = ({
   handleCloseCart,
@@ -19,7 +19,7 @@ const SignUpButton = ({
     if (anchorEl && handleCloseCart) {
       handleCloseCart()
     }
-    dispatch(setPageTitle({ name: 'Sign Up', description: 'almost there' }))
+    dispatch(setPageInfo({ name: 'Sign Up', description: 'almost there' }))
     navigate('/auth/register')
   }
   return (

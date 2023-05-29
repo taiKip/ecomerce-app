@@ -38,7 +38,8 @@ import CartItemsList from './CartItemsList'
 import useAuth from '../../utils/hooks/useAuth'
 
 const nav = ['PRODUCT DETAILS', 'QUANTITY', 'TOTAL', 'ACTION']
-const ShoppingCartPage = () => {
+export type cartPropsType = { anchorEl?: null | HTMLElement; handleClose?: () => void }
+const ShoppingCartPage = ({ anchorEl, handleClose }: cartPropsType) => {
   const { theme } = UseTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -51,8 +52,9 @@ const ShoppingCartPage = () => {
     if (!isBanned && name && count !== 0) {
       const orderItems: IOrderItem[] = []
       cartItems.map((item) => orderItems.push({ productId: +item.id, quantity: item.quantity }))
-      const order = {
-        orderItems: [...orderItems]
+      const order: IOrder = {
+        orderItems: [...orderItems],
+        addressId: 1
       }
       try {
         await placeOrder(order).unwrap()
@@ -102,6 +104,37 @@ const ShoppingCartPage = () => {
             ))}
           </TableBody>
         </Table>
+        <Container
+          component="div"
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'baseline',
+            padding: 1,
+            marginBottom: 1
+          }}>
+          <Box display={'flex'} alignItems="flex-start" flexDirection={'column'} gap={2}>
+            <IconButton onClick={handleClose}>
+              <ArrowBack />
+            </IconButton>
+
+            <Typography variant="h6">Continue Shopping</Typography>
+            <Typography color="purple">Login to checkout</Typography>
+          </Box>
+          {
+            //not user
+            <>
+              <SignUpButton handleCloseCart={handleClose} anchorEl={Boolean(anchorEl)} />
+            </>
+          }
+          <>
+            {cartItems.length < 0 && ( //not user
+              <Button variant="outlined" color="inherit" onClick={handleOrder}>
+                Checkout 🛍️
+              </Button>
+            )}
+          </>
+        </Container>
       </Container>
     </>
   )

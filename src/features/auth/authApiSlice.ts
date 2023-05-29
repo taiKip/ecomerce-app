@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
+import { logOut, setCredentials } from './authSlice'
 import { RootState } from '../../app/store'
 
 import { IUser } from '../../interfaces'
@@ -20,8 +20,34 @@ export const extendedAuthenticationSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body
       })
+    }),
+    LogOutUser: builder.mutation({
+      query: () => ({
+        url: '/auth/logout',
+        method: 'POST'
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(logOut())
+          dispatch(apiSlice.util.resetApiState())
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    }),
+    refresh: builder.mutation({
+      query: () => ({
+        url: '/auth/refresh',
+        method: 'GET'
+      })
     })
   })
 })
 
-export const { useRegisterUserMutation, useLoginUserMutation } = extendedAuthenticationSlice
+export const {
+  useRegisterUserMutation,
+  useLoginUserMutation,
+  useLogOutUserMutation,
+  useRefreshMutation
+} = extendedAuthenticationSlice

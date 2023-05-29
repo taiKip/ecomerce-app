@@ -5,17 +5,17 @@ const initialState: IPageTitle = {
   name: 'All',
   description: 'All products'
 }
-const pageTitleSlice = createSlice({
+const pageInfoSlice = createSlice({
   name: 'pageTitle',
   initialState,
   reducers: {
-    setPageTitle: (state, action: PayloadAction<typeof initialState>) => {
+    setPageInfo: (state, action: PayloadAction<typeof initialState>) => {
       state.name = action.payload.name
       state.description = action.payload.description
     }
   }
 })
 
-export const { setPageTitle } = pageTitleSlice.actions
-export const seletCurrentCategory = (state: RootState) => state.category
-export default pageTitleSlice.reducer
+export const { setPageInfo } = pageInfoSlice.actions
+export const seletCurrentCategory = (state: RootState) => state.pageInfo
+export default pageInfoSlice.reducer

@@ -1,25 +1,28 @@
 import { IAuthState } from './../../interfaces'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { RootState } from '../../app/store'
-import Cookies from 'universal-cookie'
-import useAuth from '../../utils/hooks/useAuth'
+import { AppDispatch, RootState } from '../../app/store'
 
 const initialAuthState: IAuthState = {
-  token: localStorage.getItem('jwt_token')
+  accessToken: localStorage.getItem('accessToken'),
+  refreshToken: localStorage.getItem('refreshToken')
 }
 const authSlice = createSlice({
   name: 'auth',
   initialState: initialAuthState,
   reducers: {
     setCredentials: (state, action: PayloadAction<IAuthState>) => {
-      const { token } = action.payload
-      localStorage.setItem('jwt_token', JSON.stringify(token))
+      const { accessToken, refreshToken } = action.payload
+      localStorage.setItem('accessToken', JSON.stringify(accessToken))
+      localStorage.setItem('refreshToken', JSON.stringify(refreshToken))
 
-      state.token = token
+      state.accessToken = accessToken
+      state.refreshToken = refreshToken
     },
-    logOut: (state, action) => {
-      state.token = null
-      localStorage.removeItem('jwt_token')
+    logOut: (state) => {
+      state.accessToken = null
+      state.refreshToken = null
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
     }
   }
 })
@@ -28,5 +31,4 @@ export const { setCredentials, logOut } = authSlice.actions
 
 export default authSlice.reducer
 
-//export const selectCurrentUser = (state: RootState) => state.auth.user
-export const selectCurrentUserToken = (state: RootState) => state.auth.token
+export const selectCurrentUserToken = (state: RootState) => state.auth

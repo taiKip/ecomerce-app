@@ -8,7 +8,7 @@ import App from './App'
 import './index.css'
 import { extendedProductsApiSlice } from './features/products/productApiSlice'
 import { extendedCategoriesApiSlice } from './features/categories/categoryApiSlice'
-import { extendedOrdersApiSlice } from './features/orders/orderSlice'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 store.dispatch(extendedProductsApiSlice.endpoints.getProducts.initiate())
 store.dispatch(extendedCategoriesApiSlice.endpoints.getCategories.initiate())

@@ -1,22 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
-body {
-  margin: 0;
-
-  transition: all 0.3s ease-in-out;
-  box-sizing: border-box;
-}
-::-webkit-scrollbar {
-  display: none;
-}
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
 .corousel {
   grid-column: 1/3;
   height: 180px;
-
   border-radius: 4px;
   position: relative;
 }
@@ -55,16 +39,16 @@ a {
   background-color: gray;
   transition: all 0.5s ease-in-out;
 }
-.active-dark {
+
+.active {
+  background-color: white;
   transform: scale(1.3);
-  background-color:white;
 }
-.active{
-  background-color:#ab47bc ;
+.active-white{
+  background-color: gray;
    transform: scale(1.3);
 }
 @media screen and (min-width: 600px) {
-  
   .corousel {
     grid-column: 1/4;
     height: 100%;

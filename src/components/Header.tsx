@@ -8,25 +8,21 @@ import { Box } from '@mui/system'
 import FlareIcon from '@mui/icons-material/Flare'
 import { Avatar, Badge, Button, CardHeader, IconButton, Menu, MenuItem } from '@mui/material'
 import {
-  Brightness7Outlined,
   DarkModeOutlined,
   Dashboard,
-  Login,
-  LogoutRounded,
   MailOutline,
   ShoppingCartCheckoutOutlined
 } from '@mui/icons-material'
 import { ThemeContext } from '../App'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import CartItemsList from '../features/cart/CartItemsList'
-import { logOut, selectCurrentUserToken, setCredentials } from '../features/auth/authSlice'
+import { selectCurrentUserToken } from '../features/auth/authSlice'
 
 import SignUpButton from './SignUpButton'
-import { IUser } from '../interfaces'
-import { useLoginUserMutation } from '../features/auth/authApiSlice'
 import { navItems } from '../utils/functions/extraValues'
 import LoginButton from './LoginButton'
 import useAuth from '../utils/hooks/useAuth'
+import { useLogOutUserMutation } from '../features/auth/authApiSlice'
 
 const Header = () => {
   const dispatch = useAppDispatch()
@@ -35,7 +31,8 @@ const Header = () => {
   const theme = useTheme()
   /**@todo - rarefactor after connecting to rest endpoint */
   //user = useAppSelector(selectCurrentUser)
-  const token = useAppSelector(selectCurrentUserToken)
+  const { accessToken } = useAppSelector(selectCurrentUserToken)
+  const [logout, { isError }] = useLogOutUserMutation()
   const cartItems = useAppSelector((state) => state.cart.cartItems)
   //const [userData , setUserData] = useState(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -43,12 +40,12 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   const { isAdmin, isManager, isUser, isBanned, name } = useAuth()
   useEffect(() => {
-    if (token) {
+    if (accessToken) {
       setIsLoggedIn(true)
     } else {
       setIsLoggedIn(false)
     }
-  }, [token])
+  }, [accessToken])
 
   const handleCloseCart = () => {
     setCartAnchorEl(null)
@@ -71,9 +68,13 @@ const Header = () => {
     setAnchorEl(null)
   }
   const handleLogout = () => {
-    dispatch(logOut)
+    console.log('logout')
     setAnchorEl(null)
     setIsLoggedIn(false)
+
+    localStorage.removeItem('token')
+    localStorage.removeItem('refreshToken')
+    logout(null)
     navigate('/')
   }
   let title = ''
@@ -139,7 +140,7 @@ const Header = () => {
             <SignUpButton />
           </div>
         )}
-        {token && isLoggedIn && (
+        {accessToken && isLoggedIn && (
           <CardHeader
             sx={{ cursor: 'pointer' }}
             onClick={handleMenu}
@@ -164,7 +165,7 @@ const Header = () => {
           onClose={handleClose}>
           <MenuItem onClick={handleProfile}>Profile</MenuItem>
           <MenuItem onClick={handleClose}>My account</MenuItem>
-          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          {accessToken && <MenuItem onClick={handleLogout}>Logout</MenuItem>}
         </Menu>
 
         <CartItemsList anchorEl={cartAnchorEl} handleClose={handleCloseCart} />

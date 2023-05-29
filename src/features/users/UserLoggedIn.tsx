@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux'
 import { useAppSelector } from '../../app/hooks'
 
 const UserLoggedIn = () => {
- // const user = useAppSelector((state) => state.auth.user)
-  
+  // const user = useAppSelector((state) => state.auth.user)
+
   return (
     <Container
       sx={{
@@ -22,7 +22,7 @@ const UserLoggedIn = () => {
         sx={{
           minWidth: 300
         }}>
-        <CardMedia image={ Profile} sx={{ height: 250 }} />
+        <CardMedia image={Profile} sx={{ height: 250 }} />
       </Card>
       <Stack
         display={'flex'}

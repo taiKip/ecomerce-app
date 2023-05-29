@@ -2,7 +2,7 @@ import { IconButton, Typography } from '@mui/material'
 import React, { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../app/hooks'
-import { setPageTitle } from '../features/page/pageTitleSlice'
+import { setPageInfo } from '../features/page/pageInfoSlice'
 
 const EnhancedIconButton = ({
   route,
@@ -21,7 +21,7 @@ const EnhancedIconButton = ({
 
   const navigate = useNavigate()
   const handleClick = () => {
-    dispatch(setPageTitle({ name: title, description }))
+    dispatch(setPageInfo({ name: title, description }))
     navigate(route)
   }
   return (

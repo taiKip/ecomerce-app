@@ -9,7 +9,8 @@ import {
   SelectChangeEvent,
   OutlinedInput,
   InputAdornment,
-  CircularProgress
+  CircularProgress,
+  Stack
 } from '@mui/material'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
@@ -25,7 +26,7 @@ import { useUploadImageMutation } from '../uploadFile/uploadSlice'
 
 const AddProductForm = () => {
   const [addNewProduct, { isLoading }] = useAddNewProductMutation()
-
+  const { data: categories, isLoading: categoryIsLoading } = useGetCategoriesQuery()
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -55,6 +56,7 @@ const AddProductForm = () => {
   const handleTitle = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value)
   }
+
   const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setImage(event.target.files[0])
@@ -171,24 +173,27 @@ const AddProductForm = () => {
             label="Price"
           />
         </FormControl>
-        <FormControl fullWidth sx={{ paddingBottom: 2 }}>
-          <InputLabel id="category-select" color="secondary">
-            Category
-          </InputLabel>
-          <Select
-            labelId="category-select-label"
-            id="category-select"
-            value={category}
-            label="Category"
-            onChange={handleCategory}
-            color="secondary">
-            {addresses?.map((item) => (
-              <MenuItem value={item.id} key={item.id}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Stack display={'flex'} flexDirection={'row'} alignItems={'center'}>
+          <FormControl fullWidth sx={{ paddingBottom: 2 }}>
+            <InputLabel id="category-select" color="secondary">
+              Category
+            </InputLabel>
+            <Select
+              labelId="category-select-label"
+              id="category-select"
+              value={category}
+              label="Category"
+              onChange={handleCategory}
+              color="secondary">
+              {categories?.map((item) => (
+                <MenuItem value={item.id} key={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Button variant="contained">Create a new category</Button>
+        </Stack>
 
         <Button type="submit" variant="contained" endIcon={<KeyboardArrowRightIcon />}>
           Submit

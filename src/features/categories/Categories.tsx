@@ -1,4 +1,4 @@
-import { Toolbar } from '@mui/material'
+import { Skeleton, Toolbar } from '@mui/material'
 import CategoryItem from './CategoryItem'
 import { useGetCategoriesQuery } from './categoryApiSlice'
 import { useEffect, useState } from 'react'
@@ -8,11 +8,11 @@ import { useParams } from 'react-router-dom'
 import SmallScreenAppBar from '../../components/SmallScreenAppBar'
 import { mapRecursive } from './mapRecursive'
 import { useAppDispatch } from '../../app/hooks'
-import { setPageTitle } from '../page/pageTitleSlice'
-
+import { setPageInfo } from '../page/pageInfoSlice'
+const skeletonArray = [1, 2, 3, 4]
 const Categories = () => {
   const { categoryId } = useParams()
-  const { data } = useGetCategoriesQuery()
+  const { data, isLoading, isError, isSuccess } = useGetCategoriesQuery()
   const dispatch = useAppDispatch()
   const [menu, setMenu] = useState<ICategory>()
   let parent: ICategory | null = null
@@ -34,10 +34,10 @@ const Categories = () => {
   }
 
   /**
-   * @desc setup header titles on navbar
+   * @desc setup Infos on navbar
    */
   useEffect(() => {
-    dispatch(setPageTitle({ name, description }))
+    dispatch(setPageInfo({ name, description }))
     if (parent != null) {
       setMenu(parent)
     }
@@ -47,7 +47,22 @@ const Categories = () => {
     <>
       <SmallScreenAppBar />
       <Toolbar sx={{ gap: 2, overflowX: 'scroll' }}>
-        <>{menu && <CategoryItem category={menu} disabled={Boolean(menu.categories)} />}</>
+        <>
+          {menu ? (
+            <CategoryItem category={menu} disabled={Boolean(menu.categories)} />
+          ) : (
+            skeletonArray.map((item) => (
+              <Skeleton
+                key={item}
+                variant="rectangular"
+                animation="wave"
+                width={'80px'}
+                height={'30px'}
+                sx={{ borderRadius: 1 }}
+              />
+            ))
+          )}
+        </>
         <>
           {menu &&
             menu.categories &&

@@ -3,13 +3,14 @@ import { Button } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../app/hooks'
-import { setPageTitle } from '../features/page/pageTitleSlice'
+import { setPageInfo } from '../features/page/pageInfoSlice'
 
 const LoginButton = () => {
+  
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const handleLogin = () => {
-    dispatch(setPageTitle({ name: 'login', description: 'Login in to track your basket' }))
+    dispatch(setPageInfo({ name: 'login', description: 'Login in to track your basket' }))
     navigate('/auth/login')
   }
   return (

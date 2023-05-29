@@ -19,7 +19,8 @@ import { Camera } from '@mui/icons-material'
 import { field } from './Styles'
 import { useGetCategoriesQuery } from '../categories/categoryApiSlice'
 import { useGetProductsQuery, useUpdateProductMutation } from './productApiSlice'
-
+import { useUploadImageMutation } from '../uploadFile/uploadSlice'
+import { IProduct } from '../../interfaces'
 const UpdateProductForm = () => {
   const { productId } = useParams()
   const {
@@ -29,7 +30,7 @@ const UpdateProductForm = () => {
     isSuccess
   } = useGetProductsQuery(undefined, {
     selectFromResult: ({ data, isLoading: loading, error, isSuccess }) => ({
-      product: data?.products.find((item) => item.id == productId),
+      product: data?.products.find((item) => item.id == +productId!),
       error,
       isLoading: loading,
       isSuccess
@@ -37,7 +38,7 @@ const UpdateProductForm = () => {
   })
 
   const [updateProduct, { isLoading }] = useUpdateProductMutation()
-
+  const [uploadImage, { isError }] = useUploadImageMutation()
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -47,8 +48,8 @@ const UpdateProductForm = () => {
   const [nameError, setNameError] = useState(false)
   const [descriptionError, setDescriptionError] = useState(false)
   const [image, setImage] = useState<File | null>(null)
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
-
+  const [imageUrl, setImageUrl] = useState<string>('')
+  const [newStock, setNewStock] = useState(20)
   useEffect(() => {
     if (isSuccess) {
       setName(product?.name ?? '')
@@ -71,18 +72,11 @@ const UpdateProductForm = () => {
 
       if (image) {
         formData.append('file', image)
-        const response = await fetch('https://api.escuelajs.co/api/v1/files/upload', {
-          method: 'POST',
-          body: formData
-        })
-        if (response.ok) {
-          const data = await response.json()
-          if (data) {
-            setImageUrl(data.location)
-          }
-        } else {
-          setImageUrl('')
-        }
+        await uploadImage(formData)
+          .unwrap()
+          .then((payload) => console.log(payload))
+          .catch((error) => console.log(error))
+        console.log('Uploading image')
       }
     }
   }
@@ -102,15 +96,16 @@ const UpdateProductForm = () => {
 
       //todo : fix image upload
 
-      const product = {
-        id: productId,
+      const product: IProduct = {
+        id: +productId!,
         name,
         description,
-        category,
-        images: imageUrl ? [imageUrl] : [],
+        stock: newStock,
+        image: imageUrl,
         price: itemPrice
       }
       try {
+        console.log(product)
         const res = await updateProduct(product).unwrap()
         console.log(res)
         setName('')
@@ -159,6 +154,7 @@ const UpdateProductForm = () => {
           component="label"
           variant="contained"
           fullWidth
+          disabled
           endIcon={<Camera />}
           sx={{ mb: 2 }}>
           {imageUrl ? <>Image uploaded</> : <>Upload new Image</>}

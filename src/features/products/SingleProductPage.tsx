@@ -12,6 +12,7 @@ import { addToCart } from '../cart/cartSlice'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { selectCurrentUserToken } from '../auth/authSlice'
 import AddReviewForm from './AddReviewForm'
+import useAuth from '../../utils/hooks/useAuth'
 
 const SingleProductPage = () => {
   const navigate = useNavigate()
@@ -20,12 +21,13 @@ const SingleProductPage = () => {
   const [openReviewForm, setOpenReviewForm] = useState(false)
   const [showPopUp, setShowPopUp] = useState(false)
   const theme = useTheme()
+  const { isAdmin, isManager } = useAuth()
   const dispatch = useAppDispatch()
   const [deleteProduct] = useDeleteProductMutation()
   const [deleteError, setDeleteError] = useState(false)
   const { product, error, isLoading } = useGetProductsQuery(undefined, {
     selectFromResult: ({ data, isLoading, error }) => ({
-      product: data?.products?.filter((item) => item.id == productId?.toString()),
+      product: data?.products?.filter((item) => item.id == +productId!),
       error,
       isLoading
     })
@@ -149,20 +151,21 @@ const SingleProductPage = () => {
           onClick={handleAddToCart}>
           Add to cart
         </Button>
-        {token && ( //user exists ..todo
-          <>
-            <Button
-              variant="outlined"
-              color="warning"
-              endIcon={<EditIcon />}
-              onClick={handleUpdate}>
-              Update
-            </Button>
-            <Button variant="outlined" color="error" onClick={handleDelete}>
-              Delete
-            </Button>
-          </>
-        )}
+        {token &&
+          (isAdmin || isManager) && ( //user exists ..todo
+            <>
+              <Button
+                variant="outlined"
+                color="warning"
+                endIcon={<EditIcon />}
+                onClick={handleUpdate}>
+                Update
+              </Button>
+              <Button variant="outlined" color="error" onClick={handleDelete}>
+                Delete
+              </Button>
+            </>
+          )}
       </Stack>
     </Container>
   )

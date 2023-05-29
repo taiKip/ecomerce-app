@@ -10,14 +10,18 @@ import { sortArray } from '../../utils/functions/Comparator'
 import { sortType } from '../../types'
 import { IProduct } from '../../interfaces'
 import useDebounce from '../../utils/hooks/useDebounce'
-import Wrapper from '../../components/Wrapper'
-import Corousel from '../../components/Corousel'
+import Wrapper from '../../components/wrapper/Wrapper'
+import Corousel from '../../components/corousel/Corousel'
 import Categories from '../categories/Categories'
 import { useParams } from 'react-router-dom'
 import { useGetCategoriesQuery } from '../categories/categoryApiSlice'
 
 const ProductList = () => {
-  const { data } = useGetProductsQuery()
+  const { data } = useGetProductsQuery(undefined, {
+    pollingInterval: 80000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true
+  })
   let products: IProduct[] = []
   const [sort, setSort] = useState<sortType>('' as sortType)
   const [searchItem, setSearchItem] = useState<string>('')

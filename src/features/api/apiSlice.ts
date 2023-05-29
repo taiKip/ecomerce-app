@@ -1,19 +1,23 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { fetchBaseQuery, createApi } from '@reduxjs/toolkit/query/react'
 import { RootState } from '../../app/store'
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: 'http://localhost:8080/api/v1',
+  prepareHeaders: (headers, { getState }) => {
+    const { accessToken, refreshToken } = (getState() as RootState).auth
+
+    if (accessToken) {
+      headers.set('Authorization', `Bearer ${accessToken}`)
+      headers.append('Origin', 'Acess-Control-Allow-Origin')
+      headers.set('Content-Type', 'application/json')
+    }
+    return headers
+  }
+})
+
 export const apiSlice = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8080/api/v1',
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.token
-
-      if (token) {
-        headers.set('Authorization', token)
-        headers.append('Origin', 'Acess-Control-Allow-Origin')
-      }
-      return headers
-    }
-  }),
+  baseQuery,
   tagTypes: ['Products', 'Users', 'Orders', 'Categories'],
   endpoints: (builder) => ({})
 })
