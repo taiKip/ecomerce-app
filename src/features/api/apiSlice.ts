@@ -1,8 +1,9 @@
-import { IAuthState } from './../../interfaces'
 import { fetchBaseQuery, createApi, BaseQueryFn, FetchArgs } from '@reduxjs/toolkit/query/react'
+
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query/fetchBaseQuery'
 import { RootState } from '../../app/store'
-import { FetchBaseQueryArgs, FetchBaseQueryError } from '@reduxjs/toolkit/dist/query/fetchBaseQuery'
 import { logOut, setCredentials } from '../auth/authSlice'
+import { IAuthState } from '../../interfaces/index'
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:8080/api/v1',
   credentials: 'include',
@@ -12,7 +13,6 @@ const baseQuery = fetchBaseQuery({
     if (accessToken) {
       headers.set('Authorization', `Bearer ${accessToken}`)
       headers.append('Origin', 'Acess-Control-Allow-Origin')
-      headers.set('Content-Type', 'application/json')
     }
     return headers
   }
@@ -27,7 +27,6 @@ const refreshQuery = fetchBaseQuery({
     if (refreshToken) {
       headers.set('Authorization', `Bearer ${refreshToken}`)
       headers.append('Origin', 'Acess-Control-Allow-Origin')
-      headers.set('Content-Type', 'application/json')
     }
     return headers
   }
@@ -39,15 +38,12 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
   extraOptions
 ) => {
   let result = await baseQuery(args, api, extraOptions)
-  if (result.error && (result.error.status === 403 || result.error.status === 401)) {
+  if ((result.error && result.error.status === 401) || result.error?.status === 403) {
     // try to get a new token
     const refreshResult = await refreshQuery('/auth/refresh', api, extraOptions)
-    console.log('REFRESH RESULT:: ', refreshResult)
     if (refreshResult.data) {
-      // store the new token
       const newResult = refreshResult.data as IAuthState
-      console.log('refreshToken', newResult)
-      //retry the initial query
+
       api.dispatch(setCredentials(newResult))
       result = await baseQuery(args, api, extraOptions)
     } else {
@@ -60,6 +56,6 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Products', 'Users', 'Orders', 'Categories'],
+  tagTypes: ['Products', 'Users', 'Orders', 'Categories', 'Files'],
   endpoints: (builder) => ({})
 })

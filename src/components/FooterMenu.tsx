@@ -1,4 +1,4 @@
-import { Dashboard, Search, ShoppingCartOutlined } from '@mui/icons-material'
+import { Dashboard, RssFeedOutlined, Search, ShoppingCartOutlined } from '@mui/icons-material'
 import { AppBar, Badge, Icon, IconButton, Toolbar, Typography } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import EnhancedIconButton from './EnhancedIconButton'
@@ -13,6 +13,13 @@ const FooterMenu = () => {
       route: '/',
       title: 'Home',
       description: 'Welcome'
+    },
+    {
+      text: 'Blog',
+      icon: <RssFeedOutlined />,
+      route: '/blog',
+      title: 'Cart',
+      description: 'a basket full of goodness'
     },
     {
       text: 'Cart',

@@ -1,5 +1,5 @@
-import { cartItemType } from './features/cart/cartSlice'
-import { orderStatusType } from './types'
+import { cartItemType } from '../features/cart/cartSlice'
+import { orderStatusType } from '../types'
 export interface IReview {
   id: number
   rating: number
@@ -10,13 +10,14 @@ export interface IReview {
 }
 export interface IProduct {
   id: number
-  image: string
+  imageUrl: string
   name: string
   price: number
   description?: string
   stock: number
   reviews?: IReview[]
   averageRating?: number
+  categoryId?: number
 }
 export interface IQuantity {
   quantity: number
@@ -44,20 +45,17 @@ export interface IAuthState {
   refreshToken: string | null
 }
 export interface ICategory {
-  id: number
+  id?: number
   name: string
   image: string
-  open: boolean
   description: string
-  parentId: number | null
-  categories: ICategory[]
 }
 
-export interface IProductPage {
+export interface IPage<T> {
   currentPage: number
   hasPreviousPage: boolean
   nextPage: boolean
-  products: IProduct[]
+  products: T[]
   totalItems: number
   totalPages: number
 }
@@ -82,5 +80,16 @@ export interface ITableProps {
 }
 export interface IError {
   status: number
+  message: string
+}
+export interface IFile {
+  fileUrl: string
+}
+export interface IError {
+  data: ErrorDetail[]
+  status: number
+}
+export interface ErrorDetail {
+  httpStatus: string
   message: string
 }

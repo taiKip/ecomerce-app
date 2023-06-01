@@ -21,7 +21,7 @@ export const extendedAuthenticationSlice = apiSlice.injectEndpoints({
         body
       })
     }),
-    LogOutUser: builder.mutation({
+    logOutUser: builder.mutation({
       query: () => ({
         url: '/auth/logout',
         method: 'POST'
@@ -30,7 +30,6 @@ export const extendedAuthenticationSlice = apiSlice.injectEndpoints({
         try {
           await queryFulfilled
           dispatch(logOut())
-          dispatch(apiSlice.util.resetApiState())
         } catch (err) {
           console.log(err)
         }

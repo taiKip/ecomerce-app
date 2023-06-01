@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { selectCurrentUserToken } from '../auth/authSlice'
 import AddReviewForm from './AddReviewForm'
 import useAuth from '../../utils/hooks/useAuth'
+import SmallScreenAppBar from '../../components/SmallScreenAppBar'
 
 const SingleProductPage = () => {
   const navigate = useNavigate()
@@ -25,13 +26,16 @@ const SingleProductPage = () => {
   const dispatch = useAppDispatch()
   const [deleteProduct] = useDeleteProductMutation()
   const [deleteError, setDeleteError] = useState(false)
-  const { product, error, isLoading } = useGetProductsQuery(undefined, {
-    selectFromResult: ({ data, isLoading, error }) => ({
-      product: data?.products?.filter((item) => item.id == +productId!),
-      error,
-      isLoading
-    })
-  })
+  const { product, isLoading, error } = useGetProductsQuery(
+    {},
+    {
+      selectFromResult: ({ data, isLoading, error }) => ({
+        product: data?.products?.find((item) => item.id == +productId!),
+        error,
+        isLoading
+      })
+    }
+  )
   const handleShowPopUp = () => {
     setShowPopUp(true)
   }
@@ -52,7 +56,6 @@ const SingleProductPage = () => {
     return <div>Something went wrong</div>
   }
 
-  const productObj = product && product[0]
   const handleDelete = async () => {
     try {
       await deleteProduct({ id: productId! }).unwrap()
@@ -62,12 +65,12 @@ const SingleProductPage = () => {
     }
   }
   const handleAddToCart = () => {
-    if (productObj) {
-      dispatch(addToCart({ ...productObj, quantity: 1 }))
+    if (product) {
+      dispatch(addToCart({ ...product, quantity: 1 }))
     }
   }
   const handleUpdate = () => {
-    navigate(`/edit/${productObj?.id}`)
+    navigate(`/edit/${product?.id}`)
   }
   const handleToggleReview = () => {
     setOpenReviewForm((prev) => !prev)
@@ -86,6 +89,7 @@ const SingleProductPage = () => {
         marginLeft: 0
       }}>
       {showPopUp && <Alert> Review added</Alert>}
+      <SmallScreenAppBar />
       <div
         style={{
           position: 'relative',
@@ -94,14 +98,14 @@ const SingleProductPage = () => {
         }}>
         <CardMedia
           component="img"
-          image={productObj?.image}
-          sx={{ borderRadius: 1, objectFit: 'contain', maxHeight: '50vh', m: 2 }}
+          image={product?.imageUrl}
+          sx={{ borderRadius: 1, objectFit: 'contain', height: '52vh', m: 2 }}
         />
         <Typography fontWeight="bold" color="secondary" variant="h5">
-          {productObj?.name}
+          {product?.name}
         </Typography>
         <Typography color={theme.palette.mode === 'dark' ? 'primary' : 'inherit'}>
-          {productObj?.description}
+          {product?.description}
         </Typography>
         <Stack
           display={'flex'}
@@ -110,7 +114,7 @@ const SingleProductPage = () => {
           alignItems={'center'}
           fontSize={'1em'}>
           <Typography color={'green'} component={'p'} fontSize={'inherit'} fontWeight={'bold'}>
-            {'€' + productObj?.price}
+            {'€' + product?.price}
           </Typography>
 
           <Button sx={{ gap: '3px' }}>
@@ -120,10 +124,10 @@ const SingleProductPage = () => {
               precision={0.5}
               readOnly
               size="small"
-              value={productObj?.averageRating || 5}
+              value={product?.averageRating || 5}
             />
 
-            <Typography>({productObj?.reviews?.length})</Typography>
+            <Typography>({product?.reviews?.length})</Typography>
           </Button>
 
           <Button

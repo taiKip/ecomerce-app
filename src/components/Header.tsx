@@ -1,6 +1,7 @@
 import { useContext, useState, MouseEvent, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import RssFeedIcon from '@mui/icons-material/RssFeed'
 
 import { useTheme } from '@mui/material/styles'
 import { AppBar, Toolbar } from '@mui/material'
@@ -100,7 +101,11 @@ const Header = () => {
               </Link>
             ))}
         </Box>
-
+        <Link to={'/blog'}>
+          <Button color="inherit" endIcon={<RssFeedIcon color="secondary" />}>
+            Blog
+          </Button>
+        </Link>
         <Box gap={2} display={'flex'} marginX={2}>
           {isLoggedIn && (
             <IconButton

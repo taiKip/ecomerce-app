@@ -5,7 +5,7 @@ import Header from './Header'
 import FooterMenu from './FooterMenu'
 import { Box, Toolbar } from '@mui/material'
 
-import { wrapperStyle } from '../features/products/Styles'
+import { wrapperStyle } from '../styles'
 import EnhancedSelect from './EnhancedSelect'
 import SearchBar from './SearchBar'
 import useDebounce from '../utils/hooks/useDebounce'

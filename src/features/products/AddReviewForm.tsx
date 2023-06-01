@@ -11,8 +11,8 @@ import {
   Typography
 } from '@mui/material'
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu'
-import { FormEvent, useState, ChangeEvent, useEffect } from 'react'
-import { field } from './Styles'
+import { FormEvent, useState, ChangeEvent } from 'react'
+import { fieldStyle } from '../../styles'
 import { useAddReviewMutation } from './productApiSlice'
 import { ArrowBack } from '@mui/icons-material'
 import { IReview } from '../../interfaces'
@@ -94,7 +94,7 @@ const AddReviewForm = ({
             />
             <TextField
               onChange={handleChangeComment}
-              sx={field}
+              sx={fieldStyle}
               label="Review"
               color="secondary"
               fullWidth
@@ -103,7 +103,7 @@ const AddReviewForm = ({
             />
             <TextField
               onChange={handleChangeNickName}
-              sx={field}
+              sx={fieldStyle}
               label="NickName"
               color="secondary"
               fullWidth

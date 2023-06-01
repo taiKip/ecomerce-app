@@ -12,7 +12,7 @@ export const breakpointColumnsObj = {
   500: 1
 }
 
-export const field = {
+export const fieldStyle = {
   marginTop: '20px',
   marginBottom: '20px',
   display: 'block'
@@ -28,3 +28,9 @@ export const modalStyle = {
   p: 2,
   borderRadius: 2
 }
+export const inputFormStyle = { paddingTop: 16, width: { xs: '100%', sm: '80vw', lg: '50vw' } }
+export const buttonStackStyle = {
+  display: 'flex',
+  gap: 2
+}
+

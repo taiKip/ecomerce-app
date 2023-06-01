@@ -10,13 +10,13 @@ import { useAppDispatch } from '../../app/hooks'
 import { addToCart } from '../cart/cartSlice'
 import { IProduct } from '../../interfaces'
 
-const Product = ({ id, image, name, price, stock }: IProduct) => {
+const Product = ({ id, imageUrl, name, price, stock }: IProduct) => {
   const dispatch = useAppDispatch()
   const handleAddToCart = () => {
     dispatch(
       addToCart({
         id,
-        image,
+        imageUrl,
         price,
         name,
         quantity: 1,
@@ -30,7 +30,7 @@ const Product = ({ id, image, name, price, stock }: IProduct) => {
         <CardMedia
           component="img"
           height={200}
-          image={image}
+          image={imageUrl}
           alt={name}
           loading="lazy"
           sx={{ minHeight: { xs: 150, sm: 200 } }}

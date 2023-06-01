@@ -1,51 +1,46 @@
-import React, { FormEvent, useState, ChangeEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { FormEvent, useState, ChangeEvent } from 'react'
 
-import {
-  Select,
-  MenuItem,
-  InputLabel,
-  Typography,
-  SelectChangeEvent,
-  OutlinedInput,
-  InputAdornment,
-  CircularProgress,
-  Stack
-} from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import InputLabel from '@mui/material/InputLabel'
+import Typography from '@mui/material/Typography'
+import Stack from '@mui/material/Stack'
+import OutlinedInput from '@mui/material/OutlinedInput'
+import InputAdornment from '@mui/material/InputAdornment'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
-import { Camera } from '@mui/icons-material'
+
 import { useGetCategoriesQuery } from '../categories/categoryApiSlice'
-import { useAddNewProductMutation, useUpdateProductMutation } from './productApiSlice'
-import { field } from './Styles'
-import { useUploadImageMutation } from '../uploadFile/uploadSlice'
+import { useAddNewProductMutation } from './productApiSlice'
+import { fieldStyle } from '../../styles'
+import UploadFile from '../uploadFile/UploadFile'
+import { IError } from '../../interfaces'
+import ErrorHandler from '../../components/error/ErrorHandler'
 
 const AddProductForm = () => {
   const [addNewProduct, { isLoading }] = useAddNewProductMutation()
-  const { data: categories, isLoading: categoryIsLoading } = useGetCategoriesQuery()
+  const { data: categories, isLoading: categoryIdIsLoading } = useGetCategoriesQuery()
   const navigate = useNavigate()
-  const [title, setTitle] = useState('')
+  const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const [category, setCategory] = useState('')
+  const [categoryId, setCategoryId] = useState('')
   const [price, setPrice] = useState('')
+  const [stock, setStock] = useState('')
   const [formError, setFormError] = useState(false)
 
-  const [titleError, setTitleError] = useState(false)
+  const [nameError, setNameError] = useState(false)
   const [descriptionError, setDescriptionError] = useState(false)
-  const [image, setImage] = useState<File | null>(null)
   const [imageUrl, setImageUrl] = useState<string>('')
-  const [imageError, setImageError] = useState(false)
-  const [imageLoading, setImageLoading] = useState(false)
 
-  const { data: addresses } = useGetCategoriesQuery()
-  const [uploadImage, { isError, isLoading: loading, isSuccess }] = useUploadImageMutation()
+  const [error, setError] = useState<IError | null>(null)
 
-  const handleCategory = (event: SelectChangeEvent) => {
-    setCategory(event.target.value)
+  const handleCategoryId = (event: SelectChangeEvent) => {
+    setCategoryId(event.target.value)
   }
   const handlePrice = (event: ChangeEvent<HTMLInputElement>) => {
     setPrice(event.target.value)
@@ -53,83 +48,76 @@ const AddProductForm = () => {
   const handleDescription = (event: ChangeEvent<HTMLInputElement>) => {
     setDescription(event.target.value)
   }
-  const handleTitle = (event: ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value)
+  const handleName = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value)
   }
-
-  const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setImage(event.target.files[0])
-    }
-    const formData = new FormData()
-    if (image) {
-      formData.append('file', image)
-      try {
-        const res = await uploadImage(formData).unwrap()
-        console.log(res)
-      } catch (error) {
-        setFormError(true)
-      }
-    }
+  const handleStock = (event: ChangeEvent<HTMLInputElement>) => {
+    setStock(event.target.value)
   }
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     setFormError(false)
     console.log(imageUrl)
-    setTitleError(false)
+    setNameError(false)
     setDescriptionError(false)
-    if (title === '') {
-      setTitleError(true)
+    if (name === '') {
+      setNameError(true)
     }
     if (description === '') {
       setDescriptionError(true)
     }
 
-    if (title && description && category) {
-      console.log('in save')
+    if (name && description && categoryId && imageUrl && price) {
       const itemPrice = +price
 
-      const product = { title, description, category, image: imageUrl, price: itemPrice }
-      console.log(product)
-      try {
-        await addNewProduct(product).unwrap()
-        console.log(product)
-        setTitle('')
-        setDescription('')
-        setImage(null)
-        setPrice('')
-        navigate('/')
-      } catch (error) {
-        setFormError(true)
+      const product = {
+        name,
+        description,
+        categoryId: +categoryId,
+        imageUrl,
+        price: itemPrice,
+        stock: +stock
       }
+
+      await addNewProduct(product)
+        .unwrap()
+        .then((payload) => {
+          setCategoryId('')
+          setDescription('')
+          setName('')
+          setImageUrl('')
+          setPrice('')
+          setStock('')
+          navigate('/')
+        })
+        .catch((err) => {
+          setError(err)
+          console.log(error)
+        })
     }
   }
+
   return (
-    <Container sx={{ paddingTop: 6, height: '100vh', overflow: 'scroll' }}>
+    <Container sx={{ padding: { xs: 2, sm: 6 }, overflow: 'scroll' }}>
       <Typography variant="h6" component="h2" color="textSecondary" gutterBottom>
         Add New Product
       </Typography>
+
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        {formError && (
-          <Typography color="error" display={'flex'} alignItems={'center'}>
-            Something went wrong
-            <SentimentVeryDissatisfiedIcon />
-          </Typography>
-        )}
         <TextField
-          onChange={handleTitle}
-          sx={field}
-          label="Product Title"
+          onChange={handleName}
+          sx={fieldStyle}
+          label="Product Name"
           color="secondary"
           fullWidth
           required
-          error={titleError}
+          error={nameError}
         />
 
         <TextField
           onChange={handleDescription}
-          sx={field}
+          sx={fieldStyle}
           label="Description"
           color="secondary"
           fullWidth
@@ -138,64 +126,63 @@ const AddProductForm = () => {
           rows={2}
           error={descriptionError}
         />
-        {imageError && (
-          <Typography color="error" display={'flex'} alignItems={'center'}>
-            Something went wrong
-            <SentimentVeryDissatisfiedIcon />
-          </Typography>
-        )}
-        <Button
-          color="primary"
-          component="label"
-          variant="contained"
-          fullWidth
-          endIcon={
-            imageLoading ? (
-              <CircularProgress color="secondary" size={20} />
-            ) : (
-              <Camera color="success" />
-            )
-          }
-          sx={{ mb: 2 }}>
-          Upload Image
-          <input hidden accept="image/*" type="file" onChange={handleUploadImage} />
-        </Button>
-        <FormControl fullWidth sx={{ mb: 1 }}>
-          <InputLabel htmlFor="outlined-adornment-price" color="secondary">
-            Price
-          </InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-price"
-            type="number"
-            color="secondary"
-            onChange={handlePrice}
-            startAdornment={<InputAdornment position="start">€</InputAdornment>}
-            label="Price"
-          />
-        </FormControl>
-        <Stack display={'flex'} flexDirection={'row'} alignItems={'center'}>
+
+        <UploadFile setFileUrl={setImageUrl} />
+        <Stack display={'flex'} gap={2} alignItems={'center'}>
+          <FormControl fullWidth sx={{ mb: 1 }}>
+            <InputLabel htmlFor="outlined-adornment-price" color="secondary">
+              Price
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-price"
+              type="number"
+              color="secondary"
+              onChange={handlePrice}
+              startAdornment={<InputAdornment position="start">€</InputAdornment>}
+              label="Price"
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 1 }}>
+            <InputLabel htmlFor="outlined-adornment-price" color="secondary">
+              Stock
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-price"
+              type="number"
+              value={stock}
+              color="secondary"
+              onChange={handleStock}
+              startAdornment={<InputAdornment position="start">€</InputAdornment>}
+              label="Price"
+            />
+          </FormControl>
+
           <FormControl fullWidth sx={{ paddingBottom: 2 }}>
-            <InputLabel id="category-select" color="secondary">
-              Category
+            <InputLabel id="categoryId-select" color="secondary">
+              CategoryId
             </InputLabel>
             <Select
-              labelId="category-select-label"
-              id="category-select"
-              value={category}
+              labelId="categoryId-select-label"
+              id="categoryId-select"
+              value={categoryId}
               label="Category"
-              onChange={handleCategory}
+              onChange={handleCategoryId}
               color="secondary">
-              {categories?.map((item) => (
-                <MenuItem value={item.id} key={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))}
+              {categories &&
+                categories?.map((item) => (
+                  <MenuItem value={item.id} key={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
-          <Button variant="contained">Create a new category</Button>
         </Stack>
 
-        <Button type="submit" variant="contained" endIcon={<KeyboardArrowRightIcon />}>
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={!imageUrl}
+          endIcon={<KeyboardArrowRightIcon />}>
           Submit
         </Button>
       </form>

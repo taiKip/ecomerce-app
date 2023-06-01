@@ -10,6 +10,8 @@ import { useAppDispatch } from '../../app/hooks'
 import { useRegisterUserMutation } from './authApiSlice'
 import { EMAIL_REGEX, PWD_REGEX } from '../../utils/AppConstants'
 import { setCredentials } from './authSlice'
+import { inputFormStyle } from '../../styles'
+import GoogleLoginButton from '../../components/GoogleLoginButton'
 
 const field = {
   marginTop: '20px',
@@ -95,7 +97,7 @@ const SignUp = () => {
   return (
     <>
       <SmallScreenAppBar />
-      <Container sx={{ paddingTop: 8 }}>
+      <Container sx={inputFormStyle}>
         {Boolean(error) && (
           <Alert severity="error" aria-live="assertive">
             {error}
@@ -143,7 +145,7 @@ const SignUp = () => {
             required
             error={confirmPasswordValid}
           />
-          <Stack>
+          <Stack display={'flex'}>
             <Button
               type="submit"
               color="secondary"
@@ -155,6 +157,7 @@ const SignUp = () => {
               already have an account? Login
             </Button>
           </Stack>
+          <GoogleLoginButton />
         </form>
       </Container>
     </>

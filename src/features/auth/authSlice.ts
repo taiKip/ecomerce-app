@@ -1,4 +1,4 @@
-import { IAuthState } from './../../interfaces'
+import { IAuthState } from '../../interfaces'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { AppDispatch, RootState } from '../../app/store'
 

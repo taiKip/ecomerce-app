@@ -10,6 +10,8 @@ import SmallScreenAppBar from '../../components/SmallScreenAppBar'
 import { useAppDispatch } from '../../app/hooks'
 import { setCredentials } from './authSlice'
 import { EMAIL_REGEX, PWD_REGEX } from '../../utils/AppConstants'
+import { buttonStackStyle, fieldStyle, inputFormStyle } from '../../styles'
+import GoogleLoginButton from '../../components/GoogleLoginButton'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -35,15 +37,9 @@ const Login = () => {
       if (isSuccess && data) {
         navigate('/', { replace: true })
       }
-    }, 1000)
+    }, 1500)
     return () => clearTimeout(timer)
   }, [isSuccess, data])
-
-  const field = {
-    marginTop: '20px',
-    marginBottom: '20px',
-    display: 'block'
-  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -84,7 +80,7 @@ const Login = () => {
     <>
       <SmallScreenAppBar />
 
-      <Container sx={{ paddingTop: 16 }}>
+      <Container sx={inputFormStyle}>
         <Toolbar />
         <Snackbar
           open={isSuccess}
@@ -94,7 +90,7 @@ const Login = () => {
             vertical: 'top'
           }}>
           <Alert severity="success" sx={{ width: '100%' }}>
-            Login successfull
+            Login successfull 🎉
           </Alert>
         </Snackbar>
         {Boolean(error) && (
@@ -108,7 +104,7 @@ const Login = () => {
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <TextField
             onChange={(e) => setEmail(e.target.value)}
-            sx={field}
+            sx={fieldStyle}
             label="email"
             color="secondary"
             fullWidth
@@ -118,7 +114,7 @@ const Login = () => {
           />
           <TextField
             onChange={(e) => setPassword(e.target.value)}
-            sx={field}
+            sx={fieldStyle}
             label="Password"
             color="secondary"
             fullWidth
@@ -126,10 +122,11 @@ const Login = () => {
             error={passwordError}
             inputRef={passwordRef}
           />
-          <Stack>
+          <Stack sx={buttonStackStyle}>
             <Button type="submit" color="secondary" variant="contained" endIcon={<LoginOutlined />}>
               Log In
             </Button>
+            <GoogleLoginButton />
           </Stack>
         </form>
       </Container>

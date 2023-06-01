@@ -1,12 +1,23 @@
 import { Button, colors } from '@mui/material'
 import React from 'react'
 import { ICategory } from '../../interfaces'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useParams } from 'react-router-dom'
+import { useAppDispatch } from '../../app/hooks'
+import { setPageInfo } from '../page/pageInfoSlice'
 
-const CategoryItem = ({ category, disabled }: { category: ICategory; disabled: boolean }) => {
+const CategoryItem = ({ category }: { category: ICategory }) => {
+  const dispatch = useAppDispatch()
+  const { categoryId } = useParams()
+  const handleClick = () => {
+    dispatch(setPageInfo({ name: category.name, description: category.description }))
+  }
   return (
-    <Link to={`/category/${category.id}`}>
-      <Button variant="contained" disabled={disabled} size="small" sx={{ minWidth: '80px' }}>
+    <Link to={`/category/${category.id}`} onClick={handleClick}>
+      <Button
+        variant="contained"
+        size="small"
+        sx={{ minWidth: '80px' }}
+        disabled={+categoryId! == category.id}>
         {category.name}
       </Button>
     </Link>

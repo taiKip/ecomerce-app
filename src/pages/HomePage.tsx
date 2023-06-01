@@ -1,4 +1,4 @@
-import { Toolbar } from '@mui/material'
+import { IconButton, Toolbar } from '@mui/material'
 import { Box } from '@mui/system'
 
 import ProductList from '../features/products/ProductList'

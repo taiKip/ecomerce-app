@@ -92,7 +92,7 @@ const ShoppingCartPage = ({ anchorEl, handleClose }: cartPropsType) => {
           <TableBody>
             {cartItems.map((item) => (
               <CartItem
-                image={item.image}
+                imageUrl={item.imageUrl}
                 quantity={item.quantity}
                 price={item.price}
                 name={item.name}

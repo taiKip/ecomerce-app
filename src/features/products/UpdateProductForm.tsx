@@ -10,78 +10,66 @@ import {
   OutlinedInput,
   InputAdornment
 } from '@mui/material'
+import CardMedia from '@mui/material/CardMedia'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
-import { Camera } from '@mui/icons-material'
-import { field } from './Styles'
+import { fieldStyle } from '../../styles'
 import { useGetCategoriesQuery } from '../categories/categoryApiSlice'
 import { useGetProductsQuery, useUpdateProductMutation } from './productApiSlice'
-import { useUploadImageMutation } from '../uploadFile/uploadSlice'
-import { IProduct } from '../../interfaces'
+import { IError } from '../../interfaces'
+import UploadFile from '../uploadFile/UploadFile'
+
 const UpdateProductForm = () => {
   const { productId } = useParams()
-  const {
-    product,
-    error,
-    isLoading: loading,
-    isSuccess
-  } = useGetProductsQuery(undefined, {
-    selectFromResult: ({ data, isLoading: loading, error, isSuccess }) => ({
-      product: data?.products.find((item) => item.id == +productId!),
-      error,
-      isLoading: loading,
-      isSuccess
-    })
-  })
+  const { product, isLoading: loadingProduct } = useGetProductsQuery(
+    {},
+    {
+      selectFromResult: ({ data, isLoading, error }) => ({
+        product: data?.products?.find((item) => item.id == +productId!),
+        error,
+        isLoading
+      })
+    }
+  )
+  const { data: categories, isLoading } = useGetCategoriesQuery()
 
-  const [updateProduct, { isLoading }] = useUpdateProductMutation()
-  const [uploadImage, { isError }] = useUploadImageMutation()
+  const [updateProduct] = useUpdateProductMutation()
   const navigate = useNavigate()
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
-  const [category, setCategory] = useState('')
-  const [price, setPrice] = useState('')
-  const [formError, setFormError] = useState(false)
+  const [name, setName] = useState(product?.name)
+  const [description, setDescription] = useState(product?.description)
+  const [categoryId, setCategoryId] = useState('')
+  const [price, setPrice] = useState(product?.price + '')
+  const [stock, setStock] = useState(product?.stock + '')
+
   const [nameError, setNameError] = useState(false)
   const [descriptionError, setDescriptionError] = useState(false)
-  const [image, setImage] = useState<File | null>(null)
   const [imageUrl, setImageUrl] = useState<string>('')
-  const [newStock, setNewStock] = useState(20)
-  useEffect(() => {
-    if (isSuccess) {
-      setName(product?.name ?? '')
-      setDescription(product?.description ?? '')
-      setPrice(product?.price.toString() ?? '')
-    }
-  }, [isSuccess, product?.name, product?.image, product?.price])
-  const { data: categories } = useGetCategoriesQuery()
 
-  const handleCategory = (event: SelectChangeEvent) => {
-    setCategory(event.target.value)
+  const [error, setError] = useState<IError | null>(null)
+
+  const handleCategoryId = (event: SelectChangeEvent) => {
+    setCategoryId(event.target.value)
   }
   const handlePrice = (event: ChangeEvent<HTMLInputElement>) => {
     setPrice(event.target.value)
   }
-  const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setImage(event.target.files[0])
-      const formData = new FormData()
-
-      if (image) {
-        formData.append('file', image)
-        await uploadImage(formData)
-          .unwrap()
-          .then((payload) => console.log(payload))
-          .catch((error) => console.log(error))
-        console.log('Uploading image')
-      }
-    }
+  const handleStock = (event: ChangeEvent<HTMLInputElement>) => {
+    setStock(event.target.value)
   }
+  const handleDescription = (event: ChangeEvent<HTMLInputElement>) => {
+    setDescription(event.target.value)
+  }
+  const handleName = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value)
+  }
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+
+    console.log(imageUrl)
     setNameError(false)
     setDescriptionError(false)
     if (name === '') {
@@ -91,31 +79,24 @@ const UpdateProductForm = () => {
       setDescriptionError(true)
     }
 
-    if (name && description && price) {
-      const itemPrice = +price
-
-      //todo : fix image upload
-
-      const product: IProduct = {
-        id: +productId!,
-        name,
-        description,
-        stock: newStock,
-        image: imageUrl,
-        price: itemPrice
-      }
-      try {
-        console.log(product)
-        const res = await updateProduct(product).unwrap()
-        console.log(res)
-        setName('')
-        setDescription('')
-        setImage(null)
-        setPrice('')
-        navigate('/')
-      } catch (error) {
-        setFormError(true)
-      }
+    if (name && description && categoryId && imageUrl && price && stock) {
+      const product = { name, categoryId: +categoryId, imageUrl, price: +price, stock: +stock }
+console.log(product)
+      await updateProduct(product)
+        .unwrap()
+        .then((payload) => {
+          setCategoryId('')
+          setDescription('')
+          setName('')
+          setImageUrl('')
+          setPrice('')
+          setStock('')
+          navigate('/')
+        })
+        .catch((err) => {
+          setError(err)
+          console.log(error)
+        })
     }
   }
   return (
@@ -127,7 +108,7 @@ const UpdateProductForm = () => {
         <TextField
           onChange={(e) => setName(e.target.value)}
           value={name}
-          sx={field}
+          sx={fieldStyle}
           label="Product Name"
           color="secondary"
           fullWidth
@@ -138,28 +119,22 @@ const UpdateProductForm = () => {
 
         <TextField
           onChange={(e) => setDescription(e.target.value)}
-          sx={field}
+          sx={fieldStyle}
           value={description}
           label="Description"
           color="secondary"
           fullWidth
           required
           multiline
-          rows={8}
+          rows={4}
           error={descriptionError}
         />
-
-        <Button
-          color="primary"
-          component="label"
-          variant="contained"
-          fullWidth
-          disabled
-          endIcon={<Camera />}
-          sx={{ mb: 2 }}>
-          {imageUrl ? <>Image uploaded</> : <>Upload new Image</>}
-          <input hidden accept="image/*" type="file" onChange={handleUploadImage} />
-        </Button>
+        <CardMedia
+          component="img"
+          image={product?.imageUrl}
+          sx={{ borderRadius: 1, objectFit: 'contain', maxHeight: '30vh', m: 2 }}
+        />
+        <UploadFile setFileUrl={setImageUrl} />
         <FormControl fullWidth sx={{ mb: 1 }}>
           <InputLabel htmlFor="outlined-adornment-price" color="secondary">
             Price
@@ -174,6 +149,20 @@ const UpdateProductForm = () => {
             label="Price"
           />
         </FormControl>
+        <FormControl fullWidth sx={{ mb: 1 }}>
+          <InputLabel htmlFor="outlined-adornment-price" color="secondary">
+            Stock
+          </InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-price"
+            type="number"
+            value={stock}
+            color="secondary"
+            onChange={handleStock}
+            startAdornment={<InputAdornment position="start">€</InputAdornment>}
+            label="Price"
+          />
+        </FormControl>
         <FormControl fullWidth sx={{ paddingBottom: 2 }}>
           <InputLabel id="category-select" color="secondary">
             Category
@@ -181,9 +170,9 @@ const UpdateProductForm = () => {
           <Select
             labelId="category-select-label"
             id="category-select"
-            value={category}
+            value={categoryId}
             label="Category"
-            onChange={handleCategory}
+            onChange={handleCategoryId}
             color="secondary">
             {categories?.map((item) => (
               <MenuItem value={item.id} key={item.id}>

@@ -24,12 +24,12 @@ const Corousel = () => {
   return (
     <div className="corousel">
       <div className="corousel--slide">
-        <img
+        {/* <img
           src={
             'https://shop.luminskin.com/_next/image?url=https%3A%2F%2Fcdn.shopify.com%2Fs%2Ffiles%2F1%2F0044%2F1237%2F5107%2Ffiles%2FMB_2MO_1_1.png%3Fv%3D1597705809&w=1920&q=75'
           }
           className="corousel--image"
-        />
+        /> */}
         <IconButton
           sx={{ left: '10px', position: 'absolute' }}
           onClick={handlePrev}
